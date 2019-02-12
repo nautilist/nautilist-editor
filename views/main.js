@@ -15,12 +15,13 @@ const TITLE = 'Nautilist Web Editor'
 const CodeEditor = require("../components/CodeEditor");
 const VisualEditor = require("../components/VisualEditor");
 
-const codeEditor = new CodeEditor();
-const visualEditor = new VisualEditor();
+
 
 module.exports = view
 
 function view (state, emit) {
+  const codeEditor = new CodeEditor(state, emit);
+  const visualEditor = new VisualEditor();
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
   return html`

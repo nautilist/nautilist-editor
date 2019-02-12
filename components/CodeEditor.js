@@ -16,9 +16,10 @@ css`
 
 
 class CodeEditor extends Component {
-  constructor () {
+  constructor (state, emit) {
     super()
-    
+    this.state = state;
+    this.emit = emit;
     // this.local = state.components[id] = {}
   }
 
@@ -42,8 +43,12 @@ class CodeEditor extends Component {
     });
     // lineNumbers: true,
     // codeMirror.fromTextArea(el.querySelector("#code"),{styleActiveLine: true, matchBrackets: true});
-
-
+    editor.on('change',(cMirror) => {
+      // get value right from instance
+      console.log(cMirror.getValue());
+      // TODO: create STORE to set vlaues 
+      this.state.TODO =  cMirror.getValue();
+    });
   }
 
   update () {
