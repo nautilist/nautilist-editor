@@ -47,7 +47,7 @@ function view (state, emit) {
       </header>
       <section class="w-100 h-100 flex flex-row justify-start items-start">
         <div class="w-60 h-100 pa1">
-          <div class="ba bw2 b--black w-100 h-100 pb4 overflow-y-scroll">
+          <div class="ba bw2 b--black w-100 h-100">
           ${visualEditor.render()}
           </div>
         </div>

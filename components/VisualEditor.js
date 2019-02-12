@@ -50,7 +50,7 @@ class VisualEditor extends Component {
   createElement () {
     const {json} = this.state.workspace;
     return html`
-      <div class="w-100 h-100 pl2 pr2">
+      <div class="w-100 h-100 pl2 pr2 overflow-y-scroll">
         <header class="w-100 flex flex-column pl2 pr2">
           <h1 class="f1 lh-title mb0">${json.name}</h1>
           <p class="f2 lh-copy mt0 mb2">${json.description}</p>
@@ -58,7 +58,6 @@ class VisualEditor extends Component {
         <section class="w-100">
           ${createUrlList(json.features)}
         </section>
-
       </div>
     `
   }
