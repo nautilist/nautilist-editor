@@ -24,7 +24,7 @@ class CodeEditor extends Component {
   }
 
   createElement () {
-    const cm =  html`<textarea class="h-100 pa0 ma0" name="code" id="code">blah blue</textarea>`;
+    const cm =  html`<textarea class="h-100 pa0 ma0" name="code" id="code">${this.state.workspace.yaml}</textarea>`;
 
     return html`
       <div class="w-100 h-100">
@@ -34,7 +34,6 @@ class CodeEditor extends Component {
   }
 
   load(el){
-    console.log(el.querySelector("#code"))
     const editor = codeMirror.fromTextArea(el.querySelector("#code"),{
       styleActiveLine: true,
       mode: "text/x-yaml",
@@ -42,12 +41,11 @@ class CodeEditor extends Component {
       viewportMargin: Infinity
     });
     // lineNumbers: true,
-    // codeMirror.fromTextArea(el.querySelector("#code"),{styleActiveLine: true, matchBrackets: true});
     editor.on('change',(cMirror) => {
       // get value right from instance
       console.log(cMirror.getValue());
       // TODO: create STORE to set vlaues 
-      this.state.TODO =  cMirror.getValue();
+      this.emit(this.state.events.workspace_yaml_update, cMirror.getValue())
     });
   }
 

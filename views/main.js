@@ -21,14 +21,21 @@ module.exports = view
 
 function view (state, emit) {
   const codeEditor = new CodeEditor(state, emit);
-  const visualEditor = new VisualEditor();
+  const visualEditor = new VisualEditor(state, emit);
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
+
+  function updateEditorView(){
+    console.log(state.workspace.json)
+    visualEditor.rerender()
+  }
 
   return html`
     <body class="w-100 h-100 code lh-copy">
       <main class="w-100 h-100 flex flex-column justify-start items-start">
       <header class="w-100">
-        <div class="w-100 h-100 flex flex-row ba br2 bw2 pa2">hello!</div>
+        <div class="w-100 h-100 flex flex-row justify-end ba br2 bw2 pa2">
+        <button onclick="${updateEditorView}">RUN!</button>
+        </div>
       </header>
       <section class="w-100 h-100 flex flex-row justify-start items-start">
         <div class="w-60 h-100 ba bw2 pa2">
