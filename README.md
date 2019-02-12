@@ -1,13 +1,15 @@
 # Nautilist Web Editor
 > A reactive web editor for making nautilist lists built on Choo.js
 
+![web editor sketch](assets/web-editor.png)
+
 ## About 
 > Inspired by some of the helpful data editing tools out there (e.g. geojson.io or the P5js Web Editor), we bring you nautilist web editor - a super simple, no frills web editor to help you make lists of URLs, export, and share them across the web. 
 
 
 ## Features (forthcoming!)
 
-Allow for public lists 
+- Allow for posting and remixing public lists served from nautilist-server
 
 ## Setup
 
