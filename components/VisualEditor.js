@@ -9,6 +9,11 @@ css`
 `
 
 function createUrlList(_urlList){
+  // if there's no data, then return null
+  if(typeof _urlList !== "object" || _urlList == null){
+    return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`
+  }
+
   // recursion!
   console.log("running!")
   return _urlList.map(feature => {
@@ -49,11 +54,13 @@ class VisualEditor extends Component {
   // ${JSON.stringify(this.state.workspace.json)}
   createElement () {
     const {json} = this.state.workspace;
+    if(!json){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
+
     return html`
       <div class="w-100 h-100 pl2 pr2 overflow-y-scroll">
         <header class="w-100 flex flex-column pl2 pr2">
-          <h1 class="f1 lh-title mb0">${json.name}</h1>
-          <p class="f2 lh-copy mt0 mb2">${json.description}</p>
+          <h1 class="f1 lh-title mb0">${json.name || "Add an awesome list name"}</h1>
+          <p class="f2 lh-copy mt0 mb2">${json.description ||  "Add an awesome list description"}</p>
         </header>
         <section class="w-100">
           ${createUrlList(json.features)}
