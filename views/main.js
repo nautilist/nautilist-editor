@@ -20,6 +20,10 @@ css`
 .dropshadow{
   box-shadow:2px 2px black;
 }
+
+.min-height-0{
+  min-height:0;
+}
 `
 
 module.exports = view
@@ -62,22 +66,20 @@ function view (state, emit) {
   return html`
     <body class="w-100 h-100 code lh-copy">
       <main class="w-100 h-100 flex flex-column justify-start items-start">
-      <header class="w-100">
-        <div class="w-100 h-100 flex flex-row justify-between items-center pa2">
+      <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
-        <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
-        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openHelp}"> About </button>
-        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openShare}"> Share </button>
-        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openSearch}"> 🔎 Search </button>
+          <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openHelp}"> About </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openShare}"> Share </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openSearch}"> 🔎 Search </button>
         </div>
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2" onclick="${updateEditorView}">▶ Run</button>
           <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2" onclick="${saveYaml}">Save</button>
           <button class="ba dropshadow ba b--white bg-white purple bw1 pa2" onclick="${openFile}">Open</button>
         </div>
-        </div>
       </header>
-      <section class="w-100 h-100 flex flex-row justify-start items-start">
+      <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
         <div class="w-60 h-100 pa1">
           <div class="ba bw2 b--black w-100 h-100">
           ${visualEditor.render()}
@@ -96,3 +98,20 @@ function view (state, emit) {
 }
 
 // 
+/**
+<header class="w-100">
+        <div class="w-100 h-100 flex flex-row justify-between items-center pa2">
+        <div>
+        <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
+        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openHelp}"> About </button>
+        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openShare}"> Share </button>
+        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openSearch}"> 🔎 Search </button>
+        </div>
+        <div>
+          <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2" onclick="${updateEditorView}">▶ Run</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2" onclick="${saveYaml}">Save</button>
+          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2" onclick="${openFile}">Open</button>
+        </div>
+        </div>
+      </header>
+ */
