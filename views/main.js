@@ -48,12 +48,28 @@ function view (state, emit) {
     // FileSaver.saveAs(blob, fileName);
   }
 
+  function openHelp(e){
+    alert("TODO: help info")
+  }
+  function openShare(e){
+    alert("TODO: share ")
+  }
+
+  function openSearch(e){
+    alert("TODO: search list db ")
+  }
+
   return html`
     <body class="w-100 h-100 code lh-copy">
       <main class="w-100 h-100 flex flex-column justify-start items-start">
       <header class="w-100">
         <div class="w-100 h-100 flex flex-row justify-between items-center pa2">
+        <div>
         <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
+        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openHelp}"> About </button>
+        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openShare}"> Share </button>
+        <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openSearch}"> 🔎 Search </button>
+        </div>
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2" onclick="${updateEditorView}">▶ Run</button>
           <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2" onclick="${saveYaml}">Save</button>
