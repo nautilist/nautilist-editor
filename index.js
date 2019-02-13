@@ -16,4 +16,10 @@ app.use(require('./stores/workspace'))
 app.route('/', require('./views/main'))
 app.route('/*', require('./views/404'))
 
+// if (typeof navigator !== 'undefined') {
+//   console.log("not defined!!!!!")
+//   document.body.appendChild(app.start())
+  
+// }
+
 module.exports = app.mount('body')

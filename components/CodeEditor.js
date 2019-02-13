@@ -2,7 +2,6 @@ var Component = require('choo/component')
 const css = require('sheetify')
 var html = require('choo/html')
 
-// require("../node_modules/codemirror/lib/codemirror.js")
 require("../node_modules/codemirror/mode/yaml/yaml.js")
 require("../node_modules/codemirror/addon/selection/active-line.js")
 require("../node_modules/codemirror/addon/lint/yaml-lint.js")
