@@ -1,6 +1,7 @@
 const html = require('choo/html')
 const css = require('sheetify')
-
+var FileSaver = require('file-saver');
+const slugify = require('slugify')
 
 css`
 html{
@@ -33,6 +34,13 @@ function view (state, emit) {
     visualEditor.rerender()
   }
 
+  function saveYaml(){
+    console.log(state.workspace.yaml)
+    let blob = new Blob([state.workspace.yaml], {type: "application/x-yaml;charset=utf-8"});
+    let fileName =  slugify(state.workspace.json.name)+'.yml'
+    FileSaver.saveAs(blob, fileName);
+  }
+
   return html`
     <body class="w-100 h-100 code lh-copy">
       <main class="w-100 h-100 flex flex-column justify-start items-start">
@@ -41,7 +49,7 @@ function view (state, emit) {
         <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2" onclick="${updateEditorView}">▶ Run</button>
-          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2" onclick="${updateEditorView}">Save</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2" onclick="${saveYaml}">Save</button>
         </div>
         </div>
       </header>
