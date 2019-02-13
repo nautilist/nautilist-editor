@@ -40,6 +40,13 @@ function view (state, emit) {
     let fileName =  slugify(state.workspace.json.name)+'.yml'
     FileSaver.saveAs(blob, fileName);
   }
+  function openFile(e){
+    // console.log("open file!",state.workspace.yaml)
+    alert("TODO: open file!")
+    // let blob = new Blob([state.workspace.yaml], {type: "application/x-yaml;charset=utf-8"});
+    // let fileName =  slugify(state.workspace.json.name)+'.yml'
+    // FileSaver.saveAs(blob, fileName);
+  }
 
   return html`
     <body class="w-100 h-100 code lh-copy">
@@ -49,7 +56,8 @@ function view (state, emit) {
         <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2" onclick="${updateEditorView}">▶ Run</button>
-          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2" onclick="${saveYaml}">Save</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2" onclick="${saveYaml}">Save</button>
+          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2" onclick="${openFile}">Open</button>
         </div>
         </div>
       </header>
@@ -70,3 +78,5 @@ function view (state, emit) {
   `
 
 }
+
+// 

@@ -2,12 +2,22 @@ var Component = require('choo/component')
 const css = require('sheetify')
 var html = require('choo/html')
 
-require("codemirror/mode/yaml/yaml.js")
-require("codemirror/addon/selection/active-line.js")
-require("codemirror/addon/lint/yaml-lint.js")
-css('../node_modules/codemirror/lib/codemirror.css')
-css('../node_modules/codemirror/theme/tomorrow-night-bright.css')
-var codeMirror = require("codemirror/lib/codemirror.js");
+if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+  
+  require("../node_modules/codemirror/mode/yaml/yaml.js")
+  require("../node_modules/codemirror/addon/selection/active-line.js")
+  require("../node_modules/codemirror/addon/lint/yaml-lint.js")
+  css('../node_modules/codemirror/lib/codemirror.css')
+  css('../node_modules/codemirror/theme/tomorrow-night-bright.css')
+  var codeMirror = require("codemirror/lib/codemirror.js");
+
+}
+// // require("../node_modules/codemirror/mode/yaml/yaml.js")
+// // require("../node_modules/codemirror/addon/selection/active-line.js")
+// // require("../node_modules/codemirror/addon/lint/yaml-lint.js")
+// css('../node_modules/codemirror/lib/codemirror.css')
+// css('../node_modules/codemirror/theme/tomorrow-night-bright.css')
+// var codeMirror = require("codemirror/lib/codemirror.js");
 
 css`
 .CodeMirror { height:100%; }
@@ -33,12 +43,13 @@ class CodeEditor extends Component {
   }
 
   load(el){
-    const editor = codeMirror.fromTextArea(el.querySelector("#code"),{
-      styleActiveLine: true,
-      mode: "text/x-yaml",
-      theme: "tomorrow-night-bright",
-      viewportMargin: Infinity
-    });
+    // const editor = codeMirror.fromTextArea(el.querySelector("#code"),{
+    //   styleActiveLine: true,
+    //   mode: "text/x-yaml",
+    //   theme: "tomorrow-night-bright",
+    //   viewportMargin: Infinity
+    // });
+    const editor = codeMirror.fromTextArea(el.querySelector("#code"),{});
     // lineNumbers: true,
     editor.on('change',(cMirror) => {
       // get value right from instance
