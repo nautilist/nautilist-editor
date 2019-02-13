@@ -11,7 +11,27 @@ css`
 }
 `
 
-
+function renderUrl(feature, parentName){
+  return html`
+    <div class="w-100 flex flex-column ba bw1 mt2" data-parentname="${parentName}" data-featurename="${slugify(feature.name)}">
+      <!-- url -->
+      <div class="w-100 pl2 pr2 bg-light-green truncate">
+        <small class="ma0 small">${feature.url}</small>
+      </div>
+      <!-- link details -->
+      <div class="w-100 flex flex-row">
+        <!-- link name -->
+        <div class="w-40 pa2">
+          <p class="f6 b ma0"> <a class="link black" href="${feature.url}" target="_blank">${feature.name} </a></p>
+        </div>
+        <!-- link description -->
+        <div class="w-60 pl2 pa2">
+          <p class="f6 ma0">${feature.description}</p>
+        </div>
+      </div>
+    </div>
+  `
+}
 
 
 class VisualEditor extends Component {
@@ -25,6 +45,7 @@ class VisualEditor extends Component {
   }
 
   createUrlList(_json){
+    console.log("from createUrlList", _json)
     const {features, name, description} = _json;
     const parentName = slugify(name);
   
@@ -39,34 +60,29 @@ class VisualEditor extends Component {
     <section>
     ${
       features.map(feature => {
+        
         if(feature.hasOwnProperty('features')){
+          let sortables = html`
+          <div>
+            ${feature.features.map(item => {
+              return renderUrl(item, slugify(feature.name) )
+            })}
+          </div>
+          `
+          // ${this.createSortable(sortables, this.state, this.emit)}
           return html`
-          <fieldset class="ba b--dark-pink bw2">
+          <fieldset class="ba b--dark-pink bw2" data-parentname="${parentName}" data-featurename="${slugify(feature.name)}">
             <legend>${feature.name}</legend>
             <small>${feature.description}</small>
-          ${this.createSortable(this.createUrlList(feature), this.state, this.emit ) }
+            ${this.createSortable(sortables, this.state, this.emit)}
           </fieldset>
           `
         } else {
-          return html`
-          <div class="w-100 flex flex-column ba bw1 mt2" data-parentname="${parentName}" data-featurename="${slugify(feature.name)}">
-            <!-- url -->
-            <div class="w-100 pl2 pr2 bg-light-green truncate">
-              <small class="ma0 small">${feature.url}</small>
-            </div>
-            <!-- link details -->
-            <div class="w-100 flex flex-row">
-              <div class="w-40 pa2">
-                <p class="f6 b ma0"> <a class="link black" href="${feature.url}" target="_blank">${feature.name} </a></p>
-              </div>
-              <div class="w-60 pl2 pa2">
-                <p class="f6 ma0">${feature.description}</p>
-              </div>
-            </div>
-          </div>
-          `
+          return renderUrl(feature, parentName)
         }
+
       })
+
     }
     </section>
     `
@@ -79,14 +95,8 @@ class VisualEditor extends Component {
         onEnd: function(evt){
           console.log("sortable", evt.newIndex);
           console.log("🌮🌮🌮", evt.clone.dataset.parentname);
-          // const payload = {
-          //   parentBranchId: evt.clone.dataset.parentid,
-          //   parentCollection: evt.clone.dataset.parentdb,
-          //   recipeId: evt.clone.dataset.id,
-          //   newRecipePosition: evt.newIndex
-          // }
-
           const payload = Object.assign({newPosition: evt.newIndex}, evt.clone.dataset)
+
           emit(state.events.workspace_json_reorder, payload)
         }
       });
@@ -101,7 +111,9 @@ class VisualEditor extends Component {
     const {json} = this.state.workspace;
     if(!json){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
 
-    const mySortableList = this.createSortable( this.createUrlList(json), this.state, this.emit )
+    // const mySortableList = this.createSortable( this.createUrlList(json), this.state, this.emit )
+    const mySortableList =  this.createUrlList(json)
+
 
     return html`
       <div class="w-100 h-100 pl2 pr2 overflow-y-scroll">

@@ -50,7 +50,7 @@ features:
 //   description: 
 //   `
   state.workspace = {
-    json:yaml.load(initialYaml),
+    json:yaml.safeLoad(initialYaml),
     yaml:initialYaml.trim()
   }
   state.events.workspace_yaml_update = 'workspace:yaml:update'
@@ -69,42 +69,51 @@ features:
   emitter.on(state.events.workspace_json_reorder, function(_payload){
     const {parentname, featurename, newPosition} = _payload;
 
+    console.log(_payload)
     let newJson = Object.assign({}, state.workspace.json);
+    let parentObject, parentIndex;
 
-    // first find the parent array
-    // let parentListIndex =  
+    if(parentname === slugify(newJson.name)){
+      parentObject = newJson;
+      parentIndex = 0;
 
-    
-    
-    const parentList = newJson.features.find(item => {
-      return slugify(item.name) == parentname;
-    })
+    } else {
+      // first find the parent array
+      parentObject = newJson.features.find(item => {
+        return slugify(item.name) == parentname;
+      });
 
-    const parentIndex = newJson.features.findIndex(item => {
-      return slugify(item.name) == parentname;
-    })
+      parentIndex = newJson.features.findIndex(item => {
+        return slugify(item.name) == parentname;
+      })
+    }
+
     
     // then find the specified resource index
-    const currentPosition = parentList.features.findIndex(item => {
+    const currentPosition = parentObject.features.findIndex(item => {
       return slugify(item.name) == featurename
     });
 
-    // move the value
-    moveVal(parentList.features, currentPosition, newPosition);  
 
-    // update the copy
-    newJson.features[parentIndex].features = parentList.features;
+    // // move the value
+    moveVal(parentObject.features, currentPosition, newPosition);  
+    
+    // // update the copy
+    newJson.features[parentIndex].features = parentObject.features;
     
     // then update the store!
-    emitter.emit(state.events.workspace_all_update, newJson)
+    emitter.emit(state.events.workspace_all_update, newJson )
   
-    console.log(`Reordering ${featurename} in ${parentname} to position ${newPosition}`)
+    console.log(`Reordering ${featurename} in ${parentname} from ${currentPosition} to position ${newPosition}`)
   })
 
   emitter.on(state.events.workspace_all_update, function(_payload){
+    // console.log(_payload)
     state.workspace.json = _payload;
-    state.workspace.yaml = yaml.safeDump(_payload);
-    emitter.emit('render');
+    const newYaml = yaml.safeDump(_payload , {'noRefs': true});
+    console.log(newYaml)
+    state.workspace.yaml = newYaml
+    emitter.emit(state.events.RENDER)
   });
 
   // helper functions
