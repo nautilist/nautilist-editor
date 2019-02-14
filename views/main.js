@@ -24,6 +24,10 @@ css`
 .min-height-0{
   min-height:0;
 }
+
+.max-z{
+  z-index:9999;
+}
 `
 
 module.exports = view
@@ -53,9 +57,80 @@ function view (state, emit) {
     // FileSaver.saveAs(blob, fileName);
   }
 
-  function openHelp(e){
-    alert("TODO: help info")
+  function HelpModal(){
+    return html`
+      <div id="helpModal" class="w-100 h-100 flex-column justify-center items-center dn fixed top-0 left-0 max-z pa4" style="background:rgba(255, 65, 180,0.7)">
+        <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll">
+          <header class="flex flex-row items-center justify-between">
+            <h2>About</h2>
+            <button class="bn bg-purple white bw2 pa2" onclick="${closeHelp}">⨉</button>
+          </header>
+          <p>Hello and welcome to the Nautlist Editor!</p>
+          <p>It's a lightweight editor for putting together flexible lists of resources using YAML, a structured, human-computer readable data structure. <a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
+          <p>To get get started - copy/paste this list boilerplate 👇 and press the "run" button:</p>
+          
+          <h3>Simple list</h3>
+          <pre class="mt2 bg-light-gray pa2 f7">
+<code>
+type: list
+name: Nautilist Simple Boilerplate
+description: A boilerplate list for nautilist
+features:
+  - url: www.itp.nyu.edu
+    name: ITP/IMA
+    description: Website to NYU's ITP/IMA program
+  - url: www.nautilist.github.io/
+    name: Nautilist homepage
+    description: Nautilist is a tool for ...
+          </code>
+          </pre>
+
+          <h3>Simple list of lists</h3>
+          <pre class="mt2 bg-light-gray pa2 f7">
+<code>
+type: list
+name: Nautilist Simple Boilerplate
+description: A boilerplate list for nautilist
+features:
+  - type: list
+    name: My Special List
+    description: A list 1 description
+    features:
+    - url: www.itp.nyu.edu
+      name: ITP/IMA
+      description: Website to NYU's ITP/IMA program
+    - url: www.nautilist.github.io/
+      name: Nautilist homepage
+      description: Nautilist is a tool for ...
+  - type: list
+    name: My Other Special List
+    description: A list 2 description
+    features:
+    - url: www.itp.nyu.edu
+      name: ITP/IMA for list 2
+      description: Website to NYU's ITP/IMA program
+    - url: www.nautilist.github.io/
+      name: Nautilist homepage for list 2
+      description: Nautilist is a tool for ...
+          </code>
+          </pre>
+
+          <button class="w-100 h3 br2 bn bg-purple white pa2 mt3 mb3" onclick=${closeHelp}>close</button>
+        </div>
+      </div>
+    `
   }
+
+  function closeHelp(){
+      document.querySelector('#helpModal').classList.toggle('flex')
+  }
+
+
+  function openHelp(e){
+      // alert("copy and paste into the editor to start:\n\n\ntype: list\nname:my title\ndescription: list description\nfeatures:\n- url:")
+    document.querySelector('#helpModal').classList.toggle('flex')
+  }
+
   function openShare(e){
     alert("TODO: share ")
   }
@@ -93,6 +168,7 @@ function view (state, emit) {
         </div>
       </section>
       </main>
+      ${HelpModal()}
     </body>
   `
 
