@@ -36,17 +36,17 @@ class ShareModal extends Component {
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll">
         <header class="flex flex-row items-center justify-between">
           <h2>Share</h2>
-          <button class="bn bg-navy yellow bw2 pa h2 w2" onclick="${this.close()}">⨉</button>
+          <button class="bn bg-navy yellow bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
         <section class="w-100 mt2 mb2">
-          <p>Share your list in <a class="link black underline b" href="#" target="_blank">Natilist Public</a> or as an HTML page. More formats coming soon!</p>
+          <p>Share your list in <a class="link black underline b" href="#" target="_blank">Nautilist Public</a> or as an HTML page. More formats coming soon!</p>
         </section>
         <!-- Sharing Options -->
         <section>
          <p>🚀 Send to Nautilist Public</p>
          <p>✨ Download HTML page</p>
         </section>
-        <button class="w-100 h3 bn bg-navy yellow pa2 mt3 mb3" onclick=${this.close()}>close</button>
+        <button class="w-100 h3 bn bg-navy yellow pa2 mt3 mb3 pointer" onclick=${this.close()}>close</button>
       </div>
     </div>
     `

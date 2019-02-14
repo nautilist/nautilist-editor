@@ -9,6 +9,7 @@ const CodeEditor = require("../components/CodeEditor");
 const VisualEditor = require("../components/VisualEditor");
 const AboutModal = require("../components/AboutModal");
 const ShareModal = require("../components/ShareModal");
+const SearchModal = require("../components/SearchModal");
 
 css`
 html{
@@ -37,6 +38,7 @@ function view (state, emit) {
   const visualEditor = new VisualEditor(state, emit);
   const aboutModal  = new AboutModal("AboutModal", state, emit)
   const shareModal  = new ShareModal("ShareModal", state, emit)
+  const searchModal  = new SearchModal("SearchModal", state, emit)
 
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
@@ -56,9 +58,9 @@ function view (state, emit) {
     alert("TODO: open file!")
   }
 
-  function openSearch(e){
-    alert("TODO: search list db ")
-  }
+  // function openSearch(e){
+  //   alert("TODO: search list db ")
+  // }
 
   return html`
     <body class="w-100 h-100 code lh-copy">
@@ -66,14 +68,14 @@ function view (state, emit) {
       <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
           <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${aboutModal.open()}"> About </button>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${shareModal.open()}"> Share </button>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openSearch}"> 🔎 Search </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${aboutModal.open()}"> About </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${shareModal.open()}"> Share </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${searchModal.open()}"> 🔎 Search </button>
         </div>
         <div>
-          <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2" onclick="${updateEditorView}">▶ Run</button>
-          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2" onclick="${saveYaml}">Save</button>
-          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2" onclick="${openFile}">Open</button>
+          <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveYaml}">Save</button>
+          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">Open</button>
         </div>
       </header>
       <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
@@ -91,6 +93,7 @@ function view (state, emit) {
       </main>
       ${aboutModal.render()}
       ${shareModal.render()}
+      ${searchModal.render()}
     </body>
   `
 
