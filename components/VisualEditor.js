@@ -180,6 +180,19 @@ class VisualEditor extends Component {
     function moveVal(arr, from, to) {
       arr.splice(to, 0, arr.splice(from, 1)[0]);
     };
+
+    function removeClientId(_json){
+      let newObj = Object.assign({}, _json)
+      delete newObj.clientId
+      newObj.features.forEach( item => {
+        if(item.hasOwnProperty('features')){
+          item.features.forEach(subItem =>  {delete subItem.clientId})
+        }
+        delete item.clientId
+      });
+      return newObj
+    }
+    
     
     for (var i = 0; i < nestedSortables.length; i++) {
       new Sortable(nestedSortables[i], {
@@ -212,8 +225,12 @@ class VisualEditor extends Component {
 
           console.log(newJson)
           this.state.workspace.json = newJson;
-          this.state.workspace.yaml = yaml.safeDump(newJson , {'noRefs': true});
 
+          // clean json
+          
+          const cleanJson = removeClientId(newJson)
+          this.state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
+          this.emit("json:addClientId")
           this.emit('render');
           
           // this.emit(this.state.events.workspace_json_reorder, payload)
