@@ -34,8 +34,8 @@ html{
 module.exports = view
 
 function view (state, emit) {
-  const codeEditor = new CodeEditor(state, emit);
-  const visualEditor = new VisualEditor(state, emit);
+  const codeEditor = new CodeEditor("CodeEditor", state, emit);
+  const visualEditor = new VisualEditor("VisualEditor", state, emit);
   const aboutModal  = new AboutModal("AboutModal", state, emit)
   const shareModal  = new ShareModal("ShareModal", state, emit)
   const searchModal  = new SearchModal("SearchModal", state, emit)

@@ -36,13 +36,13 @@ function renderUrl(feature, parentName){
 
 
 class VisualEditor extends Component {
-  constructor (state, emit) {
-    super()
+  constructor (id, state, emit) {
+    super(id)
     this.state = state;
     this.emit = emit;
     // this.createSortable = this.createSortable.bind(this)
     // this.createUrlList = this.createUrlList.bind(this)
-    // this.local = state.components[id] = {}
+    this.local = state.components[id] = {}
     this.addLinkPlaceHolder = this.addLinkPlaceHolder.bind(this);
     this.addListPlaceholder = this.addListPlaceholder.bind(this);
   }
