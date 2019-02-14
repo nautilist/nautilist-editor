@@ -1,5 +1,6 @@
 const yaml = require('js-yaml');
 const slugify = require('slugify');
+const shortid = require('shortid');
 
 module.exports = store
 
@@ -58,7 +59,30 @@ features:
   state.events.workspace_all_update = 'workspace:all:update'
 
 
-  emitter.on('DOMContentLoaded', function () {})
+  addClientId();  
+
+  emitter.on('DOMContentLoaded', function () {
+    // adds a clientId for use in handling and sorting items clientside on load
+    
+  })
+
+   // adds a clientId for use in handling and sorting items clientside
+  function addClientId(){
+    state.workspace.json.clientId = shortid.generate();
+    state.workspace.json.features = state.workspace.json.features.map( item => {
+      if(item.hasOwnProperty('features')){
+        item.features = item.features.map(subItem =>  Object.assign({clientId: shortid.generate()}, subItem))
+      }
+      return Object.assign({clientId: shortid.generate()}, item)
+    });
+  }
+  emitter.on("json:addClientId", addClientId)
+
+  emitter.on("test", function(_payload){
+      // emitter.emit(state.events.RENDER)
+      console.log(_payload)
+
+  })
   
   emitter.on(state.events.workspace_yaml_update, function(_payload){
     let safeYaml = yaml.load(_payload)
@@ -67,52 +91,47 @@ features:
   })
 
   emitter.on(state.events.workspace_json_reorder, function(_payload){
-    const {parentname, featurename, newPosition} = _payload;
-
-    console.log(_payload)
+    const {parentid, featureid, newPosition, oldPosition} = _payload;
     let newJson = Object.assign({}, state.workspace.json);
     let parentObject, parentIndex;
 
-    if(parentname === slugify(newJson.name)){
-      parentObject = newJson;
-      parentIndex = 0;
+    console.log(_payload)
 
-    } else {
-      // first find the parent array
-      parentObject = newJson.features.find(item => {
-        return slugify(item.name) == parentname;
-      });
+    // if(parentname === slugify(newJson.name)){
+    //   parentObject = newJson;
+    //   parentIndex = 0;
 
-      parentIndex = newJson.features.findIndex(item => {
-        return slugify(item.name) == parentname;
-      })
-    }
+    //   moveVal(parentObject.features, oldPosition, newPosition); 
+    //   newJson.features = parentObject.features;
+      
+    // } else {
+    //   // first find the parent array
+    //   parentObject = newJson.features.find(item => {
+    //     return slugify(item.name) == parentname;
+    //   });
 
-    
-    // then find the specified resource index
-    const currentPosition = parentObject.features.findIndex(item => {
-      return slugify(item.name) == featurename
-    });
+    //   parentIndex = newJson.features.findIndex(item => {
+    //     return slugify(item.name) == parentname;
+    //   })
+    //   moveVal(parentObject.features, oldPosition, newPosition); 
+    //   newJson.features[parentIndex].features = parentObject.features;
 
+    // }
 
-    // // move the value
-    moveVal(parentObject.features, currentPosition, newPosition);  
-    
-    // // update the copy
-    newJson.features[parentIndex].features = parentObject.features;
-    
     // then update the store!
-    emitter.emit(state.events.workspace_all_update, newJson )
-  
-    console.log(`Reordering ${featurename} in ${parentname} from ${currentPosition} to position ${newPosition}`)
+    // state.workspace.json = Object.assign({}, newJson)
+    // emitter.emit(state.events.RENDER)
+    // state.workspace.yaml = yaml.safeDump(newJson , {'noRefs': true});
+
+    // emitter.emit(state.events.workspace_all_update, newJson )
+    // console.log(`Reordering ${featurename} in ${parentname} from ${oldPosition} to position ${newPosition}`, newJson)
   })
 
   emitter.on(state.events.workspace_all_update, function(_payload){
-    // console.log(_payload)
     state.workspace.json = _payload;
     const newYaml = yaml.safeDump(_payload , {'noRefs': true});
-    console.log(newYaml)
     state.workspace.yaml = newYaml
+
     emitter.emit(state.events.RENDER)
   });
 
