@@ -36,7 +36,7 @@ class AboutModal extends Component {
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll">
         <header class="flex flex-row items-center justify-between">
           <h2>About</h2>
-          <button class="bn bg-purple white bw2 pa h2 w2" onclick="${this.close()}">⨉</button>
+          <button class="bn bg-navy dark-pink bw2 pa h2 w2" onclick="${this.close()}">⨉</button>
         </header>
         <section class="w-100 mt2 mb2">
           <p>Hello and welcome to the Nautlist Editor!</p>
@@ -53,7 +53,7 @@ ${singleListExample()}
         <h3>Simple list of lists</h3>
 ${multiListExample()}
         </section>
-        <button class="w-100 h3 bn bg-purple white pa2 mt3 mb3" onclick=${this.close()}>close</button>
+        <button class="w-100 h3 bn bg-navy dark-pink pa2 mt3 mb3" onclick=${this.close()}>close</button>
       </div>
     </div>
     `

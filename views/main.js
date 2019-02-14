@@ -8,6 +8,7 @@ const TITLE = 'Nautilist Web Editor'
 const CodeEditor = require("../components/CodeEditor");
 const VisualEditor = require("../components/VisualEditor");
 const AboutModal = require("../components/AboutModal");
+const ShareModal = require("../components/ShareModal");
 
 css`
 html{
@@ -35,6 +36,7 @@ function view (state, emit) {
   const codeEditor = new CodeEditor(state, emit);
   const visualEditor = new VisualEditor(state, emit);
   const aboutModal  = new AboutModal("AboutModal", state, emit)
+  const shareModal  = new ShareModal("ShareModal", state, emit)
 
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
@@ -51,15 +53,7 @@ function view (state, emit) {
     FileSaver.saveAs(blob, fileName);
   }
   function openFile(e){
-    // console.log("open file!",state.workspace.yaml)
     alert("TODO: open file!")
-    // let blob = new Blob([state.workspace.yaml], {type: "application/x-yaml;charset=utf-8"});
-    // let fileName =  slugify(state.workspace.json.name)+'.yml'
-    // FileSaver.saveAs(blob, fileName);
-  }
-
-  function openShare(e){
-    alert("TODO: share ")
   }
 
   function openSearch(e){
@@ -73,7 +67,7 @@ function view (state, emit) {
         <div>
           <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${aboutModal.open()}"> About </button>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openShare}"> Share </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${shareModal.open()}"> Share </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2" onclick="${openSearch}"> 🔎 Search </button>
         </div>
         <div>
@@ -96,6 +90,7 @@ function view (state, emit) {
       </section>
       </main>
       ${aboutModal.render()}
+      ${shareModal.render()}
     </body>
   `
 
