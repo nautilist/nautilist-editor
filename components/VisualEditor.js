@@ -45,95 +45,7 @@ class VisualEditor extends Component {
     // this.local = state.components[id] = {}
   }
 
-  // createUrlList(_json, state, emit){
-  //   console.log("from createUrlList", _json)
-  //   const {features, name, description} = _json;
-  //   const parentName = slugify(name);
   
-  //   // if there's no data, then return null
-  //   if(typeof features !== "object" || features == null){
-  //     return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`
-  //   }
-
-  //   return html`
-  //   <ul>
-  //     ${
-  //       features.map(feature => {
-  //         let els;
-
-  //         if(feature.hasOwnProperty("features")){
-  //           let subParentName = slugify(feature.name);
-  //           let nestedEls = html`
-  //           <ul class="item"> 
-  //           ${
-  //             feature.features.map(nestedFeature => {
-  //                 let nestedFeatureName = slugify(nestedFeature.name)
-  //                 return html`
-  //                   <li class="item" data-parentname="${subParentName}" data-featurename="${nestedFeatureName}">${nestedFeature.name}</li>
-  //                 `
-  //               })
-  //             }
-  //           </ul>
-  //          `
-
-  //          nestedEls = new Sortable(nestedEls, {
-  //             animation:150, 
-  //             draggable: ".item",
-  //             fallbackOnBody: true,
-  //             onEnd: (evt)=> {
-  //               console.log("sortable", evt.newIndex);
-  //               console.log("sortable", evt);
-  //               console.log("🌮🌮🌮", evt.clone.dataset.parentname);
-  //               const payload = Object.assign({newPosition: evt.newIndex, oldPosition: evt.oldIndex}, evt.clone.dataset)
-  //               // emit(state.events.workspace_json_reorder, payload)
-  //               console.log("yes!")
-  //               emit(state.events.workspace_json_reorder, payload)
-  //             }}).el
-  //           // console.log(nestedEls)
-
-  //           els = html`
-  //             <li class="item-group" data-parentname="${parentName}">
-  //               ${feature.name}
-  //               ${nestedEls}
-  //             </li>
-  //           `
-  //         } else{
-  //           let featureName = slugify(feature.name)
-  //           els = html`
-  //           <li class="item" data-parentname="${parentName}" data-featurename="${featureName}">
-  //             ${feature.name}
-  //           </li>
-  //           `
-  //         }
-          
-  //         // return new Sortable(els, {animation: 150})
-  //         return els
-  //       })
-  //     }
-  //   </ul>
-  //   `
-  // }
-
-  // createSortable(_newList, state, emit){
-  //   let newList, sortableList;
-  //     sortableList = Sortable.create(_newList, {
-  //       animation: 150,
-  //       fallbackOnBody: true,
-  //       onEnd: function(evt){
-  //         console.log("sortable", evt.newIndex);
-  //         console.log("🌮🌮🌮", evt.clone.dataset.parentname);
-  //         const payload = Object.assign({newPosition: evt.newIndex}, evt.clone.dataset)
-
-  //         emit(state.events.workspace_json_reorder, payload)
-  //       }
-  //     });
-  
-  //     return sortableList.el;
-  // }
-  
-  
-
-  // ${JSON.stringify(this.state.workspace.json)}
   createElement () {
     const {json} = this.state.workspace;
     if(!json){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
@@ -147,22 +59,32 @@ class VisualEditor extends Component {
           <p class="f2 lh-copy mt0 mb2">${json.description ||  "Add an awesome list description"}</p>
         </header>
         <section class="w-100">
-          <ul class="list-container">
+          <ul class="list pl0 list-container">
             ${features.map( feature => {
               const subListExists = feature.hasOwnProperty("features")
               let subList = ''
               if(subListExists){
                 subList = html`
-                  <ul class="list-container">
+                  <ul class="list pl0 list-container">
                     ${feature.features.map(subFeature => {
-                      return html`<li class="item" data-parentid="${feature.clientId}" data-featureid="${subFeature.clientId}">${subFeature.name}</li>`
+                      return html`
+                      <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${feature.clientId}" data-featureid="${subFeature.clientId}">
+                        <a class="link underline black f7 b" href="${subFeature.url}">${subFeature.name}</a>
+                        <p class="ma0 f7">${subFeature.description}</p>
+                      </li>
+                      `
                     })}
                   </ul>
                 `
               }
               return html`
-                <li class="item" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">${feature.name}
-                  ${subList}
+                <li class="item" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
+                  <fieldset class="ba bw1">
+                    <legend class="pl2 pr2">${feature.name}</legend>
+                    <p class="ma0 pl2">${feature.description}</p>
+                    ${subList}
+                  </fieldset>
+                  
                 </li>
               `
             })}
@@ -287,3 +209,92 @@ module.exports = VisualEditor
     // }
     // </section>
     // `
+
+
+
+    // createUrlList(_json, state, emit){
+  //   console.log("from createUrlList", _json)
+  //   const {features, name, description} = _json;
+  //   const parentName = slugify(name);
+  
+  //   // if there's no data, then return null
+  //   if(typeof features !== "object" || features == null){
+  //     return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`
+  //   }
+
+  //   return html`
+  //   <ul>
+  //     ${
+  //       features.map(feature => {
+  //         let els;
+
+  //         if(feature.hasOwnProperty("features")){
+  //           let subParentName = slugify(feature.name);
+  //           let nestedEls = html`
+  //           <ul class="item"> 
+  //           ${
+  //             feature.features.map(nestedFeature => {
+  //                 let nestedFeatureName = slugify(nestedFeature.name)
+  //                 return html`
+  //                   <li class="item" data-parentname="${subParentName}" data-featurename="${nestedFeatureName}">${nestedFeature.name}</li>
+  //                 `
+  //               })
+  //             }
+  //           </ul>
+  //          `
+
+  //          nestedEls = new Sortable(nestedEls, {
+  //             animation:150, 
+  //             draggable: ".item",
+  //             fallbackOnBody: true,
+  //             onEnd: (evt)=> {
+  //               console.log("sortable", evt.newIndex);
+  //               console.log("sortable", evt);
+  //               console.log("🌮🌮🌮", evt.clone.dataset.parentname);
+  //               const payload = Object.assign({newPosition: evt.newIndex, oldPosition: evt.oldIndex}, evt.clone.dataset)
+  //               // emit(state.events.workspace_json_reorder, payload)
+  //               console.log("yes!")
+  //               emit(state.events.workspace_json_reorder, payload)
+  //             }}).el
+  //           // console.log(nestedEls)
+
+  //           els = html`
+  //             <li class="item-group" data-parentname="${parentName}">
+  //               ${feature.name}
+  //               ${nestedEls}
+  //             </li>
+  //           `
+  //         } else{
+  //           let featureName = slugify(feature.name)
+  //           els = html`
+  //           <li class="item" data-parentname="${parentName}" data-featurename="${featureName}">
+  //             ${feature.name}
+  //           </li>
+  //           `
+  //         }
+          
+  //         // return new Sortable(els, {animation: 150})
+  //         return els
+  //       })
+  //     }
+  //   </ul>
+  //   `
+  // }
+
+  // createSortable(_newList, state, emit){
+  //   let newList, sortableList;
+  //     sortableList = Sortable.create(_newList, {
+  //       animation: 150,
+  //       fallbackOnBody: true,
+  //       onEnd: function(evt){
+  //         console.log("sortable", evt.newIndex);
+  //         console.log("🌮🌮🌮", evt.clone.dataset.parentname);
+  //         const payload = Object.assign({newPosition: evt.newIndex}, evt.clone.dataset)
+
+  //         emit(state.events.workspace_json_reorder, payload)
+  //       }
+  //     });
+  
+  //     return sortableList.el;
+  // }
+  
