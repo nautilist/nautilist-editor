@@ -48,7 +48,7 @@ class VisualEditor extends Component {
   
   createElement () {
     const {json} = this.state.workspace;
-    if(!json){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
+    if(!json || !json.features){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
 
     const {features, name} = json;
 
@@ -76,15 +76,20 @@ class VisualEditor extends Component {
                     })}
                   </ul>
                 `
-              }
-              return html`
+                return html`
                 <li class="item" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
                   <fieldset class="ba bw1">
                     <legend class="pl2 pr2">${feature.name}</legend>
                     <p class="ma0 pl2">${feature.description}</p>
                     ${subList}
                   </fieldset>
-                  
+                </li>
+                `
+              }
+              return html`
+                <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
+                  <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+                  <p class="ma0 f7">${feature.description}</p>
                 </li>
               `
             })}

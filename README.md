@@ -30,10 +30,23 @@ Add it to your project
 heroku buildpacks:set https://github.com/heroku/heroku-buildpack-static.git -a nautilist-editor
 ```
 
+Set heroku remote
+```
+https://devcenter.heroku.com/articles/git#for-an-existing-heroku-app
+```
+
 Build it!
 ```
 git push heroku master
 ```
+
+clear your cache:
+https://devcenter.heroku.com/articles/git#build-cache 
+https://github.com/heroku/heroku-repo#purge-cache
+```
+$ heroku repo:purge_cache -a appname
+```
+
 
 
 ## Commands

@@ -69,12 +69,15 @@ features:
    // adds a clientId for use in handling and sorting items clientside
   function addClientId(){
     state.workspace.json.clientId = shortid.generate();
-    state.workspace.json.features = state.workspace.json.features.map( item => {
-      if(item.hasOwnProperty('features')){
-        item.features = item.features.map(subItem =>  Object.assign({clientId: shortid.generate()}, subItem))
-      }
-      return Object.assign({clientId: shortid.generate()}, item)
-    });
+    if(state.workspace.json.features){
+      state.workspace.json.features = state.workspace.json.features.map( item => {
+        if(item.hasOwnProperty('features')){
+          item.features = item.features.map(subItem =>  Object.assign({clientId: shortid.generate()}, subItem))
+        }
+        return Object.assign({clientId: shortid.generate()}, item)
+      });
+    }
+    
   }
   emitter.on("json:addClientId", addClientId)
 
@@ -85,7 +88,8 @@ features:
   })
   
   emitter.on(state.events.workspace_yaml_update, function(_payload){
-    let safeYaml = yaml.load(_payload)
+    if(!_payload){_payload = "type: list"}
+    let safeYaml = yaml.safeLoad(_payload)
     state.workspace.json = safeYaml;
     state.workspace.yaml = yaml.safeDump(safeYaml)
   })
