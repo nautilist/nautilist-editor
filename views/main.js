@@ -90,28 +90,28 @@ features:
 <code>
 type: list
 name: Nautilist Simple Boilerplate
-description: A boilerplate list for nautilist
+description: A boilerplate list of lists for nautilist
 features:
   - type: list
     name: My Special List
     description: A list 1 description
     features:
-    - url: www.itp.nyu.edu
-      name: ITP/IMA
-      description: Website to NYU's ITP/IMA program
-    - url: www.nautilist.github.io/
-      name: Nautilist homepage
-      description: Nautilist is a tool for ...
+      - url: www.itp.nyu.edu
+        name: ITP/IMA
+        description: Website to NYU's ITP/IMA program
+      - url: www.nautilist.github.io/
+        name: Nautilist homepage
+        description: Nautilist is a tool for ...
   - type: list
     name: My Other Special List
     description: A list 2 description
     features:
-    - url: www.itp.nyu.edu
-      name: ITP/IMA for list 2
-      description: Website to NYU's ITP/IMA program
-    - url: www.nautilist.github.io/
-      name: Nautilist homepage for list 2
-      description: Nautilist is a tool for ...
+      - url: www.itp.nyu.edu
+        name: ITP/IMA for list 2
+        description: Website to NYU's ITP/IMA program
+      - url: www.nautilist.github.io/
+        name: Nautilist homepage for list 2
+        description: Nautilist is a tool for ...
           </code>
           </pre>
 
@@ -156,12 +156,12 @@ features:
         </div>
       </header>
       <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
-        <div class="w-60 h-100 pa1">
+        <div class="w-50 h-100 pa1">
           <div class="ba bw2 b--black w-100 h-100">
           ${visualEditor.render()}
           </div>
         </div>
-        <div class="w-40 h-100 pa1">
+        <div class="w-50 h-100 pa1">
           <div class="ba bw2 b--black w-100 h-100">
           ${codeEditor.render()}
           </div>

@@ -44,7 +44,7 @@ clear your cache:
 https://devcenter.heroku.com/articles/git#build-cache 
 https://github.com/heroku/heroku-repo#purge-cache
 ```
-$ heroku repo:purge_cache -a appname
+$ heroku repo:purge_cache -a nautilist-editor
 ```
 
 

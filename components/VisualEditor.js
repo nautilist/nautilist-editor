@@ -77,8 +77,8 @@ class VisualEditor extends Component {
                   </ul>
                 `
                 return html`
-                <li class="item" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
-                  <fieldset class="ba bw1">
+                <li class="item mt2 mb2" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
+                  <fieldset class="ba b bw1 b--dark-pink">
                     <legend class="pl2 pr2">${feature.name}</legend>
                     <p class="ma0 pl2">${feature.description}</p>
                     ${subList}
