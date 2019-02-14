@@ -43,6 +43,16 @@ class VisualEditor extends Component {
     // this.createSortable = this.createSortable.bind(this)
     // this.createUrlList = this.createUrlList.bind(this)
     // this.local = state.components[id] = {}
+    this.addLinkPlaceHolder = this.addLinkPlaceHolder.bind(this);
+    this.addListPlaceholder = this.addListPlaceholder.bind(this);
+  }
+
+  addLinkPlaceHolder(e){
+    console.log("adding link!")
+  }
+
+  addListPlaceholder(e){
+    console.log("adding list!")
   }
 
   

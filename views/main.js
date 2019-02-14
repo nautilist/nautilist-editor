@@ -63,7 +63,7 @@ function view (state, emit) {
         <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll">
           <header class="flex flex-row items-center justify-between">
             <h2>About</h2>
-            <button class="bn bg-purple white bw2 pa2" onclick="${closeHelp}">⨉</button>
+            <button class="bn bg-purple white bw2 pa h2 w2" onclick="${closeHelp}">⨉</button>
           </header>
           <p>Hello and welcome to the Nautlist Editor!</p>
           <p>It's a lightweight editor for putting together flexible lists of resources using YAML, a structured, human-computer readable data structure. <a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
@@ -115,7 +115,7 @@ features:
           </code>
           </pre>
 
-          <button class="w-100 h3 br2 bn bg-purple white pa2 mt3 mb3" onclick=${closeHelp}>close</button>
+          <button class="w-100 h3 bn bg-purple white pa2 mt3 mb3" onclick=${closeHelp}>close</button>
         </div>
       </div>
     `
