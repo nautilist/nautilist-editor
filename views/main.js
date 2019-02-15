@@ -45,7 +45,9 @@ function view (state, emit) {
   function updateEditorView(){
     console.log(state.workspace.json)
     emit("json:addClientId")
+
     visualEditor.rerender()
+    
   }
 
   function saveYaml(){

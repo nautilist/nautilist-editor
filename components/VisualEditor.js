@@ -90,109 +90,169 @@ class VisualEditor extends Component {
   }
 
   load(el){
+    // run makeSortable
+    makeSortable(el, this.state, this.emit)
 
-    let nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
-
-    function removeClientId(_json){
-      let newObj = Object.assign({}, _json)
-      delete newObj.clientId
-      newObj.features.forEach( item => {
-        if(item.hasOwnProperty('features')){
-          item.features.forEach(subItem =>  {delete subItem.clientId})
-        }
-        delete item.clientId
-      });
-      return newObj
-    }
-    
-    
-    for (var i = 0; i < nestedSortables.length; i++) {
-      new Sortable(nestedSortables[i], {
-        animation: 150,
-        draggable: ".item",
-        onEnd: (evt) => {
-          // console.log("sortable", evt.newIndex);
-          // this.emit("test", evt.newIndex)
-          // const payload = Object.assign({newPosition: evt.newIndex, oldPosition: evt.oldIndex}, evt.clone.dataset)
-          let newJson = Object.assign({}, this.state.workspace.json);
-
-          let parentObject, parentIndex;
-
-          if(evt.clone.dataset.parentid === newJson.clientId){
-            parentObject = newJson;
-            moveVal(parentObject.features, evt.oldIndex, evt.newIndex); 
-            newJson.features = parentObject.features;
-          } else {
-            // first find the parent array
-            parentObject = newJson.features.find(item => {
-              return item.clientId == evt.clone.dataset.parentid;
-            });
-
-            parentIndex = newJson.features.findIndex(item => {
-              return item.clientId  == evt.clone.dataset.parentid;;
-            })
-            moveVal(parentObject.features, evt.oldIndex, evt.newIndex); 
-            newJson.features[parentIndex].features = parentObject.features;
-          }
-
-          console.log(newJson)
-          this.state.workspace.json = newJson;
-
-          // clean json
-          const cleanJson = removeClientId(newJson)
-          this.state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
-          this.emit("json:addClientId")
-          this.emit('render');
-          
-      }
-      });
-    }
   }
 
-  update () {
+  afterupdate(el){
+    console.log(el);
+    makeSortable(el, this.state, this.emit)
+  }
+
+  update (el) {
     return true
   }
 }
 
 module.exports = VisualEditor
 
+function makeSortable(el, state, emit){
+  const nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
 
-  // createSortable(_newList, state, emit){
-  //   let newList, sortableList;
-  //     sortableList = Sortable.create(_newList, {
-  //       animation: 150,
-  //       fallbackOnBody: true,
-  //       onEnd: function(evt){
-  //         console.log("sortable", evt.newIndex);
-  //         console.log("🌮🌮🌮", evt.clone.dataset.parentname);
-  //         const payload = Object.assign({newPosition: evt.newIndex}, evt.clone.dataset)
+  console.log(nestedSortables);
 
-  //         emit(state.events.workspace_json_reorder, payload)
-  //       }
-  //     });
+  const sortableConfig = {
+    animation: 150,
+    draggable: ".item",
+    onEnd: updateWorkspace(state, emit)
+  }
+
+  nestedSortables.forEach( feature => {
+    new Sortable( feature, sortableConfig);
+  })
+
+}
+
+
+function updateWorkspace(state, emit){
+  return e => {
+    let newJson = Object.assign({}, state.workspace.json);
+    const {parentid} = e.clone.dataset;
+
+    // First find the parent object
+    let updatedList = findRecursive(newJson, parentid);
+    moveVal(updatedList.features, e.oldIndex, e.newIndex);
+
+    updateMain(newJson, updatedList, parentid)
+    // console.log( JSON.stringify(newJson) )
+
+    state.workspace.json = newJson;
+    let cleanJson = Object.assign({}, newJson);
+
+    cleanJson = removeClientId(cleanJson)
+    // console.log(cleanJson)
+
+    state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
+    emit("json:addClientId")
+    emit('render');
+
+          
+  }
+}
+
+function updateMain(_myList, _updatedList, _parentId){
+  // update the data directly here!
+  if(_myList.clientId === _parentId){
+    _myList = _updatedList
+    return _updatedList
+  }
+  let p;
+
+  for(p in _myList){
+    if(_myList.hasOwnProperty(p) && typeof _myList[p] === 'object'){
+      _myList = updateMain(_myList[p], _updatedList, _parentId);
+
+      if(_myList){
+        return _myList
+      }
+    }
+  }
+  return _myList
+
+}
+
+
+function findRecursive(_myList, _parentId){
+  const listCopy = Object.assign({}, _myList);
+  let result;
+  let p;
+
+  // early return
+  if(listCopy.clientId === _parentId){
+    return listCopy;
+  }
   
-  //     return sortableList.el;
-  // }
+  for(p in listCopy){
+    if(listCopy.hasOwnProperty(p) && typeof listCopy[p] === 'object'){
+      result = findRecursive(listCopy[p], _parentId);
+      
+      if(result){
+        return result;
+      }
+    }
+  }
+  return result
+
+}
+
+
+function removeClientId(_json){
+  let newObj = _json
+  // remove the top clientId
+  delete newObj.clientId
+
+  newObj.features.forEach(item => {
+    if(item.hasOwnProperty('features')){
+      removeClientId(item);
+    }
+    delete item.clientId
+  })
   
-  // function renderUrl(feature, parentName){
-  //   return html`
-  //     <div class="w-100 flex flex-column ba bw1 mt2 item" data-parentname="${parentName}" data-featurename="${slugify(feature.name)}">
-  //       <!-- url -->
-  //       <div class="w-100 pl2 pr2 bg-light-green truncate">
-  //         <small class="ma0 small">${feature.url}</small>
-  //       </div>
-  //       <!-- link details -->
-  //       <div class="w-100 flex flex-row">
-  //         <!-- link name -->
-  //         <div class="w-40 pa2">
-  //           <p class="f6 b ma0"> <a class="link black" href="${feature.url}" target="_blank">${feature.name} </a></p>
-  //         </div>
-  //         <!-- link description -->
-  //         <div class="w-60 pl2 pa2">
-  //           <p class="f6 ma0">${feature.description}</p>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   `
-  // }
-  
+  return newObj;
+}
+
+
+// let nestedSortables = [].slice.call(el.querySelectorAll('.list-container'));    
+    
+    // for (var i = 0; i < nestedSortables.length; i++) {
+    //   new Sortable(nestedSortables[i], {
+    //     animation: 150,
+    //     draggable: ".item",
+    //     onEnd: (evt) => {
+    //       // console.log("sortable", evt.newIndex);
+    //       // this.emit("test", evt.newIndex)
+    //       // const payload = Object.assign({newPosition: evt.newIndex, oldPosition: evt.oldIndex}, evt.clone.dataset)
+    //       let newJson = Object.assign({}, this.state.workspace.json);
+
+    //       let parentObject, parentIndex;
+
+    //       if(evt.clone.dataset.parentid === newJson.clientId){
+    //         parentObject = newJson;
+    //         moveVal(parentObject.features, evt.oldIndex, evt.newIndex); 
+    //         newJson.features = parentObject.features;
+    //       } else {
+    //         // first find the parent array
+    //         parentObject = newJson.features.find(item => {
+    //           return item.clientId == evt.clone.dataset.parentid;
+    //         });
+
+    //         parentIndex = newJson.features.findIndex(item => {
+    //           return item.clientId  == evt.clone.dataset.parentid;;
+    //         })
+    //         moveVal(parentObject.features, evt.oldIndex, evt.newIndex); 
+    //         newJson.features[parentIndex].features = parentObject.features;
+    //       }
+
+    //       console.log(newJson)
+    //       this.state.workspace.json = newJson;
+
+    //       // clean json
+    //       const cleanJson = removeClientId(newJson)
+    //       this.state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
+    //       this.emit("json:addClientId")
+    //       this.emit('render');
+          
+    //   }
+    //   });
+    // }
