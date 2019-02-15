@@ -12,36 +12,47 @@ css`
 }
 `
 
-function renderUrl(feature, parentName){
+
+function createlistItem(parentObject, feature){
   return html`
-    <div class="w-100 flex flex-column ba bw1 mt2 item" data-parentname="${parentName}" data-featurename="${slugify(feature.name)}">
-      <!-- url -->
-      <div class="w-100 pl2 pr2 bg-light-green truncate">
-        <small class="ma0 small">${feature.url}</small>
-      </div>
-      <!-- link details -->
-      <div class="w-100 flex flex-row">
-        <!-- link name -->
-        <div class="w-40 pa2">
-          <p class="f6 b ma0"> <a class="link black" href="${feature.url}" target="_blank">${feature.name} </a></p>
-        </div>
-        <!-- link description -->
-        <div class="w-60 pl2 pa2">
-          <p class="f6 ma0">${feature.description}</p>
-        </div>
-      </div>
-    </div>
+  <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+    <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+    <p class="ma0 f7">${feature.description}</p>
+  </li>
   `
 }
 
+function createList(parentObject){
+  const {features} = parentObject;
+
+  return html`
+  <ul class="list pl0 list-container">
+    ${
+      features.map(feature => {
+        if(feature.hasOwnProperty('features')){
+          return html`
+            <li class="item mt2 mb2" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+              <fieldset class="ba b bw1 b--dark-pink">
+                <legend class="pl2 pr2">${feature.name}</legend>
+                <p class="ma0 pl2">${feature.description}</p>
+                ${createList(feature)}
+              </fieldset>
+            </li>
+          `
+        }
+        return createlistItem(parentObject, feature);
+      })
+    }
+  </ul>
+  `
+
+}
 
 class VisualEditor extends Component {
   constructor (id, state, emit) {
     super(id)
     this.state = state;
     this.emit = emit;
-    // this.createSortable = this.createSortable.bind(this)
-    // this.createUrlList = this.createUrlList.bind(this)
     this.local = state.components[id] = {}
     this.addLinkPlaceHolder = this.addLinkPlaceHolder.bind(this);
     this.addListPlaceholder = this.addListPlaceholder.bind(this);
@@ -69,41 +80,7 @@ class VisualEditor extends Component {
           <p class="f2 lh-copy mt0 mb2">${json.description ||  "Add an awesome list description"}</p>
         </header>
         <section class="w-100">
-          <ul class="list pl0 list-container">
-            ${features.map( feature => {
-              const subListExists = feature.hasOwnProperty("features")
-              let subList = ''
-              if(subListExists){
-                subList = html`
-                  <ul class="list pl0 list-container">
-                    ${feature.features.map(subFeature => {
-                      return html`
-                      <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${feature.clientId}" data-featureid="${subFeature.clientId}">
-                        <a class="link underline black f7 b" href="${subFeature.url}">${subFeature.name}</a>
-                        <p class="ma0 f7">${subFeature.description}</p>
-                      </li>
-                      `
-                    })}
-                  </ul>
-                `
-                return html`
-                <li class="item mt2 mb2" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
-                  <fieldset class="ba b bw1 b--dark-pink">
-                    <legend class="pl2 pr2">${feature.name}</legend>
-                    <p class="ma0 pl2">${feature.description}</p>
-                    ${subList}
-                  </fieldset>
-                </li>
-                `
-              }
-              return html`
-                <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
-                  <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
-                  <p class="ma0 f7">${feature.description}</p>
-                </li>
-              `
-            })}
-          </ul>
+          ${createList(json)}
         </section>
       </div>
     `
@@ -182,6 +159,43 @@ class VisualEditor extends Component {
 }
 
 module.exports = VisualEditor
+
+
+{/* 
+  <ul class="list pl0 list-container">
+            ${
+              features.map( feature => {
+                if(feature.hasOwnProperty("features")){
+                  let subList = html`
+                    <ul class="list pl0 list-container">
+                      ${feature.features.map(subFeature => {
+                        return createlistItem(feature, subFeature)
+                      })}
+                    </ul>
+                  `
+                  return html`
+                  <li class="item mt2 mb2" data-parentid="${json.clientId}" data-featureid="${feature.clientId}">
+                    <fieldset class="ba b bw1 b--dark-pink">
+                      <legend class="pl2 pr2">${feature.name}</legend>
+                      <p class="ma0 pl2">${feature.description}</p>
+                      ${subList}
+                    </fieldset>
+                  </li>
+                  `
+                }
+              
+                return createlistItem(json, feature)
+            }) // end map
+          }
+          </ul> */}
+
+
+
+
+
+
+
+
 
 
     // return html`
@@ -311,5 +325,27 @@ module.exports = VisualEditor
   //     });
   
   //     return sortableList.el;
+  // }
+  
+  // function renderUrl(feature, parentName){
+  //   return html`
+  //     <div class="w-100 flex flex-column ba bw1 mt2 item" data-parentname="${parentName}" data-featurename="${slugify(feature.name)}">
+  //       <!-- url -->
+  //       <div class="w-100 pl2 pr2 bg-light-green truncate">
+  //         <small class="ma0 small">${feature.url}</small>
+  //       </div>
+  //       <!-- link details -->
+  //       <div class="w-100 flex flex-row">
+  //         <!-- link name -->
+  //         <div class="w-40 pa2">
+  //           <p class="f6 b ma0"> <a class="link black" href="${feature.url}" target="_blank">${feature.name} </a></p>
+  //         </div>
+  //         <!-- link description -->
+  //         <div class="w-60 pl2 pa2">
+  //           <p class="f6 ma0">${feature.description}</p>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   `
   // }
   
