@@ -2,19 +2,15 @@ var Component = require('choo/component')
 const css = require('sheetify')
 var html = require('choo/html')
 let codeMirror;
-if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
-  
+
+if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {  
   require("codemirror/mode/yaml/yaml.js")
   require("codemirror/addon/selection/active-line.js")
   require("codemirror/addon/lint/yaml-lint.js")
   css('codemirror/lib/codemirror.css')
   css('codemirror/theme/tomorrow-night-bright.css')
   codeMirror = require("codemirror/lib/codemirror.js");
-
 }
-// css('../node_modules/codemirror/lib/codemirror.css')
-// css('../node_modules/codemirror/theme/tomorrow-night-bright.css')
-
 
 css`
 .CodeMirror { height:100%; }
@@ -22,11 +18,11 @@ css`
 
 
 class CodeEditor extends Component {
-  constructor (state, emit) {
-    super()
+  constructor (id, state, emit) {
+    super(id)
     this.state = state;
     this.emit = emit;
-    // this.local = state.components[id] = {}
+    this.local = state.components[id] = {}
   }
 
   createElement () {
