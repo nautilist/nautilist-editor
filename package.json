@@ -9,7 +9,8 @@
     "start": "bankai start index.js",
     "test": "standard && npm run test-deps",
     "test-deps": "dependency-check . && dependency-check . --extra --no-dev -i tachyons",
-    "deploy": "npm run build; git add .; git commit -am 'added latest build'; git push origin master"
+    "deploy": "npm run build; git add .; git commit -am 'added latest build'; git push origin master",
+    "deploy-heroku":"git push heroku master; heroku repo:purge_cache -a nautilist-editor"
   },
   "dependencies": {
     "choo": "^6.13.1",
