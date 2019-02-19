@@ -43,11 +43,8 @@ function view (state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
   function updateEditorView(){
-    console.log(state.workspace.json)
-    emit("json:addClientId")
-
+    emit("json:addClientId", state.workspace.json)
     visualEditor.rerender()
-    
   }
 
   function saveYaml(){

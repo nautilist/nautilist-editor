@@ -58,27 +58,45 @@ features:
   state.events.workspace_json_reorder = 'workspace:json:reorder'
   state.events.workspace_all_update = 'workspace:all:update'
 
-
-  addClientId();  
+  // initialize by adding in clientId
+  addClientId(state.workspace.json);  
 
   emitter.on('DOMContentLoaded', function () {
     // adds a clientId for use in handling and sorting items clientside on load
     
   })
 
-   // adds a clientId for use in handling and sorting items clientside
-  function addClientId(){
-    state.workspace.json.clientId = shortid.generate();
-    if(state.workspace.json.features){
-      state.workspace.json.features = state.workspace.json.features.map( item => {
-        if(item.hasOwnProperty('features')){
-          item.features = item.features.map(subItem =>  Object.assign({clientId: shortid.generate()}, subItem))
-        }
-        return Object.assign({clientId: shortid.generate()}, item)
-      });
+  function addClientId(_json){
+    if(_json){
+      let newObj = _json
+      // remove the top clientId
+      newObj.clientId = shortid.generate();
+      if(newObj.features){
+        newObj.features.forEach(item => {
+          if(item.hasOwnProperty('features')){
+            addClientId(item);
+          }
+          item.clientId = shortid.generate();
+        })
+      }
+      return newObj;
     }
-    
   }
+
+   // adds a clientId for use in handling and sorting items clientside
+  // function addClientId(){
+  //   state.workspace.json.clientId = shortid.generate();
+  //   if(state.workspace.json.features){
+  //     state.workspace.json.features = state.workspace.json.features.map( item => {
+  //       if(item.hasOwnProperty('features')){
+  //         item.features = item.features.map(subItem =>  Object.assign({clientId: shortid.generate()}, subItem))
+  //       }
+  //       return Object.assign({clientId: shortid.generate()}, item)
+  //     });
+  //   }
+    
+  // }
+
   emitter.on("json:addClientId", addClientId)
 
   emitter.on("test", function(_payload){
