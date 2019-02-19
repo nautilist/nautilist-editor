@@ -6,12 +6,6 @@ const slugify = require('slugify');
 const yaml = require('js-yaml');
 
 
-css`
-.small{
-  font-size:9px;
-}
-`
-
 // helper functions
 function moveVal(arr, from, to) {
   arr.splice(to, 0, arr.splice(from, 1)[0]);

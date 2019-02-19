@@ -6,6 +6,75 @@ module.exports = store
 
 store.storeName = 'workspace'
 function store (state, emitter) {
+  let initialYaml = `
+type: list
+name: Nautilist Simple Boilerplate
+description: A boilerplate list for nautilist
+features:
+  - url: www.itp.nyu.edu
+    name: ITP/IMA
+    description: Website to NYU's ITP/IMA program
+  - url: www.nautilist.github.io/
+    name: Nautilist homepage
+    description: Nautilist is a tool for ...
+  `
+  state.workspace = {
+    json:yaml.safeLoad(initialYaml),
+    yaml:initialYaml.trim()
+  }
+  state.events.workspace_yaml_update = 'workspace:yaml:update'
+  state.events.workspace_json_reorder = 'workspace:json:reorder'
+  state.events.workspace_all_update = 'workspace:all:update'
+  state.events.addClientId = "json:addClientId";
+
+  // initialize by adding in clientId
+  (function(){
+    addClientId(state.workspace.json);  
+  })()
+  
+
+
+  emitter.on(state.events.addClientId, addClientId)
+
+  emitter.on(state.events.workspace_yaml_update, function(_payload){
+    if(!_payload){_payload = "type: list"}
+    let safeYaml = yaml.safeLoad(_payload)
+    state.workspace.json = safeYaml;
+    state.workspace.yaml = yaml.safeDump(safeYaml)
+  })
+
+  emitter.on(state.events.workspace_all_update, function(_payload){
+    state.workspace.json = _payload;
+    const newYaml = yaml.safeDump(_payload , {'noRefs': true});
+    state.workspace.yaml = newYaml
+
+    emitter.emit(state.events.RENDER)
+  });
+
+  // emitter.on('DOMContentLoaded', function () {})
+
+  // helper functions
+  function addClientId(_json){
+    if(_json){
+      let newObj = _json
+      // remove the top clientId
+      newObj.clientId = shortid.generate();
+      if(newObj.features){
+        newObj.features.forEach(item => {
+          if(item.hasOwnProperty('features')){
+            addClientId(item);
+          }
+          item.clientId = shortid.generate();
+        })
+      }
+      return newObj;
+    }
+  } // end addClientId
+
+} // end store
+
+
+
 //   let initialYaml=`
 // type: "list"
 // name: "The P5.js Landscape"
@@ -38,128 +107,3 @@ function store (state, emitter) {
 //       name: "Generative Design Library"
 //       description: "Generative Design library bundled with lots of other tools built for p5.js"
 //   `
-  let initialYaml = `
-type: list
-name: Nautilist Simple Boilerplate
-description: A boilerplate list for nautilist
-features:
-  - url: www.itp.nyu.edu
-    name: ITP/IMA
-    description: Website to NYU's ITP/IMA program
-  - url: www.nautilist.github.io/
-    name: Nautilist homepage
-    description: Nautilist is a tool for ...
-  `
-  state.workspace = {
-    json:yaml.safeLoad(initialYaml),
-    yaml:initialYaml.trim()
-  }
-  state.events.workspace_yaml_update = 'workspace:yaml:update'
-  state.events.workspace_json_reorder = 'workspace:json:reorder'
-  state.events.workspace_all_update = 'workspace:all:update'
-
-  // initialize by adding in clientId
-  addClientId(state.workspace.json);  
-
-  emitter.on('DOMContentLoaded', function () {
-    // adds a clientId for use in handling and sorting items clientside on load
-    
-  })
-
-  function addClientId(_json){
-    if(_json){
-      let newObj = _json
-      // remove the top clientId
-      newObj.clientId = shortid.generate();
-      if(newObj.features){
-        newObj.features.forEach(item => {
-          if(item.hasOwnProperty('features')){
-            addClientId(item);
-          }
-          item.clientId = shortid.generate();
-        })
-      }
-      return newObj;
-    }
-  }
-
-   // adds a clientId for use in handling and sorting items clientside
-  // function addClientId(){
-  //   state.workspace.json.clientId = shortid.generate();
-  //   if(state.workspace.json.features){
-  //     state.workspace.json.features = state.workspace.json.features.map( item => {
-  //       if(item.hasOwnProperty('features')){
-  //         item.features = item.features.map(subItem =>  Object.assign({clientId: shortid.generate()}, subItem))
-  //       }
-  //       return Object.assign({clientId: shortid.generate()}, item)
-  //     });
-  //   }
-    
-  // }
-
-  emitter.on("json:addClientId", addClientId)
-
-  emitter.on("test", function(_payload){
-      // emitter.emit(state.events.RENDER)
-      console.log(_payload)
-
-  })
-  
-  emitter.on(state.events.workspace_yaml_update, function(_payload){
-    if(!_payload){_payload = "type: list"}
-    let safeYaml = yaml.safeLoad(_payload)
-    state.workspace.json = safeYaml;
-    state.workspace.yaml = yaml.safeDump(safeYaml)
-  })
-
-  emitter.on(state.events.workspace_json_reorder, function(_payload){
-    const {parentid, featureid, newPosition, oldPosition} = _payload;
-    let newJson = Object.assign({}, state.workspace.json);
-    let parentObject, parentIndex;
-
-    console.log(_payload)
-
-    // if(parentname === slugify(newJson.name)){
-    //   parentObject = newJson;
-    //   parentIndex = 0;
-
-    //   moveVal(parentObject.features, oldPosition, newPosition); 
-    //   newJson.features = parentObject.features;
-      
-    // } else {
-    //   // first find the parent array
-    //   parentObject = newJson.features.find(item => {
-    //     return slugify(item.name) == parentname;
-    //   });
-
-    //   parentIndex = newJson.features.findIndex(item => {
-    //     return slugify(item.name) == parentname;
-    //   })
-    //   moveVal(parentObject.features, oldPosition, newPosition); 
-    //   newJson.features[parentIndex].features = parentObject.features;
-
-    // }
-
-    // then update the store!
-    // state.workspace.json = Object.assign({}, newJson)
-    // emitter.emit(state.events.RENDER)
-    // state.workspace.yaml = yaml.safeDump(newJson , {'noRefs': true});
-
-    // emitter.emit(state.events.workspace_all_update, newJson )
-    // console.log(`Reordering ${featurename} in ${parentname} from ${oldPosition} to position ${newPosition}`, newJson)
-  })
-
-  emitter.on(state.events.workspace_all_update, function(_payload){
-    state.workspace.json = _payload;
-    const newYaml = yaml.safeDump(_payload , {'noRefs': true});
-    state.workspace.yaml = newYaml
-
-    emitter.emit(state.events.RENDER)
-  });
-
-  // helper functions
-  function moveVal(arr, from, to) {
-    arr.splice(to, 0, arr.splice(from, 1)[0]);
-  };
-}
-

@@ -29,6 +29,10 @@ html{
 .max-z{
   z-index:9999;
 }
+
+.small{
+  font-size:9px;
+}
 `
 
 module.exports = view
@@ -43,7 +47,9 @@ function view (state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
   function updateEditorView(){
+    // add in clientIDs
     emit("json:addClientId", state.workspace.json)
+    // rerender
     visualEditor.rerender()
   }
 
@@ -74,7 +80,7 @@ function view (state, emit) {
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
           <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveYaml}">Save</button>
-          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">Open</button>
+          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer dn" onclick="${openFile}">Open</button>
         </div>
       </header>
       <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
