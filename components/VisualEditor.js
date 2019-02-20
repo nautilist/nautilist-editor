@@ -35,7 +35,11 @@ class VisualEditor extends Component {
     return html`
       <div class="w-100 h-100 pl2 pr2 overflow-y-scroll">
         <header class="w-100 flex flex-column pl2 pr2">
-          <h1 class="f2 lh-title mb0">${name || "No list name yet"}</h1>
+          <div class="w-100 flex flex-row justify-between items-start">
+            <h1 class="f2 lh-title mb0">${name || "No list name yet"}</h1>
+            <button class="bn bg-transparent mt4" onclick="${openEditModal(json.clientId, json.clientId, this.editFeatureModal, this.state, this.emit)}">✎</button>
+          </div>
+          
           <p class="f3 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
         </header>
         <section class="w-100">
@@ -98,7 +102,7 @@ function createList(parentObject, addFeatureBtn, editFeatureModal, state, emit){
           return html`
             <li class="item mt2 mb2" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
               <fieldset class="ba b bw1 b--dark-pink">
-                <legend class="pl2 pr2">${feature.name}</legend>
+                <legend class="pl2 pr2">${feature.name} <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button></legend>
                 <p class="ma0 pl2">${feature.description}</p>
                 ${createList(feature, addFeatureButton(feature, 'link', state, emit), editFeatureModal, state, emit)}
               </fieldset>
