@@ -13,6 +13,7 @@ class EditFeatureModal extends Component {
     this.submit = this.submit.bind(this);
     this.displayed = 'dn';
     this.rerender = this.rerender.bind(this)
+    this.checkIfList = this.checkIfList.bind(this)
   }
 
   open(){
@@ -58,6 +59,14 @@ class EditFeatureModal extends Component {
     }
   }
 
+  checkIfList(_json){
+    if(_json.type =="list"){
+      return 'dn'
+    } else {
+      return ''
+    }
+  }
+
   createElement (_json) {
     if(!_json){ 
       _json = {type:"", name:"", url:"", description:""}
@@ -74,7 +83,7 @@ class EditFeatureModal extends Component {
       <section>
         <form id="editFeatureForm" data-id="${_json.clientId}">
           <!-- URL -->
-          <fieldset class="w-100 ba bw1 b--black">
+          <fieldset class="w-100 ba bw1 b--black ${this.checkIfList(_json)}">
           <legend>URL</legend>
           <input class="w-100 pa2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="url" value="${_json.url}">
         </fieldset>
@@ -111,6 +120,9 @@ function updateFeature(_json, _featureid, _newFeature){
     console.log(_json.clientId, " vs ", _featureid)
     _json.name = _newFeature.name
     _json.description = _newFeature.description
+    if(_json.type !== "list"){
+      _json.url = _newFeature.url
+    }
     return _json;
   }
   if(_json.features){
