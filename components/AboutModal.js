@@ -33,7 +33,7 @@ class AboutModal extends Component {
   createElement () {
     return html`
     <div id="helpModal" class="w-100 h-100 flex-column justify-center items-center ${this.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(255, 65, 180,0.7)">
-      <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll">
+      <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
           <h2>About</h2>
           <button class="bn bg-navy dark-pink bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
@@ -55,6 +55,7 @@ ${multiListExample()}
         </section>
         <button class="w-100 h3 bn bg-navy dark-pink pa2 mt3 mb3 pointer" onclick=${this.close()}>close</button>
       </div>
+      <div class="w-100 h-100 fixed top-0 left-0" onclick=${this.close()}></div>
     </div>
     `
   }

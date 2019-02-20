@@ -33,7 +33,7 @@ class SearchModal extends Component {
   createElement () {
     return html`
     <div id="searchModal" class="w-100 h-100 flex-column justify-center items-center ${this.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(25, 169, 116, 0.7)">
-      <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll">
+      <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
           <h2>Search</h2>
           <button class="bn bg-navy washed-green bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
@@ -52,6 +52,8 @@ class SearchModal extends Component {
         </section>
         <button class="w-100 h3 bn bg-navy washed-green pa2 mt3 mb3 pointer" onclick=${this.close()}>close</button>
       </div>
+      <!-- invisible div under the modal to capture out of modal click to close -->
+      <div class="w-100 h-100 fixed top-0 left-0" onclick=${this.close()}></div>
     </div>
     `
   }
