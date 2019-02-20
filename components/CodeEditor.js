@@ -51,7 +51,7 @@ class CodeEditor extends Component {
       mode: "text/x-yaml",
       theme: "tomorrow-night-bright",
       viewportMargin: Infinity,
-      lineNumbers: true,
+      lineNumbers: false,
       tabSize: 2,
       indentUnit:2,
       indentWithTabs: true,

@@ -2,6 +2,7 @@ const html = require('choo/html')
 const css = require('sheetify')
 var FileSaver = require('file-saver');
 const slugify = require('slugify')
+const yaml = require('js-yaml');
 
 const TITLE = 'Nautilist Web Editor'
 
@@ -64,9 +65,30 @@ function view (state, emit) {
     FileSaver.saveAs(blob, fileName);
   }
   function openFile(e){
-    alert("TODO: open file!")
+    // alert("TODO: open file!")
+    let fileElem = document.querySelector("#fileSelect")
+    if (fileElem) {
+      fileElem.click();
+    }
   }
+  function handleFiles(){
+    const myFile = this.files[0]; /* now you can work with the file list */
+    const reader = new FileReader();
 
+    reader.onload = (function(theFile){
+      return e => {
+        try{
+          let inputYaml = e.target.result;
+          // emit(state.events.workspace_yaml_update, yaml);
+          emit(state.events.workspace_all_update, yaml.safeLoad(inputYaml));
+          // codeEditor.editor.value = state.workspace.yaml;
+        } catch(err){
+          alert("not working!")
+        }
+      }
+    })(myFile)
+    reader.readAsText(myFile);
+  }
 
   return html`
     <body class="w-100 h-100 code lh-copy">
@@ -81,7 +103,8 @@ function view (state, emit) {
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
           <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveYaml}">Save</button>
-          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer dn" onclick="${openFile}">Open</button>
+          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">open</button>
+          <input class="dn" type="file" id="fileSelect" onchange="${handleFiles}">
         </div>
       </header>
       <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">

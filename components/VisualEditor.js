@@ -23,6 +23,16 @@ class VisualEditor extends Component {
     if(!json || !json.features){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
 
     const {features, name, description} = json;
+
+    let isUrlList = features.every(items => items.hasOwnProperty('url'))
+    console.log(isUrlList)
+    let buttonType;
+    if(isUrlList){
+      buttonType = "link"
+    } else{
+      buttonType = "list"
+    }
+
     return html`
       <div class="w-100 h-100 pl2 pr2 overflow-y-scroll">
         <header class="w-100 flex flex-column pl2 pr2">
@@ -30,7 +40,7 @@ class VisualEditor extends Component {
           <p class="f3 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
         </header>
         <section class="w-100">
-          ${createList(json, addFeatureButton(json,'list', this.state, this.emit), this.state, this.emit)}
+          ${createList(json, addFeatureButton(json, buttonType, this.state, this.emit), this.state, this.emit)}
         </section>
       </div>
     `
@@ -105,6 +115,7 @@ function addFeatureButton(parentObject, featureToAdd, state, emit){
 
 
 function addFeature(_parentid, featureToAdd, state, emit){
+
   return e => {
     console.log("adding feature to", _parentid)
     let featureType = "link";

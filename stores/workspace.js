@@ -77,9 +77,12 @@ features:
   })
 
   emitter.on(state.events.workspace_all_update, function(_payload){
+    addClientId(_payload);
     state.workspace.json = _payload;
-    const newYaml = yaml.safeDump(_payload , {'noRefs': true});
-    state.workspace.yaml = newYaml
+    const cleanJson = Object.assign({}, _payload)
+    removeClientId(cleanJson);
+    const newYaml = yaml.safeDump(cleanJson , {'noRefs': true});
+    state.workspace.yaml = newYaml;
 
     emitter.emit(state.events.RENDER)
   });
