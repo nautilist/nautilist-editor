@@ -33,6 +33,10 @@ html{
 .small{
   font-size:9px;
 }
+
+.resize-none{
+  resize:none;
+}
 `
 
 module.exports = view
@@ -63,9 +67,6 @@ function view (state, emit) {
     alert("TODO: open file!")
   }
 
-  // function openSearch(e){
-  //   alert("TODO: search list db ")
-  // }
 
   return html`
     <body class="w-100 h-100 code lh-copy">

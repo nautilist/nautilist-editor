@@ -66,10 +66,20 @@ ${multiListExample()}
 
 module.exports = AboutModal
 
+function copyToClipboard(_domId){
+  return e => {
+    let copyText = document.querySelector(_domId);
+    copyText.select();
+    document.execCommand('copy');
+    alert("copied!")
+  }
+  
+}
+
 function multiListExample(){
   return html`
-<pre class="mt2 bg-light-gray pa2 f7">
-<code>
+<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#multilist-example-yaml')}">
+<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="multilist-example-yaml">
 type: list
 name: Nautilist Simple Boilerplate
 description: A boilerplate list of lists for nautilist
@@ -94,15 +104,15 @@ features:
       - url: www.nautilist.github.io/
         name: Nautilist homepage for list 2
         description: Nautilist is a tool for ...
-  </code>
+  </textarea>
 </pre>
   `
 }
 
 function singleListExample(){
   return html`
-<pre class="mt2 bg-light-gray pa2 f7">
-<code>
+<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#singlelist-example-yaml')}">
+<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="singlelist-example-yaml">
 type: list
 name: Nautilist Simple Boilerplate
 description: A boilerplate list for nautilist
@@ -114,7 +124,7 @@ features:
     name: Nautilist homepage
     description: Nautilist is a tool for ...
 </code>
-</pre>
+</textarea>
   
   `
 }

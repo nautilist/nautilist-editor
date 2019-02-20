@@ -6,63 +6,16 @@ const slugify = require('slugify');
 const yaml = require('js-yaml');
 
 
-// helper functions
-function moveVal(arr, from, to) {
-  arr.splice(to, 0, arr.splice(from, 1)[0]);
-};
-
-function createlistItem(parentObject, feature){
-  return html`
-  <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
-    <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
-    <p class="ma0 f7">${feature.description}</p>
-  </li>
-  `
-}
-
-function createList(parentObject){
-  const {features} = parentObject;
-
-  return html`
-  <ul class="list pl0 list-container">
-    ${
-      features.map(feature => {
-        if(feature.hasOwnProperty('features')){
-          return html`
-            <li class="item mt2 mb2" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
-              <fieldset class="ba b bw1 b--dark-pink">
-                <legend class="pl2 pr2">${feature.name}</legend>
-                <p class="ma0 pl2">${feature.description}</p>
-                ${createList(feature)}
-              </fieldset>
-            </li>
-          `
-        }
-        return createlistItem(parentObject, feature);
-      })
-    }
-  </ul>
-  `
-
-}
-
 class VisualEditor extends Component {
   constructor (id, state, emit) {
     super(id)
     this.state = state;
     this.emit = emit;
     this.local = state.components[id] = {}
-    this.addLinkPlaceHolder = this.addLinkPlaceHolder.bind(this);
-    this.addListPlaceholder = this.addListPlaceholder.bind(this);
+    // this.addLinkPlaceHolder = this.addLinkPlaceHolder.bind(this);
+    // this.addListPlaceholder = this.addListPlaceholder.bind(this);
   }
 
-  addLinkPlaceHolder(e){
-    console.log("adding link!")
-  }
-
-  addListPlaceholder(e){
-    console.log("adding list!")
-  }
 
   
   createElement () {
@@ -77,7 +30,7 @@ class VisualEditor extends Component {
           <p class="f3 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
         </header>
         <section class="w-100">
-          ${createList(json)}
+          ${createList(json, addFeatureButton(json,'list', this.state, this.emit), this.state, this.emit)}
         </section>
       </div>
     `
@@ -100,6 +53,114 @@ class VisualEditor extends Component {
 }
 
 module.exports = VisualEditor
+
+
+// helper functions
+function moveVal(arr, from, to) {
+  arr.splice(to, 0, arr.splice(from, 1)[0]);
+};
+
+function createlistItem(parentObject, feature){
+  return html`
+
+  <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+    <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+    <p class="ma0 f7">${feature.description}</p>
+  </li>
+  `
+}
+
+function createList(parentObject, addFeatureBtn, state, emit){
+  const {features} = parentObject;
+  return html`
+  <ul class="list pl0 list-container">
+    ${
+      features.map(feature => {
+        if(feature.hasOwnProperty('features')){
+          return html`
+            <li class="item mt2 mb2" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+              <fieldset class="ba b bw1 b--dark-pink">
+                <legend class="pl2 pr2">${feature.name}</legend>
+                <p class="ma0 pl2">${feature.description}</p>
+                ${createList(feature, addFeatureButton(feature, 'link', state, emit), state, emit)}
+              </fieldset>
+            </li>
+          `
+        }
+        return createlistItem(parentObject, feature);
+      })
+    }
+    ${addFeatureBtn}
+  </ul>
+  `
+
+}
+
+function addFeatureButton(parentObject, featureToAdd, state, emit){
+  return html`
+  <button class="w-100 h2 bn bg-washed-green f7" 
+  onclick="${addFeature(parentObject.clientId, featureToAdd, state, emit)}">add</button>
+  `
+}
+
+
+function addFeature(_parentid, featureToAdd, state, emit){
+  return e => {
+    console.log("adding feature to", _parentid)
+    let featureType = "link";
+
+    let newFeature = {}
+
+    let newLink = {
+      url: "#",
+      name: "New URL!",
+      description: "A description for your new URL?"
+    }
+
+    if(featureToAdd == "link"){
+      newFeature = newLink;
+    } else if (featureToAdd == "list") {
+      newFeature = {
+        type: "list",
+        name: "New List Name",
+        description: "New List Description",
+        features:[
+          newLink
+        ]
+      }
+    }
+
+    console.log(newFeature);
+    pushNewFeature(state.workspace.json, _parentid, newFeature);
+    // console.log(state.workspace.json)
+    const cleanJson =  Object.assign({}, state.workspace.json)
+    removeClientId(cleanJson)
+    // state.workspace.json = _payload;
+    const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
+    state.workspace.yaml = newYaml
+    emit("json:addClientId", state.workspace.json)
+    emit(state.events.RENDER)
+  }
+}
+
+function pushNewFeature(_json, _parentid, _newFeature){
+  // remove the top clientId
+  if(_json.clientId === _parentid){
+    console.log(_json.clientId, " vs ", _parentid)
+    _json.features.push(_newFeature)
+    return _json;
+  }
+  if(_json.features){
+    _json.features.forEach(item => {
+      if(item.hasOwnProperty('features')){
+        pushNewFeature(item, _parentid, _newFeature);
+      }
+    })
+  }
+return _json;
+} // end addNewFeature
+
+
 
 function makeSortable(el, state, emit){
   const nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
