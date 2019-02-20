@@ -11,6 +11,7 @@ const VisualEditor = require("../components/VisualEditor");
 const AboutModal = require("../components/AboutModal");
 const ShareModal = require("../components/ShareModal");
 const SearchModal = require("../components/SearchModal");
+const EditFeatureModal = require("../components/EditFeatureModal");
 
 css`
 html{
@@ -44,10 +45,13 @@ module.exports = view
 
 function view (state, emit) {
   const codeEditor = new CodeEditor("CodeEditor", state, emit);
-  const visualEditor = new VisualEditor("VisualEditor", state, emit);
+  const editFeatureModal  = new EditFeatureModal("EditFeatureModal", state, emit)
+  const visualEditor = new VisualEditor("VisualEditor", state, emit, editFeatureModal);
   const aboutModal  = new AboutModal("AboutModal", state, emit)
   const shareModal  = new ShareModal("ShareModal", state, emit)
   const searchModal  = new SearchModal("SearchModal", state, emit)
+  
+  // const editFeatureModal = state.cache( EditFeatureModal, "EditFeatureModal", state, emit)
 
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
@@ -123,6 +127,7 @@ function view (state, emit) {
       ${aboutModal.render()}
       ${shareModal.render()}
       ${searchModal.render()}
+      ${editFeatureModal.render()}
     </body>
   `
 

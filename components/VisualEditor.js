@@ -7,13 +7,12 @@ const yaml = require('js-yaml');
 
 
 class VisualEditor extends Component {
-  constructor (id, state, emit) {
+  constructor (id, state, emit, _editFeatureModal) {
     super(id)
     this.state = state;
     this.emit = emit;
     this.local = state.components[id] = {}
-    // this.addLinkPlaceHolder = this.addLinkPlaceHolder.bind(this);
-    // this.addListPlaceholder = this.addListPlaceholder.bind(this);
+    this.editFeatureModal = _editFeatureModal;
   }
 
 
@@ -40,7 +39,7 @@ class VisualEditor extends Component {
           <p class="f3 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
         </header>
         <section class="w-100">
-          ${createList(json, addFeatureButton(json, buttonType, this.state, this.emit), this.state, this.emit)}
+          ${createList(json, addFeatureButton(json, buttonType, this.state, this.emit), this.editFeatureModal, this.state, this.emit)}
         </section>
       </div>
     `
@@ -67,17 +66,29 @@ module.exports = VisualEditor
 
 // helper functions
 
-function createlistItem(parentObject, feature){
+function openEditModal(parentid, featureid, editFeatureModal, state, emit){
+  return e => {
+    console.log("opening edit modal for", featureid);
+    editFeatureModal.displayed = 'flex';
+    let selectedItem = findRecursive(state.workspace.json, featureid);
+    editFeatureModal.render(selectedItem);
+  }
+}
+
+function createlistItem(parentObject, feature, editFeatureModal, state, emit){
   return html`
 
   <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
-    <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+    <div class="w-100 flex flex-row justify-between items-start">
+      <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+      <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button>
+    </div>
     <p class="ma0 f7">${feature.description}</p>
   </li>
   `
 }
 
-function createList(parentObject, addFeatureBtn, state, emit){
+function createList(parentObject, addFeatureBtn, editFeatureModal, state, emit){
   const {features} = parentObject;
   return html`
   <ul class="list pl0 list-container">
@@ -89,12 +100,12 @@ function createList(parentObject, addFeatureBtn, state, emit){
               <fieldset class="ba b bw1 b--dark-pink">
                 <legend class="pl2 pr2">${feature.name}</legend>
                 <p class="ma0 pl2">${feature.description}</p>
-                ${createList(feature, addFeatureButton(feature, 'link', state, emit), state, emit)}
+                ${createList(feature, addFeatureButton(feature, 'link', state, emit), editFeatureModal, state, emit)}
               </fieldset>
             </li>
           `
         }
-        return createlistItem(parentObject, feature);
+        return createlistItem(parentObject, feature, editFeatureModal, state, emit);
       })
     }
     ${addFeatureBtn}

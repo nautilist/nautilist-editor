@@ -27,7 +27,6 @@ class SearchModal extends Component {
       this.displayed = 'dn';
       this.rerender();
     }
-    
   }
 
   createElement () {

@@ -39,7 +39,7 @@ class AboutModal extends Component {
           <button class="bn bg-navy dark-pink bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
         <section class="w-100 mt2 mb2">
-          <p>Hello and welcome to the Nautlist Editor!</p>
+          <p>Hello and welcome to the Nautilist Editor!</p>
           <p>It's a lightweight editor for putting together flexible lists of resources using YAML, a structured, human-computer readable data structure. <a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
           <p>To get get started - copy/paste this list boilerplate 👇 and press the "run" button:</p>
         </section>
@@ -55,6 +55,7 @@ ${multiListExample()}
         </section>
         <button class="w-100 h3 bn bg-navy dark-pink pa2 mt3 mb3 pointer" onclick=${this.close()}>close</button>
       </div>
+      <!-- invisible div under the modal to capture out of modal click to close -->
       <div class="w-100 h-100 fixed top-0 left-0" onclick=${this.close()}></div>
     </div>
     `
