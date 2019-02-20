@@ -83,7 +83,7 @@ features:
     removeClientId(cleanJson);
     const newYaml = yaml.safeDump(cleanJson , {'noRefs': true});
     state.workspace.yaml = newYaml;
-
+    emitter.emit(state.events.addClientId, state.workspace.json)
     emitter.emit(state.events.RENDER)
   });
 
@@ -145,20 +145,18 @@ features:
 
 // helper functions
 function addClientId(_json){
-  if(_json){
-    let newObj = _json
     // remove the top clientId
-    newObj.clientId = shortid.generate();
-    if(newObj.features){
-      newObj.features.forEach(item => {
+    _json.clientId = shortid.generate();
+
+    if(_json.hasOwnProperty('features')){
+      _json.features.forEach(item => {
         if(item.hasOwnProperty('features')){
           addClientId(item);
         }
         item.clientId = shortid.generate();
       })
     }
-    return newObj;
-  }
+    return _json;
 } // end addClientId
 
 function removeClientId(_json){

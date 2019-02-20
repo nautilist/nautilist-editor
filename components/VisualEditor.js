@@ -66,9 +66,6 @@ module.exports = VisualEditor
 
 
 // helper functions
-function moveVal(arr, from, to) {
-  arr.splice(to, 0, arr.splice(from, 1)[0]);
-};
 
 function createlistItem(parentObject, feature){
   return html`
@@ -171,6 +168,9 @@ function pushNewFeature(_json, _parentid, _newFeature){
 return _json;
 } // end addNewFeature
 
+function moveVal(arr, from, to) {
+  arr.splice(to, 0, arr.splice(from, 1)[0]);
+};
 
 
 function makeSortable(el, state, emit){
@@ -210,7 +210,7 @@ function updateWorkspace(state, emit){
     // console.log(cleanJson)
 
     state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
-    emit("json:addClientId")
+    emit("json:addClientId", state.workspace.json)
     emit('render');
 
           
