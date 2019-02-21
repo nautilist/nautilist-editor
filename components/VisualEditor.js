@@ -33,7 +33,7 @@ class VisualEditor extends Component {
     }
 
     return html`
-      <div class="w-100 h-100 pl2 pr2 overflow-y-scroll">
+      <div class="w-100 h-100 pl2 pr2 overflow-y-scroll bg-washed-red">
         <header class="w-100 flex flex-column pl2 pr2">
           <div class="w-100 flex flex-row justify-between items-start">
             <h1 class="f2 lh-title mb0">${name || "No list name yet"}</h1>
@@ -82,7 +82,7 @@ function openEditModal(parentid, featureid, editFeatureModal, state, emit){
 function createlistItem(parentObject, feature, editFeatureModal, state, emit){
   return html`
 
-  <li class="item pa2 ba bw1 mb1 mt1" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+  <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
     <div class="w-100 flex flex-row justify-between items-start">
       <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
       <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button>
@@ -100,10 +100,10 @@ function createList(parentObject, addFeatureBtn, editFeatureModal, state, emit){
       features.map(feature => {
         if(feature.hasOwnProperty('features')){
           return html`
-            <li class="item mt2 mb2" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
-              <fieldset class="ba b bw1 b--dark-pink">
-                <legend class="pl2 pr2">${feature.name} <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button></legend>
-                <p class="ma0 pl2">${feature.description}</p>
+            <li class="item mt2 mb4" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name} <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button></legend>
+                <p class="ma0 pl2 mb3">${feature.description}</p>
                 ${createList(feature, addFeatureButton(feature, 'link', state, emit), editFeatureModal, state, emit)}
               </fieldset>
             </li>
@@ -120,7 +120,7 @@ function createList(parentObject, addFeatureBtn, editFeatureModal, state, emit){
 
 function addFeatureButton(parentObject, featureToAdd, state, emit){
   return html`
-  <button class="w-100 h2 bn bg-washed-green f7" 
+  <button class="w-100 h2 bn bg-pink f7 mt2" 
   onclick="${addFeature(parentObject.clientId, featureToAdd, state, emit)}">add</button>
   `
 }

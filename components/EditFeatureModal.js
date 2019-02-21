@@ -14,6 +14,7 @@ class EditFeatureModal extends Component {
     this.displayed = 'dn';
     this.rerender = this.rerender.bind(this)
     this.checkIfList = this.checkIfList.bind(this)
+    this.removeFeature = this.removeFeature.bind(this)
   }
 
   open(){
@@ -67,6 +68,22 @@ class EditFeatureModal extends Component {
     }
   }
 
+  removeFeature(_featureid){
+    return e=>{
+      console.log(this.state.workspace.json)
+      let parentCopy = this.state.workspace.json
+      parentCopy = removeFromTree(parentCopy, _featureid);
+      removeClientId(parentCopy)
+
+      const newYaml = yaml.safeDump(parentCopy, {'noRefs': true});
+      this.state.workspace.yaml = newYaml
+      this.state.workspace.json = parentCopy
+      this.emit("json:addClientId", this.state.workspace.json)
+      this.displayed = 'dn';
+      this.emit(this.state.events.RENDER)
+    }
+  }
+
   createElement (_json) {
     if(!_json){ 
       _json = {type:"", name:"", url:"", description:""}
@@ -100,6 +117,9 @@ class EditFeatureModal extends Component {
        </form>
       </section>
       <button class="w-100 h3 bn bg-navy washed-green pa2 mt3 mb3 pointer" onclick=${this.submit()}>save changes</button>
+      <div class="w-100 h3 pl2 pt2 pb2 flex flex-row justify-end">
+        <button class="bn bg-red dark-grey" onclick=${this.removeFeature(_json.clientId)}>⚠️ DELETE</button>
+      </div>
     </div>
     <!-- invisible div under the modal to capture out of modal click to close -->
     <div class="w-100 h-100 fixed top-0 left-0" onclick=${this.close()}></div>
@@ -149,4 +169,19 @@ function removeClientId(_json){
   })
   
   return newObj;
+}
+
+function removeFromTree(parent, featureid){
+  if(parent.clientId == featureid){
+    // delete parent
+    return {type:'list', name:'', description:'', features:[{url:'#',name:'', description:''}]}
+  }
+
+  if(parent.features){
+    parent.features = parent.features
+      .filter(function(child){ return child.clientId !== featureid})
+      .map(function(child){ return removeFromTree(child, featureid)});
+  
+  }
+  return parent;
 }

@@ -27,4 +27,8 @@ if (typeof window !== 'undefined') {
   app.mount('body')
 }
 
+// if (typeof window !== 'undefined' && window.history.scrollRestoration) {
+//   window.history.scrollRestoration = 'manual'
+// }
+
 // module.exports = app.mount('body')
