@@ -14,6 +14,14 @@ class VisualEditor extends Component {
     this.emit = emit;
     this.local = state.components[id] = {}
     this.editFeatureModal = _editFeatureModal;
+    this.openEditModal = this.openEditModal.bind(this);
+    this.editFeatureButton = this.editFeatureButton.bind(this);
+    this.createlistItem = this.createlistItem.bind(this);
+    this.createList = this.createList.bind(this);
+    this.addFeatureButton = this.addFeatureButton.bind(this);
+    this.addFeature = this.addFeature.bind(this);
+    this.makeSortable = this.makeSortable.bind(this);
+    this.handleSorting = this.handleSorting.bind(this);
   }
 
   
@@ -37,162 +45,168 @@ class VisualEditor extends Component {
         <header class="w-100 flex flex-column pl2 pr2">
           <div class="w-100 flex flex-row justify-between items-start">
             <h1 class="f2 lh-title mb0">${name || "No list name yet"}</h1>
-            <button class="bn bg-transparent mt4" onclick="${openEditModal(json.clientId, json.clientId, this.editFeatureModal, this.state, this.emit)}">✎</button>
+            <button class="bn bg-transparent mt4" onclick="${this.openEditModal(json.clientId, json.clientId)}">✎</button>
           </div>
           
           <p class="f3 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
         </header>
         <section class="w-100">
-          ${createList(json, addFeatureButton(json, buttonType, this.state, this.emit), this.editFeatureModal, this.state, this.emit)}
+          ${this.createList(json, this.addFeatureButton(json, buttonType))}
         </section>
       </div>
     `
   }
 
   load(el){
-    // run makeSortable
-    makeSortable(el, this.state, this.emit)
-
+    // when the dom mounts, but before render
+    this.makeSortable(el)
   }
 
   afterupdate(el){
-    console.log(el);
-    makeSortable(el, this.state, this.emit)
+    // after each update, rerun sortable to make sure we can keep sorting!
+    this.makeSortable(el)
   }
 
   update (el) {
     return true
   }
-}
+
+
+  // triggers opening the edit modal that is passed into this component
+  openEditModal(parentid, featureid){
+    return e => {
+      console.log("opening edit modal for", featureid);
+      this.editFeatureModal.displayed = 'flex';
+      let selectedItem = helpers.findFeature(this.state.workspace.json, featureid);
+      this.editFeatureModal.render(selectedItem);
+    }
+  } // end openEditModal
+
+  editFeatureButton(parentid, featureid){
+    return html`
+      <button class="bn bg-transparent" onclick="${this.openEditModal(parentid, featureid)}">✎</button>
+    `
+  } // end editFeatureButton
+  
+
+  createlistItem(parentObject, feature){
+    return html`
+    <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+      <div class="w-100 flex flex-row justify-between items-start">
+        <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+        ${this.editFeatureButton(parentObject.clientId, feature.clientId)}
+      </div>
+      <p class="ma0 f7">${feature.description}</p>
+    </li>
+    `
+  } // end createListItem
+
+  
+
+  addFeature(_parentid, featureToAdd){
+    return e => {
+      console.log("adding feature to", _parentid)
+      let featureType = "link";
+  
+      let newFeature = {}
+  
+      let newLink = {
+        url: "#",
+        name: "New URL!",
+        description: "A description for your new URL?"
+      }
+  
+      if(featureToAdd == "link"){
+        newFeature = newLink;
+      } else if (featureToAdd == "list") {
+        newFeature = {
+          type: "list",
+          name: "New List Name",
+          description: "New List Description",
+          features:[
+            newLink
+          ]
+        }
+      }
+  
+      const newParent = helpers.pushNewFeature(this.state.workspace.json, _parentid, newFeature);
+      const cleanJson = helpers.removeClientId(newParent)
+      const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
+
+      this.state.workspace.yaml = newYaml
+      this.state.workspace.json = newParent
+
+      this.emit("json:addClientId", this.state.workspace.json)
+      this.emit(this.state.events.RENDER)
+    }
+  }
+
+  addFeatureButton(parentObject, featureToAdd){
+    return html`
+    <button class="w-100 h2 bn bg-pink f7 mt2" 
+    onclick="${this.addFeature(parentObject.clientId, featureToAdd)}">add</button>
+    `
+  } // end addFeatureButton
+
+  createList(parentObject, addFeatureBtn){
+    const {features} = parentObject;
+
+    return html`
+    <ul class="list pl0 list-container">
+      ${
+        features.map(feature => {
+          if(feature.hasOwnProperty('features')){
+            return html`
+              <li class="item mt2 mb4" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
+                <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+                  <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name} ${this.editFeatureButton(parentObject.clientId, feature.clientId)}</legend>
+                  <p class="ma0 pl2 mb3">${feature.description}</p>
+                  ${this.createList(feature, this.addFeatureButton(feature, 'link'))}
+                </fieldset>
+              </li>
+            `
+          }
+          return this.createlistItem(parentObject, feature);
+        })
+      }
+      ${addFeatureBtn}
+    </ul>
+    `
+  } // end createList
+
+
+  makeSortable(el){
+    const nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
+  
+    const sortableConfig = {
+      animation: 150,
+      draggable: ".item",
+      onEnd: this.handleSorting(this.state, this.emit)
+    }
+  
+    nestedSortables.forEach( feature => {
+      new Sortable( feature, sortableConfig);
+    })
+
+  } // end makeSortable
+
+  handleSorting(state, emit){
+    return e => {
+      const {parentid} = e.clone.dataset;
+  
+      let newJson = helpers.moveFeature(state.workspace.json, parentid,  e.oldIndex, e.newIndex )
+  
+      state.workspace.json = newJson;
+      let cleanJson = helpers.removeClientId(newJson)
+  
+      state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
+      emit("json:addClientId", state.workspace.json)
+      emit('render');    
+    }
+  } // end handleSorting
+
+
+
+} // end component
 
 module.exports = VisualEditor
-
-
-// helper functions
-
-function openEditModal(parentid, featureid, editFeatureModal, state, emit){
-  return e => {
-    console.log("opening edit modal for", featureid);
-    editFeatureModal.displayed = 'flex';
-    let selectedItem = helpers.findFeature(state.workspace.json, featureid);
-    editFeatureModal.render(selectedItem);
-  }
-}
-
-function createlistItem(parentObject, feature, editFeatureModal, state, emit){
-  return html`
-
-  <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
-    <div class="w-100 flex flex-row justify-between items-start">
-      <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
-      <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button>
-    </div>
-    <p class="ma0 f7">${feature.description}</p>
-  </li>
-  `
-}
-
-function createList(parentObject, addFeatureBtn, editFeatureModal, state, emit){
-  const {features} = parentObject;
-  return html`
-  <ul class="list pl0 list-container">
-    ${
-      features.map(feature => {
-        if(feature.hasOwnProperty('features')){
-          return html`
-            <li class="item mt2 mb4" data-parentid="${parentObject.clientId}" data-featureid="${feature.clientId}">
-              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
-                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name} <button class="bn bg-transparent" onclick="${openEditModal(parentObject.clientId, feature.clientId, editFeatureModal, state, emit)}">✎</button></legend>
-                <p class="ma0 pl2 mb3">${feature.description}</p>
-                ${createList(feature, addFeatureButton(feature, 'link', state, emit), editFeatureModal, state, emit)}
-              </fieldset>
-            </li>
-          `
-        }
-        return createlistItem(parentObject, feature, editFeatureModal, state, emit);
-      })
-    }
-    ${addFeatureBtn}
-  </ul>
-  `
-
-}
-
-function addFeatureButton(parentObject, featureToAdd, state, emit){
-  return html`
-  <button class="w-100 h2 bn bg-pink f7 mt2" 
-  onclick="${addFeature(parentObject.clientId, featureToAdd, state, emit)}">add</button>
-  `
-}
-
-
-function addFeature(_parentid, featureToAdd, state, emit){
-
-  return e => {
-    console.log("adding feature to", _parentid)
-    let featureType = "link";
-
-    let newFeature = {}
-
-    let newLink = {
-      url: "#",
-      name: "New URL!",
-      description: "A description for your new URL?"
-    }
-
-    if(featureToAdd == "link"){
-      newFeature = newLink;
-    } else if (featureToAdd == "list") {
-      newFeature = {
-        type: "list",
-        name: "New List Name",
-        description: "New List Description",
-        features:[
-          newLink
-        ]
-      }
-    }
-
-    let newParent = helpers.pushNewFeature(state.workspace.json, _parentid, newFeature);
-    const cleanJson = helpers.removeClientId(newParent)
-    // state.workspace.json = _payload;
-    const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
-    state.workspace.yaml = newYaml
-    state.workspace.json = newParent
-    emit("json:addClientId", state.workspace.json)
-    emit(state.events.RENDER)
-  }
-}
-
-
-function makeSortable(el, state, emit){
-  const nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
-
-  const sortableConfig = {
-    animation: 150,
-    draggable: ".item",
-    onEnd: updateWorkspace(state, emit)
-  }
-
-  nestedSortables.forEach( feature => {
-    new Sortable( feature, sortableConfig);
-  })
-
-}
-
-
-function updateWorkspace(state, emit){
-  return e => {
-    const {parentid} = e.clone.dataset;
-
-    let newJson = helpers.moveFeature(state.workspace.json, parentid,  e.oldIndex, e.newIndex )
-
-    state.workspace.json = newJson;
-    let cleanJson = helpers.removeClientId(newJson)
-
-    state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
-    emit("json:addClientId", state.workspace.json)
-    emit('render');
-          
-  }
-}
