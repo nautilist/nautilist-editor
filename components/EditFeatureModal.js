@@ -52,7 +52,7 @@ class EditFeatureModal extends Component {
       const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
       
       this.state.workspace.yaml = newYaml;
-      this.state.workspace.json = updatedFeature;
+      this.state.workspace.json = newParent;
 
       this.emit("json:addClientId", this.state.workspace.json)
       this.displayed = 'dn';

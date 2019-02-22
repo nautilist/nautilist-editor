@@ -96,13 +96,14 @@ function pushNewFeature(parent, featureParentId, newFeature){
   
     // remove the top clientId
     if(parentCopy.clientId === featureParentId){
+
       parentCopy.features.push(newFeature)
       return parentCopy
     }
   
     if(parentCopy.hasOwnProperty('features')){
       parentCopy.features = parentCopy.features
-            .map((child) => updateFeature(child, featureParentId, newFeature));
+            .map((child) => pushNewFeature(child, featureParentId, newFeature));
     }
   
     return parentCopy;

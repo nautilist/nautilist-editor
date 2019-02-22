@@ -16,7 +16,6 @@ class VisualEditor extends Component {
     this.editFeatureModal = _editFeatureModal;
   }
 
-
   
   createElement () {
     const {json} = this.state.workspace;
@@ -159,6 +158,7 @@ function addFeature(_parentid, featureToAdd, state, emit){
     // state.workspace.json = _payload;
     const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
     state.workspace.yaml = newYaml
+    state.workspace.json = newParent
     emit("json:addClientId", state.workspace.json)
     emit(state.events.RENDER)
   }
@@ -167,8 +167,6 @@ function addFeature(_parentid, featureToAdd, state, emit){
 
 function makeSortable(el, state, emit){
   const nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
-
-  console.log(nestedSortables);
 
   const sortableConfig = {
     animation: 150,
