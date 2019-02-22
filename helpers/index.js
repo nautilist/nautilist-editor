@@ -32,6 +32,8 @@ function removeFromTree(parent, featureid){
     return parentCopy;
 }
 
+
+
 /**
  * Recursively remove the clientIds for YAML display
  * @param {*} _json 
