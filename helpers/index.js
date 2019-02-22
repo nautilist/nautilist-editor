@@ -3,7 +3,8 @@ module.exports = {
     removeClientId,
     updateFeature,
     pushNewFeature,
-    moveFeature
+    moveFeature,
+    findFeature
 }
 
 
@@ -142,21 +143,27 @@ function moveFeature(parent, featureParentId, origin, destination){
 
 
 
-// function findFeature(parent, featureid){
-//     const parentCopy = Object.assign({}, parent);
+function findFeature(parent, featureid){
+    const parentCopy = Object.assign({}, parent);
+    let p, result;
 
-//     if(parentCopy.clientId === featureid){
-//         return parentCopy;
-//     }
+    if(parentCopy.clientId === featureid){
+        console.log('found', featureid )
+        return parentCopy;
+    }
 
-//     if(parentCopy.hasOwnProperty('features')){
-//         parentCopy.features = parentCopy.features
-//             .filter(child => child.clientId == featureid)
-//             .map(child => findFeature(child, featureid))
-//     }
-
-//     return parentCopy;
-// }
+    for(p in parentCopy){
+      if(parentCopy.hasOwnProperty(p) && typeof parentCopy[p] === 'object'){
+        result = findFeature(parentCopy[p], featureid);
+        
+        if(result){
+          return result;
+        }
+        
+      }
+    }
+    return result
+}
 
 
 // function findRecursive(_myList, _parentId){

@@ -75,7 +75,7 @@ function openEditModal(parentid, featureid, editFeatureModal, state, emit){
   return e => {
     console.log("opening edit modal for", featureid);
     editFeatureModal.displayed = 'flex';
-    let selectedItem = findRecursive(state.workspace.json, featureid);
+    let selectedItem = helpers.findFeature(state.workspace.json, featureid);
     editFeatureModal.render(selectedItem);
   }
 }
@@ -197,28 +197,4 @@ function updateWorkspace(state, emit){
     emit('render');
           
   }
-}
-
-
-function findRecursive(_myList, _parentId){
-  const listCopy = Object.assign({}, _myList);
-  let result;
-  let p;
-
-  // early return
-  if(listCopy.clientId === _parentId){
-    return listCopy;
-  }
-  
-  for(p in listCopy){
-    if(listCopy.hasOwnProperty(p) && typeof listCopy[p] === 'object'){
-      result = findRecursive(listCopy[p], _parentId);
-      
-      if(result){
-        return result;
-      }
-    }
-  }
-  return result
-
 }
