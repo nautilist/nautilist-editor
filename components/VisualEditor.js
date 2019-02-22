@@ -4,6 +4,7 @@ var css = require('sheetify')
 const Sortable = require('sortablejs');
 const slugify = require('slugify');
 const yaml = require('js-yaml');
+const helpers = require('../helpers');
 
 
 class VisualEditor extends Component {
@@ -153,11 +154,8 @@ function addFeature(_parentid, featureToAdd, state, emit){
       }
     }
 
-    console.log(newFeature);
-    pushNewFeature(state.workspace.json, _parentid, newFeature);
-    // console.log(state.workspace.json)
-    const cleanJson =  Object.assign({}, state.workspace.json)
-    removeClientId(cleanJson)
+    let newParent = helpers.pushNewFeature(state.workspace.json, _parentid, newFeature);
+    const cleanJson = helpers.removeClientId(newParent)
     // state.workspace.json = _payload;
     const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
     state.workspace.yaml = newYaml
@@ -165,27 +163,6 @@ function addFeature(_parentid, featureToAdd, state, emit){
     emit(state.events.RENDER)
   }
 }
-
-function pushNewFeature(_json, _parentid, _newFeature){
-  // remove the top clientId
-  if(_json.clientId === _parentid){
-    console.log(_json.clientId, " vs ", _parentid)
-    _json.features.push(_newFeature)
-    return _json;
-  }
-  if(_json.features){
-    _json.features.forEach(item => {
-      if(item.hasOwnProperty('features')){
-        pushNewFeature(item, _parentid, _newFeature);
-      }
-    })
-  }
-return _json;
-} // end addNewFeature
-
-function moveVal(arr, from, to) {
-  arr.splice(to, 0, arr.splice(from, 1)[0]);
-};
 
 
 function makeSortable(el, state, emit){
@@ -208,49 +185,18 @@ function makeSortable(el, state, emit){
 
 function updateWorkspace(state, emit){
   return e => {
-    let newJson = Object.assign({}, state.workspace.json);
     const {parentid} = e.clone.dataset;
 
-    // First find the parent object
-    let updatedList = findRecursive(newJson, parentid);
-    moveVal(updatedList.features, e.oldIndex, e.newIndex);
-
-    updateMain(newJson, updatedList, parentid)
-    // console.log( JSON.stringify(newJson) )
+    let newJson = helpers.moveFeature(state.workspace.json, parentid,  e.oldIndex, e.newIndex )
 
     state.workspace.json = newJson;
-    let cleanJson = Object.assign({}, newJson);
-
-    cleanJson = removeClientId(cleanJson)
-    // console.log(cleanJson)
+    let cleanJson = helpers.removeClientId(newJson)
 
     state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
     emit("json:addClientId", state.workspace.json)
     emit('render');
-
           
   }
-}
-
-function updateMain(_myList, _updatedList, _parentId){
-  // update the data directly here!
-  if(_myList.clientId === _parentId){
-    _myList = _updatedList
-    return _updatedList
-  }
-  let p;
-
-  for(p in _myList){
-    if(_myList.hasOwnProperty(p) && typeof _myList[p] === 'object'){
-      _myList = updateMain(_myList[p], _updatedList, _parentId);
-
-      if(_myList){
-        return _myList
-      }
-    }
-  }
-  return _myList
-
 }
 
 
@@ -275,20 +221,4 @@ function findRecursive(_myList, _parentId){
   }
   return result
 
-}
-
-
-function removeClientId(_json){
-  let newObj = _json
-  // remove the top clientId
-  delete newObj.clientId
-
-  newObj.features.forEach(item => {
-    if(item.hasOwnProperty('features')){
-      removeClientId(item);
-    }
-    delete item.clientId
-  })
-  
-  return newObj;
 }

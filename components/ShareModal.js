@@ -35,7 +35,7 @@ class ShareModal extends Component {
     <div id="shareModal" class="w-100 h-100 flex-column justify-center items-center ${this.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(255, 215, 0,0.7)">
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
-          <h2>Share</h2>
+          <h2>Share (Coming soon!)</h2>
           <button class="bn bg-navy yellow bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
         <section class="w-100 mt2 mb2">

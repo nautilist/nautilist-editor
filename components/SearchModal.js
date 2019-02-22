@@ -44,7 +44,7 @@ class SearchModal extends Component {
         <section>
           <!-- Search bar -->
          <fieldset class="w-100 ba bw1 b--black">
-          <legend>Search</legend>
+          <legend>Search (Coming soon!)</legend>
           <input class="w-100 pa2 ba bw1 bg-light-gray h3 f6" type="search" placeholder="e.g. by keywords">
          </fieldset>
          <!-- Search results -->

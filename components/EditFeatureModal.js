@@ -1,6 +1,7 @@
 var Component = require('choo/component')
 var html = require('choo/html')
 const yaml = require('js-yaml');
+const helpers = require('../helpers');
 
 class EditFeatureModal extends Component {
   constructor (id, state, emit) {
@@ -46,17 +47,16 @@ class EditFeatureModal extends Component {
         description:formData.get('description'),
       }
       
-      updateFeature(this.state.workspace.json, currentForm.dataset.id,updatedFeature)
-
-      const cleanJson =  Object.assign({}, this.state.workspace.json)
-      removeClientId(cleanJson)
-      // state.workspace.json = _payload;
+      let newParent = helpers.updateFeature(this.state.workspace.json, currentForm.dataset.id,updatedFeature)
+      let cleanJson = helpers.removeClientId(newParent)
       const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
-      this.state.workspace.yaml = newYaml
+      
+      this.state.workspace.yaml = newYaml;
+      this.state.workspace.json = updatedFeature;
+
       this.emit("json:addClientId", this.state.workspace.json)
       this.displayed = 'dn';
       this.emit(this.state.events.RENDER)
-      // this.rerender();
     }
   }
 
@@ -71,9 +71,8 @@ class EditFeatureModal extends Component {
   removeFeature(_featureid){
     return e=>{
       console.log(this.state.workspace.json)
-      let parentCopy = this.state.workspace.json
-      parentCopy = removeFromTree(parentCopy, _featureid);
-      removeClientId(parentCopy)
+      let parentCopy = helpers.removeFromTree(this.state.workspace.json, _featureid);
+      parentCopy = helpers.removeClientId(parentCopy)
 
       const newYaml = yaml.safeDump(parentCopy, {'noRefs': true});
       this.state.workspace.yaml = newYaml
@@ -134,54 +133,3 @@ class EditFeatureModal extends Component {
 
 module.exports = EditFeatureModal
 
-function updateFeature(_json, _featureid, _newFeature){
-  // remove the top clientId
-  if(_json.clientId === _featureid){
-    console.log(_json.clientId, " vs ", _featureid)
-    _json.name = _newFeature.name
-    _json.description = _newFeature.description
-    if(_json.type !== "list"){
-      _json.url = _newFeature.url
-    }
-    return _json;
-  }
-  if(_json.features){
-    _json.features.forEach(item => {
-      // if(item.hasOwnProperty('features')){
-        updateFeature(item, _featureid, _newFeature);
-      // }
-    })
-  }
-return _json;
-} // end addNewFeature
-
-
-function removeClientId(_json){
-  let newObj = _json
-  // remove the top clientId
-  delete newObj.clientId
-
-  newObj.features.forEach(item => {
-    if(item.hasOwnProperty('features')){
-      removeClientId(item);
-    }
-    delete item.clientId
-  })
-  
-  return newObj;
-}
-
-function removeFromTree(parent, featureid){
-  if(parent.clientId == featureid){
-    // delete parent
-    return {type:'list', name:'', description:'', features:[{url:'#',name:'', description:''}]}
-  }
-
-  if(parent.features){
-    parent.features = parent.features
-      .filter(function(child){ return child.clientId !== featureid})
-      .map(function(child){ return removeFromTree(child, featureid)});
-  
-  }
-  return parent;
-}
