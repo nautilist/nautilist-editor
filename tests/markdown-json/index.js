@@ -130,35 +130,10 @@ function recursiveMake(mdText,featuresArray){
     return mdText;
 }
 
-// function toMd(jsonObject) {
-//     var mdText = '';
-//     traverse(jsonObject).reduce(function(acc, value) {
-//         if (this.isLeaf && this.key === 'raw') {
-//             mdText += value;
-//         } else {
-//             mdText += getHash(this.level) + ' ' + this.key + '\n\n';
-//         }
-//         return;
-//     });
-//     return mdText;
-// }
-// // exports.toMd = toMd;
 
-// function getHash(level) {
-//     var hash = '';
-//     for (var i = 0; i < level; i++) {
-//         hash += '#';
-//     }
-//     return hash;
-// }
 
-// console.log(headings)
-// console.log(currentParent)
 let output = parseToJson(multilist)
-
 let test = toMd(output);
 console.log(test)
-// console.log(test)
-// console.log(JSON.stringify(output))
 // console.log(prettyjson.render(output));
 
