@@ -100,7 +100,7 @@ function view (state, emit) {
       <main class="w-100 h-100 flex flex-column justify-start items-start">
       <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
-          <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2">🌈 Nautilist Editor ✨</button>
+          <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2"> Nautilist Editor </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${aboutModal.open()}"> About </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${shareModal.open()}"> Share </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${searchModal.open()}"> 🔎 Search </button>
