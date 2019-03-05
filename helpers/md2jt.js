@@ -142,9 +142,21 @@ const json2md = function (jsonTree) {
         // console.log(mdText) 
         for (let p in featuresArray) {
             let item = featuresArray[p];
-            let url = item.url ? `- ${item.url}` : ' ';
-            let hashes = "#".repeat(item.depth)
-            mdText += `${hashes} ${item.name}\n> ${item.description}\n\n${url}\n\n`
+            // let url = item.url ? `- ${item.url}` : ' ';
+            let hashes = "#".repeat(item.depth);
+
+            mdText += `${hashes} ${item.name}`
+            if(item.description !== '' && item.description !== undefined){
+                mdText+=`\n> ${item.description}`
+            } else {
+                mdText+=`\n\n`
+            }
+            if(item.url !== '' && item.url !== undefined){
+                mdText+=`\n- ${item.url}\n\n`
+            }else {
+                mdText+=`\n\n`
+            }
+
             if (typeof item == "object") {
                 mdText = recursiveMake(mdText, item.features);
             }

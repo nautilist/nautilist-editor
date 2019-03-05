@@ -2,6 +2,7 @@ var Component = require('choo/component')
 var html = require('choo/html')
 const yaml = require('js-yaml');
 const helpers = require('../helpers');
+const md2jt = require('../helpers/md2jt');
 
 class EditFeatureModal extends Component {
   constructor (id, state, emit) {
@@ -49,9 +50,9 @@ class EditFeatureModal extends Component {
       
       let newParent = helpers.updateFeature(this.state.workspace.json, currentForm.dataset.id,updatedFeature)
       let cleanJson = helpers.removeClientId(newParent)
-      const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
+      const newMd = md2jt.json2md(cleanJson);
       
-      this.state.workspace.yaml = newYaml;
+      this.state.workspace.md = newMd;
       this.state.workspace.json = newParent;
 
       this.emit("json:addClientId", this.state.workspace.json)
@@ -74,8 +75,8 @@ class EditFeatureModal extends Component {
       let parentCopy = helpers.removeFromTree(this.state.workspace.json, _featureid);
       parentCopy = helpers.removeClientId(parentCopy)
 
-      const newYaml = yaml.safeDump(parentCopy, {'noRefs': true});
-      this.state.workspace.yaml = newYaml
+      const newMd = md2jt.json2md(parentCopy)
+      this.state.workspace.md = newMd
       this.state.workspace.json = parentCopy
       this.emit("json:addClientId", this.state.workspace.json)
       this.displayed = 'dn';

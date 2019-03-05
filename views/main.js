@@ -2,7 +2,8 @@ const html = require('choo/html')
 const css = require('sheetify')
 var FileSaver = require('file-saver');
 const slugify = require('slugify')
-const yaml = require('js-yaml');
+// const yaml = require('js-yaml');
+const md2jt = require('../helpers/md2jt');
 
 const TITLE = 'Nautilist Web Editor'
 
@@ -62,10 +63,10 @@ function view (state, emit) {
     visualEditor.rerender()
   }
 
-  function saveYaml(){
+  function saveMd(){
     console.log(state.workspace.yaml)
-    let blob = new Blob([state.workspace.yaml], {type: "application/x-yaml;charset=utf-8"});
-    let fileName =  slugify(state.workspace.json.name)+'.yml'
+    let blob = new Blob([state.workspace.md], {type: "application/x-markdown;charset=utf-8"});
+    let fileName =  slugify(state.workspace.json.name)+'.md'
     FileSaver.saveAs(blob, fileName);
   }
   function openFile(e){
@@ -82,9 +83,9 @@ function view (state, emit) {
     reader.onload = (function(theFile){
       return e => {
         try{
-          let inputYaml = e.target.result;
+          let inputMd = e.target.result;
           // emit(state.events.workspace_yaml_update, yaml);
-          emit(state.events.workspace_all_update, yaml.safeLoad(inputYaml));
+          emit(state.events.workspace_all_update, md2jt.json2md(inputMd) );
           // codeEditor.editor.value = state.workspace.yaml;
         } catch(err){
           alert("not working!")
@@ -106,7 +107,7 @@ function view (state, emit) {
         </div>
         <div>
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
-          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveYaml}">Save</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveMd}">Save</button>
           <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">open</button>
           <input class="dn" type="file" id="fileSelect" onchange="${handleFiles}">
         </div>

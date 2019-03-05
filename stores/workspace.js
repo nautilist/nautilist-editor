@@ -2,17 +2,19 @@ const yaml = require('js-yaml');
 const slugify = require('slugify');
 const shortid = require('shortid');
 const helpers = require('../helpers');
+const md2jt = require('../helpers/md2jt');
 module.exports = store
 
 store.storeName = 'workspace'
 function store (state, emitter) {
-  const initialYaml= setInitialYaml('single');
+  const initialMd= setInitialMd('single');
 
   state.workspace = {
-    json:yaml.safeLoad(initialYaml),
-    yaml:initialYaml.trim()
+    json: md2jt.md2json(initialMd),
+    md:initialMd
   }
-  state.events.workspace_yaml_update = 'workspace:yaml:update'
+
+  state.events.workspace_md_update = 'workspace:md:update'
   state.events.workspace_json_reorder = 'workspace:json:reorder'
   state.events.workspace_all_update = 'workspace:all:update'
   state.events.addClientId = "json:addClientId";
@@ -28,18 +30,16 @@ function store (state, emitter) {
     state.workspace.json = addClientId(_payload);
   })
 
-  emitter.on(state.events.workspace_yaml_update, function(_payload){
+  emitter.on(state.events.workspace_md_update, function(_payload){
     if(!_payload){_payload = "type: list"}
-    let safeYaml = yaml.safeLoad(_payload)
-    state.workspace.json = safeYaml;
-    state.workspace.yaml = yaml.safeDump(safeYaml)
+
+    state.workspace.json = md2jt.md2json(_payload),
+    state.workspace.md = _payload
   })
 
   emitter.on(state.events.workspace_all_update, function(_payload){
     state.workspace.json = addClientId(_payload);
-    const cleanJson = helpers.removeClientId(_payload);
-    const newYaml = yaml.safeDump(cleanJson , {'noRefs': true});
-    state.workspace.yaml = newYaml;
+    state.workspace.md = md2jt.json2md(_payload);
     emitter.emit(state.events.addClientId, state.workspace.json)
     emitter.emit(state.events.RENDER)
   });
@@ -64,51 +64,48 @@ function addClientId(parent){
   return parentCopy;
 }
 
-function setInitialYaml(selection){
+function setInitialMd(selection){
   const singleList = `
-type: list
-name: Nautilist Simple Boilerplate
-description: A boilerplate list for nautilist
-features:
-  - url: www.itp.nyu.edu
-    name: ITP/IMA
-    description: Website to NYU's ITP/IMA program
-  - url: www.nautilist.github.io/
-    name: Nautilist homepage
-    description: Nautilist is a tool for ...
+# Nautilist Simple Boilerplate
+> description: A boilerplate list of lists for nautilist
+
+## My Special List
+> description: A list 1 description
+
+### ITP/IMA
+> Website to NYU's ITP/IMA program      
+- www.itp.nyu.edu
+      
+### Nautilist homepage
+> Nautilist is a tool for ...
+- url: www.nautilist.github.io/
   `
 
   const multilist=`
-type: "list"
-name: "The P5.js Landscape"
-description: "This is a list of the P5.js landscape."
-features:
-- type: "list" 
-  name: "Handy P5.js Tools"
-  description: "This is a list of handy p5.js Tools ranging from commandline tools, project generators, and web editors."
-  features:
-    - url: "https://p5js.org/"
-      name: "p5js website"
-      description: "p5js is a javascript library to make coding more accessible to everyone"
-    - url: "https://editor.p5js.org/"
-      name: "The p5js web editor"
-      description: "A handy web editor for writing code in the browser and seeing your magic come alive"
-    - url: "https://www.npmjs.com/package/p5-manager"
-      name: "P5 Manager commandline tool"
-      description: "Commandline scaffolding tool for generating p5js projects"
-    - url: "http://1023.io/p5-inspector/"
-      name: "P5 playground"
-      description: "A What you see is what you get editor for p5.js"
-- type: "list"
-  name: "P5 Libraries"
-  description: "A list of libraries built for P5.js."
-  features:
-    - url: "https://p5js.org/libraries/"
-      name: "P5 Libraries"
-      description: "officially on the website"
-    - url: "https://github.com/generative-design/generative-design-library.js"
-      name: "Generative Design Library"
-      description: "Generative Design library bundled with lots of other tools built for p5.js"
+# Nautilist Simple Boilerplate
+> description: A boilerplate list of lists for nautilist
+
+## My Special List
+> description: A list 1 description
+
+### ITP/IMA
+> Website to NYU's ITP/IMA program      
+- www.itp.nyu.edu
+      
+### Nautilist homepage
+> Nautilist is a tool for ...
+- url: www.nautilist.github.io/
+
+## My Other Special List
+>  A list 2 description
+
+### name: ITP/IMA for list 2
+> description: Website to NYU's ITP/IMA program
+- www.itp.nyu.edu
+
+### Nautilist homepage for list 2
+> Nautilist is a tool for ...
+- www.nautilist.github.io/
   `
 
   if(selection == "single"){

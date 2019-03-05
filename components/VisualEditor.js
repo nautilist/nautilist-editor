@@ -5,6 +5,7 @@ const Sortable = require('sortablejs');
 const slugify = require('slugify');
 const yaml = require('js-yaml');
 const helpers = require('../helpers');
+const md2jt = require('../helpers/md2jt');
 
 
 class VisualEditor extends Component {
@@ -113,6 +114,7 @@ class VisualEditor extends Component {
       let newLink = {
         url: "#",
         name: "New URL!",
+        depth:"", // need to add depth in helpers.pushNewFeature
         description: "A description for your new URL?"
       }
   
@@ -131,9 +133,12 @@ class VisualEditor extends Component {
   
       const newParent = helpers.pushNewFeature(this.state.workspace.json, _parentid, newFeature);
       const cleanJson = helpers.removeClientId(newParent)
-      const newYaml = yaml.safeDump(cleanJson, {'noRefs': true});
 
-      this.state.workspace.yaml = newYaml
+      const newMd = md2jt.json2md(cleanJson)
+      // const newJson = md2jt.md2json(newMd)
+
+      this.state.workspace.md = newMd
+      // this.state.workspace.json = md2jt.md2json(newMd)
       this.state.workspace.json = newParent
 
       this.emit("json:addClientId", this.state.workspace.json)
@@ -199,7 +204,7 @@ class VisualEditor extends Component {
       state.workspace.json = newJson;
       let cleanJson = helpers.removeClientId(newJson)
   
-      state.workspace.yaml = yaml.safeDump(cleanJson , {'noRefs': true});
+      state.workspace.md = md2jt.json2md(cleanJson)
       emit("json:addClientId", state.workspace.json)
       emit('render');    
     }

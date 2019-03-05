@@ -98,6 +98,11 @@ function pushNewFeature(parent, featureParentId, newFeature){
   
     // remove the top clientId
     if(parentCopy.clientId === featureParentId){
+      newFeature.depth = parentCopy.depth + 1;
+
+      if(newFeature.hasOwnProperty('features')){
+        newFeature.features[0].depth = newFeature.depth + 1
+      }
 
       parentCopy.features.push(newFeature)
       return parentCopy

@@ -40,7 +40,7 @@ class AboutModal extends Component {
         </header>
         <section class="w-100 mt2 mb2">
           <p>Hello and welcome to the Nautilist Editor!</p>
-          <p>It's a lightweight editor for putting together flexible lists of resources using YAML, a structured, human-computer readable data structure. <a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
+          <p>It's a lightweight editor for putting together flexible lists of resources using markdown.<a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
           <p>To get get started - copy/paste this list boilerplate 👇 and press the "run" button:</p>
         </section>
         <!-- simple single list -->
@@ -80,53 +80,79 @@ function copyToClipboard(_domId){
 
 function multiListExample(){
   return html`
-<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#multilist-example-yaml')}">
-<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="multilist-example-yaml">
-type: list
-name: Nautilist Simple Boilerplate
-description: A boilerplate list of lists for nautilist
-features:
-  - type: list
-    name: My Special List
-    description: A list 1 description
-    features:
-      - url: www.itp.nyu.edu
-        name: ITP/IMA
-        description: Website to NYU's ITP/IMA program
-      - url: www.nautilist.github.io/
-        name: Nautilist homepage
-        description: Nautilist is a tool for ...
-  - type: list
-    name: My Other Special List
-    description: A list 2 description
-    features:
-      - url: www.itp.nyu.edu
-        name: ITP/IMA for list 2
-        description: Website to NYU's ITP/IMA program
-      - url: www.nautilist.github.io/
-        name: Nautilist homepage for list 2
-        description: Nautilist is a tool for ...
-  </textarea>
+<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#multilist-example-md')}">
+<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="multilist-example-md">
+
+# why???
+
+</textarea>
 </pre>
   `
 }
 
+
+/**
+ * 
+ * 
+ * # Nautilist Simple Boilerplate
+> description: A boilerplate list of lists for nautilist
+
+## My Special List
+> description: A list 1 description
+
+### ITP/IMA
+> Website to NYU's ITP/IMA program      
+
+- www.itp.nyu.edu
+      
+### Nautilist homepage
+> Nautilist is a tool for ...
+
+- url: www.nautilist.github.io/
+
+## My Other Special List
+>  A list 2 description
+
+### name: ITP/IMA for list 2
+> description: Website to NYU's ITP/IMA program
+
+- www.itp.nyu.edu
+
+### Nautilist homepage for list 2
+> Nautilist is a tool for ...
+
+- www.nautilist.github.io/
+ */
+
 function singleListExample(){
   return html`
-<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#singlelist-example-yaml')}">
-<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="singlelist-example-yaml">
-type: list
-name: Nautilist Simple Boilerplate
-description: A boilerplate list for nautilist
-features:
-  - url: www.itp.nyu.edu
-    name: ITP/IMA
-    description: Website to NYU's ITP/IMA program
-  - url: www.nautilist.github.io/
-    name: Nautilist homepage
-    description: Nautilist is a tool for ...
-</code>
+<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#singlelist-example-md')}">
+<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="singlelist-example-md">
+
+
 </textarea>
+</pre>
   
   `
 }
+
+
+
+/**
+ * # Nautilist Simple Boilerplate
+> description: A boilerplate list of lists for nautilist
+
+## My Special List
+> description: A list 1 description
+
+### ITP/IMA
+> Website to NYU's ITP/IMA program      
+
+- www.itp.nyu.edu
+      
+### Nautilist homepage
+> Nautilist is a tool for ...
+
+- url: www.nautilist.github.io/
+
+ */
