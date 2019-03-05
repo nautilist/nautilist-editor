@@ -85,7 +85,7 @@ function view (state, emit) {
         try{
           let inputMd = e.target.result;
           // emit(state.events.workspace_yaml_update, yaml);
-          emit(state.events.workspace_all_update, md2jt.json2md(inputMd) );
+          emit(state.events.workspace_all_update, md2jt.md2json(inputMd) );
           // codeEditor.editor.value = state.workspace.yaml;
         } catch(err){
           alert("not working!")
