@@ -1,61 +1,12 @@
 const marked = require('marked');
 const beautify = require("json-beautify");
 const shortid = require('shortid');
-var arrayToTree = require('array-to-tree');
+const arrayToTree = require('array-to-tree');
 
-const multilist = `
-# list 1
-> description for list 1
-
-## sublist 1
-> description for sublist 1
-
-### sublist 1 - feature 1
-> description for sublist 1 feature 1
-
-- https://itp.nyu.edu
-
-### sublist 1 - feature 2
-> description for sublist 1 feature 2
-
-#### subsublist 1 - feature 1
-> description for sublist 1 feature 2
-
-- https://editor.p5js.org
-
-#### subsublist 1 - feature 2
-> description for sublist 1 feature 2
-
-- https://editor.p5js.org
-
-## sublist 2
-> description for sublist 1
-
-### sublist 2 - feature 1
-> description for sublist 2 feature 1
-
-- https://itp.nyu.edu
-
-### sublist 2 - feature 2
-> description for sublist 2 feature 2
-
-#### subsublist 1 - feature 1
-> description for sublist 1 feature 2
-
-- https://editor.p5js.org
-
-#### subsublist 2 - feature 2
-> description for sublist 1 feature 2
-
-##### subsubsublist 3 - feature 1
-> description for sublist 1 feature 2
-
-- https://editor.p5js.org
-
-`
-
-
-
+/**
+ * Convert markdown to jsonTree
+ * @param {*} mdContent 
+ */
 const md2json = function (mdContent) {
     // use marked lexer to convert markdown to json array
     let json = marked.lexer(mdContent);
@@ -168,11 +119,10 @@ const md2json = function (mdContent) {
 
 }
 
-let test = md2json(multilist)
-// console.log(beautify(test, null, 2, 40));
-
-
-
+/**
+ * Convert json tree to md
+ * @param {*} jsonTree 
+ */
 const json2md = function (jsonTree) {
     let mdText = ''
 
@@ -205,5 +155,7 @@ const json2md = function (jsonTree) {
 
 }
 
-let testmd = json2md(test)
-console.log(testmd);
+module.exports = {
+    json2md,
+    md2json
+}

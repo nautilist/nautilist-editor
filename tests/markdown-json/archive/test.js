@@ -89,3 +89,280 @@ let output = myData.reduce( (result, item, index, array) => {
 console.log(headings)
 
 console.log(beautify(output, null, 2, 40) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let thing = [{
+    depth: 1,
+    name: 'list1'
+},
+{
+    depth: 2,
+    name: 'sublist1'
+},
+{
+    depth: 2,
+    name: 'sublist2'
+},
+{
+    depth: 3,
+    name: 'subsublist1'
+},
+{
+    depth: 2,
+    name: 'sublist3'
+},
+{
+    depth: 3,
+    name: 'subsublist2'
+},
+{
+    depth: 3,
+    name: 'subsublist3'
+},
+{
+    depth: 4,
+    name: 'subsubsublist1'
+},
+{
+    depth: 4,
+    name: 'subsubsublist2'
+}
+]
+
+
+
+// // thing = thing.map(item =>  Object.assign({id:shortid.generate()}, item))
+// myFeatures = myFeatures.map(item =>  Object.assign({id: item.depth-1}, item))
+// // console.log(thing)
+
+
+// var ltt = new LTT(myFeatures, {
+//     key_id: 'depth',
+//     key_parent: 'id'
+// });
+// var tree = ltt.GetTree();
+
+// console.log( beautify(tree, null, 2, 20) );
+
+// get the index of where each feature should live under
+// function mapFeaturesToParent(arr){
+//     // let output = arr.slice(0,)
+//     let currentParent;
+//     let output = arr.reduce( (result, item, idx, arr) => {
+//         if(item.depth == 1){
+//             currentParent = item;
+//             result.push(currentParent)
+//         }
+//         else {
+//             // console.log(currentParent)
+//             // if(item.depth - 1 == currentParent.depth ){
+//             //     item.parentIndex = currentParent.depth;
+//             //     result.push(item)
+//             // }
+//             result.forEach( thing => {
+//                 if(item.depth -1 == thing.depth){
+//                     item.parentIndex = currentParent.depth;
+//                     result.push(item)
+//                 }
+//             })
+//         }
+
+//         return result;
+//     },[]);
+
+//     return output
+// }
+
+// let t = mapFeaturesToParent(thing)
+// console.log(t)
+
+
+
+// let currentParent;
+// let parentHeadings = []
+// let output = thing.reduce( (result, item, idx, arr) => {
+//     if(item.depth == 1){
+//         item.features = [];
+//         currentParent = item;
+//         result = currentParent;
+//         parentHeadings.push(result);
+//     } else {
+
+//     }
+
+//     return result
+// }, {})
+
+// console.log(output)
+// console.log(parentHeadings)
+
+
+
+// function nester2(featureCollection){
+
+
+//     let output = featureCollection.reduce((result, item, index, array) => {
+//         // console.log(result.depth, item.depth, item)
+
+
+
+
+//         return result;
+//     });
+
+//     return output;
+// }
+
+// let test  = nester2(thing);
+// console.log(beautify(test, null, 2, 40));
+
+
+
+
+
+
+// function nester(featureCollection) {
+//     let mainParent;
+//     let currentParent;
+
+//     let output = featureCollection.reduce((result, item, index, array) => {
+//         if (index == 0) {
+//             mainParent = item;
+//             mainParent.features = [];
+//             result = mainParent
+//         } else {
+//             if (item.depth - 1 == mainParent.depth) {
+//                 currentParent = item;
+//                 currentParent.features = [];
+//                 mainParent.features.push(currentParent)
+//             } else {
+
+//                 if (item.depth - 1 == currentParent.depth) {
+//                     let currentList = [];
+//                     let checks = array.slice(index + 1, )
+
+//                     // console.log(checks)
+
+//                     for (let i = 0; i < checks.length; i++) {
+//                         let check = checks[i];
+//                         if (check.depth > item.depth) {
+//                             // console.log(true)
+//                             currentList.push(check);
+
+//                         } else {
+//                             break
+//                         }
+//                     }
+
+//                     console.log(item.depth, currentParent.depth)
+//                     if (currentParent) {
+//                         item.features = currentList;
+//                         currentParent.features.push(item);
+//                     }
+//                 }
+
+//             }
+//         }
+
+//         return result;
+//     }, {})
+
+//     return output;
+// }
+
+
+// let test = nester(myFeatures);
+// console.log(beautify(test, null, 2, 40))
+
+// function nestFeatures(featureCollection){
+//     let mainParent;
+//     let currentParent;
+
+
+//     let output = featureCollection.reduce( (result, item, index, array) => {
+//         // initial state
+//         if(index == 0){
+//             mainParent = array[0];
+//             mainParent.features = [];
+//             result = mainParent;
+//         }
+
+//         if(item.depth - 1 == mainParent.depth){
+//             currentParent = item;
+//             currentParent.features = [];
+//             mainParent.features.push(currentParent);
+//         } else {
+
+//         }
+
+
+//         return result
+//     }, {})
+//     return output
+// }
+
+// let test = nestFeatures(myFeatures)
+// console.log(test);
+
+
+// Step 2: nest them according to their parent depth
+// function nestFeatures(featureCollection){
+//     let mainParent;
+//     let currentParent;
+//     let output = featureCollection.reduce((result, item, index, array) => {
+//         if(item.depth == 1){
+//             item.features = [];
+//             mainParent = item;
+//             result = mainParent;
+//         } else{
+//             let dist = item.depth - mainParent.depth;
+//             console.log(dist)
+//             if(item.depth - 1 == mainParent.depth){
+//                 currentParent = item;
+//                 currentParent.features = []
+//                 mainParent.features.push(currentParent);
+//             }
+//             else {
+
+//                 currentParent.features.push(item);
+
+//             }
+//         }
+
+//         return result;
+//     }, {})
+
+//     return output;
+// }
+
+// let nestedFeatures = nestFeatures(myFeatures);
+// console.log(beautify(nestedFeatures, null, 2, 40))
+
+
+// console.log(myFeatures.slice(6,))
