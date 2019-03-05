@@ -109,9 +109,9 @@ function setInitialMd(selection){
   `
 
   if(selection == "single"){
-    return singleList
+    return singleList.trim()
   } else{
-    return multilist
+    return multilist.trim()
   }
 
 }
