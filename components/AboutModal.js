@@ -79,22 +79,8 @@ function copyToClipboard(_domId){
 }
 
 function multiListExample(){
-  return html`
-<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#multilist-example-md')}">
-<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="multilist-example-md">
-
-# why???
-
-</textarea>
-</pre>
-  `
-}
-
-
-/**
- * 
- * 
- * # Nautilist Simple Boilerplate
+const mdContent = `
+# Nautilist Simple Boilerplate
 > description: A boilerplate list of lists for nautilist
 
 ## My Special List
@@ -102,12 +88,10 @@ function multiListExample(){
 
 ### ITP/IMA
 > Website to NYU's ITP/IMA program      
-
 - www.itp.nyu.edu
       
 ### Nautilist homepage
 > Nautilist is a tool for ...
-
 - url: www.nautilist.github.io/
 
 ## My Other Special List
@@ -115,21 +99,42 @@ function multiListExample(){
 
 ### name: ITP/IMA for list 2
 > description: Website to NYU's ITP/IMA program
-
 - www.itp.nyu.edu
 
 ### Nautilist homepage for list 2
 > Nautilist is a tool for ...
-
 - www.nautilist.github.io/
- */
+  `
+  return html`
+<pre class="mt2 bg-light-gray pl2 pr2 pb0 pt0 f6" onclick="${copyToClipboard('#multilist-example-md')}">
+<textarea type="text" class="w-100 h5 bn bg-light-gray resize-none" id="multilist-example-md">
+${mdContent.trim()}
+</textarea>
+</pre>
+  `
+}
+
 
 function singleListExample(){
+  const mdContent = `
+# Nautilist Simple Boilerplate
+> A boilerplate list of lists for nautilist
+
+## My Special List
+> A list 1 description
+
+### ITP/IMA
+> Website to NYU's ITP/IMA program      
+- www.itp.nyu.edu
+    
+### Nautilist homepage
+> Nautilist is a tool for ...
+- url: www.nautilist.github.io/
+  `
   return html`
-<pre class="mt2 bg-light-gray pa2 f7" onclick="${copyToClipboard('#singlelist-example-md')}">
-<textarea class="w-100 h5 bn bg-moon-gray resize-none" id="singlelist-example-md">
-
-
+<pre class="mt2 bg-light-gray pl2 pr2 pb0 pt0 f6" onclick="${copyToClipboard('#singlelist-example-md')}">
+<textarea class="w-100 h5 bn bg-light-gray resize-none" id="singlelist-example-md">
+${mdContent.trim()}
 </textarea>
 </pre>
   
@@ -138,21 +143,11 @@ function singleListExample(){
 
 
 
+
+
+
 /**
- * # Nautilist Simple Boilerplate
-> description: A boilerplate list of lists for nautilist
-
-## My Special List
-> description: A list 1 description
-
-### ITP/IMA
-> Website to NYU's ITP/IMA program      
-
-- www.itp.nyu.edu
-      
-### Nautilist homepage
-> Nautilist is a tool for ...
-
-- url: www.nautilist.github.io/
-
+ * 
+ * 
+ * 
  */
