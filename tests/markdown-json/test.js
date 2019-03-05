@@ -56,73 +56,128 @@ const multilist = `
 
 
 
+const md2json = function (mdContent) {
+    // use marked lexer to convert markdown to json array
+    let json = marked.lexer(mdContent);
 
-let json = marked.lexer(multilist);
-// recurse down and check each next feature and send the result to the feature collection
-function createFeatures(jsonArr) {
+    // restructure json array of markdown tags to nautilist {name, description, features, url} structure
+    let myFeatures = createFeatures(json);
 
-    let newItem = {}
+    // generate a unique ID
+    myFeatures = myFeatures.map(item => Object.assign({
+        _id: shortid.generate()
+    }, item));
 
-    let output = jsonArr.reduce((result, item, index, arr) => {
+    // assign the parent based on the order of the features and their depth
+    myFeatures = assignParents(myFeatures);
+    // console.log(myFeatures)
+    
+    // create a tree structure from the features
+    const tree = arrayToTree(myFeatures, {
+        parentProperty: 'parent',
+        customID: '_id',
+        childrenProperty: 'features'
+    });
+    
+    // return the output
+    return tree;
 
-        if (result.length == 0 && item.type == "heading") {
-            newItem = {}
-            newItem.name = item.text;
-            newItem.depth = item.depth;
-            result.push(newItem);
-        } else if (result.length > 0 && item.type == "heading") {
-            newItem = {}
-            newItem.name = item.text;
-            newItem.depth = item.depth;
-            result.push(newItem);
+    /** ------- main functions ------- */
+    /**
+     * assignParents()
+     * take the features with generated Ids to assign them to parents
+     * @param {*} jsonArr 
+     */
+    function findParent(currentItem, arr){
+        const preceeding = arr.reverse();
+        let parent;
+
+        for(let i = 0; i < preceeding.length; i++){
+            let item = preceeding[i];
+            
+            if(currentItem.depth -1 == item.depth){
+                console.log(currentItem.depth, item.depth)    
+                parent = item;
+                break;
+            }
         }
 
-        if (item.type == 'paragraph') {
-            newItem.description = item.text;
-        }
+        return parent;
 
-        if (item.type == 'text') {
-            newItem.url = item.text;
-        }
+    }
+    function assignParents(jsonArr){
+        let myFeatures = jsonArr.slice(0,);
 
-        return result;
-    }, []);
+        let mainParent;
+        let currentParent;
 
-    return output;
+        myFeatures = myFeatures.reduce((result, item, idx, arr) => {
+            if (idx == 0) {
+                result.push(item);
+                currentParent = item;
+            } else {
+                let preceeding = arr.slice(0, idx);
+                // console.log(preceeding)
+                let currentParent = findParent(item, preceeding)
+                item.parent = currentParent._id
+
+                result.push(item)
+
+            }
+            return result;
+        }, []);
+
+        return myFeatures
+    } // end assignParents()
+
+    /**
+     * createFeatures()
+     * take the marked.lexer() output and parse them into nautilist structure
+     * @param {*} jsonArr 
+     */
+    function createFeatures(jsonArr) {
+        let newItem = {}
+        let output = jsonArr.reduce((result, item, index, arr) => {
+
+            if (result.length == 0 && item.type == "heading") {
+                newItem = {}
+                newItem.name = item.text;
+                newItem.depth = item.depth;
+                result.push(newItem);
+            } else if (result.length > 0 && item.type == "heading") {
+                newItem = {}
+                newItem.name = item.text;
+                newItem.depth = item.depth;
+                result.push(newItem);
+            }
+
+            if (item.type == 'paragraph') {
+                newItem.description = item.text;
+            }
+
+            if (item.type == 'text') {
+                newItem.url = item.text;
+            }
+
+            return result;
+        }, []);
+
+        return output;
+    } // end createFeatures()
+
 }
 
-let myFeatures = createFeatures(json);
-myFeatures = myFeatures.map(item => Object.assign({_id:shortid.generate()}, item) )
+let test = md2json(multilist)
+console.log(beautify( test, null, 2, 40 )) ;
 
-// 1. create id's and add the parent id key
-let currentParent;
-let myFeatures2 = myFeatures.reduce( (result, item, idx, arr) => {
-        if(idx == 0){
-            // item.parent = item._id
-            result.push(item);
-            currentParent = item;
-        } else {
-            if(currentParent.depth == item.depth-1 ){
-                item.parent = currentParent._id;
-            }
-            if (idx < arr.length - 1 && item.depth < arr[idx+1].depth){
-                currentParent = item;
-                // result.push(item);
-            }
-            result.push(item);
-        }
-    return result;
-},[]);
+const json2md = function (jsonTree) {
+
+}
 
 
-let tree = arrayToTree(myFeatures2, {
-    parentProperty: 'parent',
-    customID: '_id',
-    childrenProperty:'features'
-  });
 
 
-console.log( beautify(tree, null, 2, 20) );
+
 
 
 
@@ -222,7 +277,7 @@ let thing = [{
 
 //         return result;
 //     },[]);
-    
+
 //     return output
 // }
 
@@ -252,12 +307,12 @@ let thing = [{
 
 
 // function nester2(featureCollection){
-    
-    
+
+
 //     let output = featureCollection.reduce((result, item, index, array) => {
 //         // console.log(result.depth, item.depth, item)
 
-        
+
 
 
 //         return result;
@@ -301,7 +356,7 @@ let thing = [{
 //                         if (check.depth > item.depth) {
 //                             // console.log(true)
 //                             currentList.push(check);
-                            
+
 //                         } else {
 //                             break
 //                         }
