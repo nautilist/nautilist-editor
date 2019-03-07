@@ -1,12 +1,40 @@
 var html = require('choo/html')
+const copy = require('clipboard-copy')
 
 module.exports = view
 
-function goBack(state, emit){
+function openInEditor(state,emit){
   return e => {
-    emit('popState');
+    console.log("opening in editor")
+    // get the selectedProject.json
+    emit(state.events.workspace_all_update, state.selectedProject.json);
+    // then render!
+    emit('pushState', '/');
   }
 }
+
+function saveToLists(state,emit){
+  return e => {
+    console.log("creating a copy and saving to lists")
+  }
+}
+
+function copyMarkdown(state, emit){
+  return e=>{
+    console.log("copying markdown")
+    copy(state.selectedProject.md);
+    /* Alert the copied text */
+    alert("Copied the text: " + state.selectedProject.md);
+  }
+}
+
+function addToGroup(state,emit){
+  return e=>{
+    console.log("opening add to group modal")
+  }
+}
+
+
 
 function createlistItem(feature){
   return html`
@@ -23,27 +51,27 @@ function createList(parentObject){
   if(parentObject !== undefined){
   
     let {features} = parentObject;
-  return html`
-  <ul class="list pl0 list-container">
-    ${
-      features.map(feature => {
-        if(feature.hasOwnProperty('features')){
-          return html`
-            <li class="item mt2 mb4">
-              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
-                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
-                <p class="ma0 pl2 mb3">${feature.description}</p>
-                ${createList(feature)}
-              </fieldset>
-            </li>
-          `
-        }
-        return createlistItem(feature);
-      })
-    }
-  </ul>
-  `
-}
+    return html`
+    <ul class="list pl0 list-container">
+      ${
+        features.map(feature => {
+          if(feature.hasOwnProperty('features')){
+            return html`
+              <li class="item mt2 mb4">
+                <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+                  <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
+                  <p class="ma0 pl2 mb3">${feature.description}</p>
+                  ${createList(feature)}
+                </fieldset>
+              </li>
+            `
+          }
+          return createlistItem(feature);
+        })
+      }
+    </ul>
+    `
+  }
 } // end createList
 
 function view (state, emit) {
@@ -52,13 +80,13 @@ function view (state, emit) {
 
   return html`
   <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-project', state.params.id)}>
-    <div class="w-100">
-      <a href="/public">Back to Public</a>
-    </div>
-    
-    <div class="w-100 flex flex-row">
+    <div class="w-100 flex flex-column h-100 pl2 pr2">
+            <div class="w-100 pt3 pb2 ">
+              <a class="link black underline pointer" href="/public">Back to Public</a>
+            </div>
+        <section class="w-100 h-auto flex flex-row pb4">
             <section class="w-70 h-100 pr2">
-                <div class="w-100 h-100 pl2 pr2 overflow-y-scroll bg-washed-red">
+                <div class="w-100 h-100 pl2 pr2 bg-washed-red">
                   <header class="w-100 flex flex-column pl2 pr2">
                     <div class="w-100 flex flex-row justify-between items-start">
                       <h1 class="f2 lh-title mb0">${selectedProject.name || "No list name yet"}</h1>
@@ -71,15 +99,15 @@ function view (state, emit) {
                   </section>
                 </div>
             </section>
-            <section class="w-30">
-                <div class="bn bg-light-gray br2 w-100 pa2">
+            <section class="w-30 h-100">
+                <div class="bn bg-light-gray br2 w-100 pa2 h-100">
                     <section>
                         <h3 class="">Actions</h3>
-                        <ul class="list pl0 flex flex-column items-start">
-                            <li class="mb2"><button class="pa2 bn dropshadow bg-purple white">Copy & Edit</button></li>
-                            <li class="mb2"><button class="pa2 bn dropshadow bg-yellow navy">Save to lists</button></li>
-                            <li class="mb2"><button class="pa2 bn dropshadow bg-navy yellow">Copy Markdown</button></li>
-                            <li class="mb2"><button class="pa2 bn dropshadow bg-pink navy">Add to group</button></li>
+                        <ul class="list pl0 flex flex-column items-start w-50">
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-purple white" onclick="${openInEditor(state, emit)}">Open in Editor</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Save to lists</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-navy yellow" onclick="${copyMarkdown(state, emit)}">Copy Markdown</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToGroup(state, emit)}">Add to group</button></li>
                         </ul>
                     </section>    
                     <section class="w-100">
@@ -92,6 +120,7 @@ function view (state, emit) {
                         </form>
                     </section>
                 </div>
+            </section>
             </section>
         </div>
   </body>

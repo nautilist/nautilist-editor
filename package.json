@@ -21,6 +21,7 @@
     "cheerio": "^1.0.0-rc.2",
     "choo": "^6.13.1",
     "choo-service-worker": "^2.4.0",
+    "clipboard-copy": "^3.0.0",
     "codemirror": "^5.43.0",
     "file-saver": "^2.0.0",
     "js-yaml": "^3.12.1",
