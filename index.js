@@ -12,20 +12,34 @@ if (process.env.NODE_ENV !== 'production') {
 
 // app.use(require('./stores/clicks'))
 app.use(require('./stores/workspace'))
+app.use(require('./stores/public'))
 
 app.route('/', require('./views/main'))
+app.route('/public', require('./views/public'))
+app.route('/projects/:id', require('./views/project'))
+
 app.route('/*', require('./views/404'))
 
 // if (typeof navigator !== 'undefined') {
 //   console.log("not defined!!!!!")
 //   document.body.appendChild(app.start())
-  
 // }
 
 if (typeof window !== 'undefined') {
   document.body.appendChild(app.start())
   app.mount('body')
 }
+
+app.use((state, emitter) => {                  // 1.
+  emitter.on('navigate', () => {               // 2.
+    console.log(`Navigated to ${state.route}`) // 3.
+    // emitter.emit('render');
+    if(state.route == 'public'){
+      emitter.emit("fetch-projects", {});
+    }
+
+  })
+})
 
 // if (typeof window !== 'undefined' && window.history.scrollRestoration) {
 //   window.history.scrollRestoration = 'manual'
