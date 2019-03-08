@@ -95,6 +95,17 @@ function view (state, emit) {
     reader.readAsText(myFile);
   }
 
+  function logout(){
+    emit(state.events.user_logout);
+  }
+
+  function isAuthd(){
+    if(state.user.authenticated === false){
+      return html`<a class="mr3 black underline" href="/login">login</a>`
+    }
+    return html`<p class="f6 ma0 black mr3">Hello, <a class="link black underline" href="/${state.user.username}">@${state.user.username}</a> | <span onclick="${logout}">👋</span> </p>`
+  }
+
   return html`
     <body class="w-100 h-100 code lh-copy">
       <main class="w-100 h-100 flex flex-column justify-start items-start">
@@ -106,10 +117,12 @@ function view (state, emit) {
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${shareModal.open()}"> Share </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${searchModal.open()}"> 🔎 Search </button>
         </div>
-        <div>
+        <div class="flex flex-row items-center">
+          ${isAuthd()}
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
-          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveMd}">Save</button>
-          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">open</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${()=> {console.log("saving")} }">Save</button>
+          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveMd}">Download</button>
+          <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">Open</button>
           <input class="dn" type="file" id="fileSelect" onchange="${handleFiles}">
         </div>
       </header>

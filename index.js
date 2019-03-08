@@ -13,8 +13,11 @@ if (process.env.NODE_ENV !== 'production') {
 // app.use(require('./stores/clicks'))
 app.use(require('./stores/workspace'))
 app.use(require('./stores/public'))
+app.use(require('./stores/user'))
 
 app.route('/', require('./views/main'))
+app.route('/signup', require('./views/signup'))
+app.route('/login', require('./views/login'))
 app.route('/public', require('./views/public'))
 app.route('/projects/:id', require('./views/project'))
 

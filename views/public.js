@@ -16,13 +16,12 @@ function view (state, emit) {
       emit('fetch-project',id);
     }
 
-  
-    const {name, description, _id} = project;
+    const {name, description, _id, selectedColor, colors} = project;
 
     return html`
     <a class="link black" href="/projects/${_id}">
     <div class="h5 w5 dropshadow br2 bg-near-white ma2" data-type="projects" data-id=${_id} onclick=${handleRedirect}>
-      <header class="w-100 h3 bg-yellow br2 br--top"></header>
+      <header class="w-100 h3 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
       <section class="pa2">
         <h3>${name}</h3>
         <p>${description}</p>
@@ -44,6 +43,18 @@ function view (state, emit) {
     `
   }
 
+  function logout(){
+    emit(state.events.user_logout);
+  }
+
+  function isAuthd(){
+    if(state.user.authenticated === false){
+      return html`<a class="mr3 black underline" href="/login">login</a>`
+    }
+    return html`<p class="f6 ma0 black mr3">Hello, <a class="link black underline" href="/${state.user.username}">@${state.user.username}</a> | <span onclick="${logout}">👋</span> </p>`
+  }
+
+
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-projects')}>
       <header class="pt3 pl2 pr2 pb2 w-100">
@@ -59,14 +70,17 @@ function view (state, emit) {
           </select> 
           </div>
           <div>
-            <a class="link black mr4 pointer" href="/">login</a>
+            ${isAuthd()}
+
           </div>
         </nav>
       </header>
       <main class="w-100 pa4">
+        <h1 class="tc">Check out these public lists</h1>
         ${makeProjectList(state.projects, projectModal)}
       </main>
-      ${projectModal.render()}   
     </body>
     `
 }
+
+// ${projectModal.render()}   

@@ -12,7 +12,6 @@ function store (state, emitter) {
       state.projects = result.data
       emitter.emit('render');
     }).catch(err => {
-      // emitter.emit('error', err);
       console.log("could not find projects")
     })
   })
