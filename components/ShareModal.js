@@ -12,7 +12,6 @@ class ShareModal extends Component {
     this.displayed = 'dn';
     this.rerender = this.rerender.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.isAuthd = this.isAuthd.bind(this)
   }
 
   open(){
@@ -56,25 +55,6 @@ class ShareModal extends Component {
     }
   }
 
-  isAuthd(){
-    feathersClient.authenticate().then( authResponse => {
-      // try to auth using JWT from local Storage
-      // state.user.username = authResponse.username;
-      // state.user.id = authResponse._id;
-      // state.user.authenticated = true;
-      // emitter.emit(state.events.RENDER);
-      console.log('is authenticated!');
-      return html`<div>hello @username!</div>`
-    }).catch(err => {
-      console.log("not auth'd friend!")
-      // state.user.authenticated = false;
-      
-      // emitter.emit("pushState", "/login")
-      // console.log(err);
-      // return err;
-      return html`<div>submit anonymously</div>`
-    });
-  }
 
   createElement () {
     return html`
@@ -89,7 +69,6 @@ class ShareModal extends Component {
         </section>
         <!-- Sharing Options -->
         <section class="flex flex-column">
-          ${this.isAuthd()}
          <button onclick="${this.handleSubmit()}" class="h3 grow pointer pa2 mb2 bn dropshadow bg-pink navy">🚀 Send to Nautilist Public</button>
          <button class="pa2 mb2 bn dropshadow bg-pink navy dn">✨ Download HTML page</button>
         </section>
