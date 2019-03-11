@@ -3,6 +3,7 @@ const slugify = require('slugify');
 const shortid = require('shortid');
 const helpers = require('../helpers');
 const md2jt = require('../helpers/md2jt');
+const feathersClient = require('../helpers/feathersClient')
 module.exports = store
 
 store.storeName = 'workspace'
@@ -10,8 +11,9 @@ function store (state, emitter) {
   const initialMd= setInitialMd('single');
 
   state.workspace = {
-    json: md2jt.md2json(initialMd),
-    md:initialMd
+    json: {},//md2jt.md2json(initialMd),
+    md:'', //initialMd,
+    _id: null // the id in the database
   }
 
   state.events.workspace_md_update = 'workspace:md:update'
@@ -19,6 +21,7 @@ function store (state, emitter) {
   state.events.workspace_all_update = 'workspace:all:update'
   state.events.addClientId = "json:addClientId";
   state.events.workspace_json_addfeature = "workspace:json:addfeature";
+  state.events.workspace_findOneAndUpdate = "workspace:findOneAndUpdate";
 
   // initialize by adding in clientId
   (function(){
@@ -29,6 +32,65 @@ function store (state, emitter) {
   emitter.on(state.events.addClientId, function(_payload){
     state.workspace.json = addClientId(_payload);
   })
+
+  // emitter.on(state.events.workspace_findOneAndUpdate, function(){
+  //   const {_id} = state.workspace;
+    
+  //   let payload = {
+  //     html:'',
+  //     md: state.workspace.md,
+  //     json: state.workspace.json,
+  //     name: state.workspace.json.name,
+  //     description: state.workspace.json.description
+  //   }
+
+  //   // if there's no ID, then create a new feature
+  //   if(_id === null){
+  //       // submit the payload to the server annonymously
+  //       feathersClient.service("/api/projects").create(payload).then(result => {
+  //         state.workspace.json = result.json
+  //         state.workspace.md = result.md
+  //         state.workspace._id = result._id
+  //         // this.emit('pushState', '/public');
+  //         this.emit('render');
+  //       }).catch(err => {
+  //         return err;
+  //       })
+  //   } else {
+
+  //     if(state.user.authenticated === false || state.user.authenticated === ''){
+  //       // submit the payload to the server annonymously
+  //       feathersClient.service("/api/projects").create(payload).then(result => {
+  //         state.workspace.json = result.json
+  //         state.workspace.md = result.md
+  //         state.workspace._id = result._id
+  //         // this.emit('pushState', '/public');
+  //         this.emit('render');
+  //       }).catch(err => {
+  //         return err;
+  //       });
+
+  //     } else {
+  //       let data = {
+  //         $set: payload
+  //       }
+  
+  //       feathersClient.service('/api/projects').patch(_id, data).then(result => {
+  //         console.log("🌈🌈🌈🌈",result);
+  //         state.workspace.json = result.json
+  //         state.workspace.md = result.md
+  //         state.workspace._id = result._id
+  //         // this.emit('pushState', '/public');
+  //         this.emit('render');
+  //       }).catch(err => {
+  //         return err;
+  //       })
+  //     }
+
+      
+  //   }
+
+  // })
 
   emitter.on(state.events.workspace_md_update, function(_payload){
     if(!_payload){_payload = "type: list"}

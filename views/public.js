@@ -62,8 +62,8 @@ function view (state, emit) {
           <div>
           <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/public">Nautilist Public</a>
           <a class="link black mr4 pointer" href="/">editor</a>
-          <input type="search" class="w5 h2 pa2 bn bg-light-gray" placeholder="🔎 search">
-          <select class="bn bg-light-gray br2 br--right h2">
+          <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
+          <select class="bn bg-light-gray br2 br--right h2 dn">
             <option value="projects">Projects</option>
             <option value="collections">Collections</option>
             <option value="users">Users</option>

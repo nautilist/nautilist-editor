@@ -23,12 +23,53 @@ class VisualEditor extends Component {
     this.addFeature = this.addFeature.bind(this);
     this.makeSortable = this.makeSortable.bind(this);
     this.handleSorting = this.handleSorting.bind(this);
+    this.createNewParent = this.createNewParent.bind(this);
   }
 
+  createNewParent(){
+      let newFeature = {}
+  
+      let newLink = {
+        url: "#",
+        name: "New URL!",
+        depth:"2", // need to add depth in helpers.pushNewFeature
+        description: "A description for your new URL?"
+      }
+  
+      newFeature = {
+        type: "list",
+        name: "New List Name",
+        depth: 1,
+        description: "New List Description",
+        features:[
+          newLink
+        ]
+      }
+
+      const newParent = newFeature
+      const cleanJson = helpers.removeClientId(newParent)
+
+      const newMd = md2jt.json2md(cleanJson)
+      // const newJson = md2jt.md2json(newMd)
+
+      this.state.workspace.md = newMd
+      // this.state.workspace.json = md2jt.md2json(newMd)
+      this.state.workspace.json = newParent
+
+      this.emit("json:addClientId", this.state.workspace.json)
+      this.emit(this.state.events.RENDER)
+  }
   
   createElement () {
     const {json} = this.state.workspace;
-    if(!json || !json.features){ return html`<div class="flex flex-row w-100 justify-center mt4">No lists yet! 🏝</div>`}
+    if(!json || !json.features){ 
+      return html`
+        <div class="flex flex-row w-100 justify-center mt4 pa4">
+        <button class="w-100 h2 bn bg-pink f7 mt2" 
+        onclick="${this.createNewParent}">start new list</button>
+        </div>
+        `
+    }
 
     const {features, name, description} = json;
 

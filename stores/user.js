@@ -43,7 +43,6 @@ function store (state, emitter) {
         emitter.emit(state.events.user_login, _formData)
       }).catch(err => {
         console.log("sign up unsuccessful! something went wrong!")
-        console.log(err);
         return error;
       });
     };
@@ -60,7 +59,6 @@ function store (state, emitter) {
         state.user.authenticated = false;
         
         // emitter.emit("pushState", "/login")
-        console.log(err);
         return err;
       });
     };

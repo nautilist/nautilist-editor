@@ -6,6 +6,8 @@ module.exports = view
 function openInEditor(state,emit){
   return e => {
     console.log("opening in editor")
+    // TODO: set this in another way?
+    state.workspace._id = state.selectedProject._id
     // get the selectedProject.json
     emit(state.events.workspace_all_update, state.selectedProject.json);
     // then render!

@@ -16,7 +16,7 @@ const md2json = function (mdContent) {
 
     // generate a unique ID
     myFeatures = myFeatures.map(item => Object.assign({
-        _id: shortid.generate()
+        _clientId: shortid.generate()
     }, item));
 
     // assign the parent based on the order of the features and their depth
@@ -26,7 +26,7 @@ const md2json = function (mdContent) {
     // create a tree structure from the features
     const tree = arrayToTree(myFeatures, {
         parentProperty: 'parent',
-        customID: '_id',
+        customID: '_clientId',
         childrenProperty: 'features'
     });
 
@@ -71,7 +71,7 @@ const md2json = function (mdContent) {
                 let preceeding = arr.slice(0, idx);
                 // console.log(preceeding)
                 let currentParent = findParent(item, preceeding)
-                item.parent = currentParent._id
+                item.parent = currentParent._clientId
 
                 result.push(item)
 
