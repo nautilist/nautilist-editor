@@ -1,6 +1,6 @@
 {
-  "name": "src",
-  "short_name": "src",
+  "name": "Nautilist Editor",
+  "short_name": "Nautilist",
   "description": "",
   "start_url": "/",
   "display": "standalone",

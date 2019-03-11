@@ -1,5 +1,6 @@
 var css = require('sheetify')
 var choo = require('choo')
+const config = require('./config.js');
 
 css('tachyons')
 
@@ -7,6 +8,9 @@ var app = choo()
 if (process.env.NODE_ENV !== 'production') {
   app.use(require('choo-devtools')())
 } else {
+  
+  // app.feathersRestApi = config.NAUTILISTAPI;
+  // console.log(app.feathersRestApi)
   app.use(require('choo-service-worker')())
 }
 
@@ -43,6 +47,8 @@ app.use((state, emitter) => {                  // 1.
 
   })
 })
+
+module.exports = app;
 
 // if (typeof window !== 'undefined' && window.history.scrollRestoration) {
 //   window.history.scrollRestoration = 'manual'
