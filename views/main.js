@@ -100,7 +100,7 @@ function view (state, emit) {
   }
 
   function isAuthd(){
-    if(state.user.authenticated === false){
+    if(state.user.authenticated === false || state.user.authenticated === undefined || state.user.authenticated === ''){
       return html`<a class="mr3 black underline" href="/login">login</a>`
     }
     return html`<p class="f6 ma0 black mr3">Hello, <a class="link black underline" href="/${state.user.username}">@${state.user.username}</a> | <span onclick="${logout}">👋</span> </p>`
