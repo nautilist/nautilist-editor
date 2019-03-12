@@ -24,6 +24,8 @@ app.route('/signup', require('./views/signup'))
 app.route('/login', require('./views/login'))
 app.route('/public', require('./views/public'))
 app.route('/projects/:id', require('./views/project'))
+app.route('/users', require('./views/users'))
+app.route('/users/:username', require('./views/user'))
 
 app.route('/*', require('./views/404'))
 
@@ -44,6 +46,14 @@ app.use((state, emitter) => {                  // 1.
     if(state.route == 'public'){
       emitter.emit("fetch-projects", {});
     }
+
+    if(state.route == 'users' && state.params.hasOwnProperty('username')){
+      console.log('fetching', state.params.username)
+      emitter.emit('fetch-user', state.params.username);
+    } else if(state.route == 'users'){
+      emitter.emit("fetch-users", {});
+    }
+    
 
   })
 })

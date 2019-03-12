@@ -11,6 +11,7 @@ function store (state, emitter) {
     authenticated:""
   }
 
+
   state.events.user_signup = 'user:signup';
   state.events.user_login = 'user:login';
   state.events.user_logout = 'user:logout';

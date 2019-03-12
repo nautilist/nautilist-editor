@@ -90,7 +90,7 @@ class VisualEditor extends Component {
             <button class="bn bg-transparent mt4" onclick="${this.openEditModal(json.clientId, json.clientId)}">✎</button>
           </div>
           
-          <p class="f3 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
+          <p class="f6 lh-copy mt0 mb2">${description ||  "No list description yet"}</p>
         </header>
         <section class="w-100">
           ${this.createList(json, this.addFeatureButton(json, buttonType))}

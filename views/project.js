@@ -103,7 +103,7 @@ function view (state, emit) {
                       <small class="ma0">created by ${checkOwner(selectedProject)} </small>
                     </div>
                     
-                    <p class="f3 lh-copy mt0 mb2">${selectedProject.description ||  "No list description yet"}</p>
+                    <p class="f5 lh-copy mt0 mb2">${selectedProject.description ||  "No list description yet"}</p>
                   </header>
                   <section class="w-100">
                     ${createList(selectedProject.json)}
