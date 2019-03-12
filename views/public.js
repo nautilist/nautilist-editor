@@ -32,7 +32,7 @@ function view (state, emit) {
       <section class="pa2">
         <h3 class="ma0">${name}</h3>
         <small class="ma0">created by ${checkOwner(project)} </small>
-        <p class="ma0">${description}</p>
+        <p class="ma0 truncate">${description}</p>
       </section>
     </div>
     </a>
