@@ -82,7 +82,7 @@ function view (state, emit) {
 
   function checkOwner(project){
     if(project.hasOwnProperty('owner')){
-      return `${project.owner}`
+      return `${project.ownerDetails.username}`
     } else {
       return '🤖'
     }
