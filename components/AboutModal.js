@@ -53,7 +53,7 @@ ${singleListExample()}
         <h3>Simple list of lists</h3>
 ${multiListExample()}
         </section>
-        <button class="w-100 h3 bn bg-navy dark-pink pa2 mt3 mb3 pointer" onclick=${this.close()}>close</button>
+        <button class="w-100 h3 bn bg-navy dark-pink pa2 mt3 mb3 pointer dn" onclick=${this.close()}>close</button>
       </div>
       <!-- invisible div under the modal to capture out of modal click to close -->
       <div class="w-100 h-100 fixed top-0 left-0" onclick=${this.close()}></div>

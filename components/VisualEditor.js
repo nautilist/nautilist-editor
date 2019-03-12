@@ -64,7 +64,7 @@ class VisualEditor extends Component {
     const {json} = this.state.workspace;
     if(!json || !json.features){ 
       return html`
-        <div class="flex flex-row w-100 justify-center mt4 pa4">
+        <div class="flex flex-row w-100 justify-center pa4">
         <button class="w-100 h2 bn bg-pink f7 mt2" 
         onclick="${this.createNewParent}">start new list</button>
         </div>

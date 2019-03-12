@@ -80,6 +80,14 @@ function view (state, emit) {
   
   let selectedProject = state.selectedProject;
 
+  function checkOwner(project){
+    if(project.hasOwnProperty('owner')){
+      return `${project.owner}`
+    } else {
+      return '🤖'
+    }
+  }
+
   return html`
   <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-project', state.params.id)}>
     <div class="w-100 flex flex-column h-100 pl2 pr2">
@@ -90,8 +98,9 @@ function view (state, emit) {
             <section class="w-70 h-100 pr2">
                 <div class="w-100 h-100 pl2 pr2 bg-washed-red">
                   <header class="w-100 flex flex-column pl2 pr2">
-                    <div class="w-100 flex flex-row justify-between items-start">
+                    <div class="w-100 flex flex-column">
                       <h1 class="f2 lh-title mb0">${selectedProject.name || "No list name yet"}</h1>
+                      <small class="ma0">created by ${checkOwner(selectedProject)} </small>
                     </div>
                     
                     <p class="f3 lh-copy mt0 mb2">${selectedProject.description ||  "No list description yet"}</p>

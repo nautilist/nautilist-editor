@@ -15,6 +15,13 @@ function view (state, emit) {
       console.log('go to selected project!', id, type)
       emit('fetch-project',id);
     }
+    function checkOwner(project){
+      if(project.hasOwnProperty('owner')){
+        return `${project.owner}`
+      } else {
+        return '🤖'
+      }
+    }
 
     const {name, description, _id, selectedColor, colors} = project;
 
@@ -23,8 +30,9 @@ function view (state, emit) {
     <div class="h5 w5 dropshadow br2 bg-near-white ma2" data-type="projects" data-id=${_id} onclick=${handleRedirect}>
       <header class="w-100 h3 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
       <section class="pa2">
-        <h3>${name}</h3>
-        <p>${description}</p>
+        <h3 class="ma0">${name}</h3>
+        <small class="ma0">created by ${checkOwner(project)} </small>
+        <p class="ma0">${description}</p>
       </section>
     </div>
     </a>
@@ -61,7 +69,7 @@ function view (state, emit) {
         <nav class="w-100 flex flex-row items-center justify-between">
           <div>
           <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/public">Nautilist Public</a>
-          <a class="link black mr4 pointer" href="/">editor</a>
+          <a class="link black mr4 pointer" href="/">Editor</a>
           <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
           <select class="bn bg-light-gray br2 br--right h2 dn">
             <option value="projects">Projects</option>

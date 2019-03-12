@@ -174,7 +174,7 @@ function view(state, emit) {
             state.workspace.md = result.md
             state.workspace._id = result._id
             // this.emit('pushState', '/public');
-            document.querySelector("#lastUpdated").innerHTML = `updated: ${result.updatedAt}`;
+            document.querySelector("#lastUpdated").innerHTML = `updated: ${result.updatedAt}  `;
             emit("json:addClientId", state.workspace.json)
             // rerender
             visualEditor.rerender()
@@ -203,7 +203,7 @@ function view(state, emit) {
         <div class="flex flex-row items-center">
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
           <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveToPublic(state, emit)}">Save</button>
-          <button class="ba dropshadow ba b--white bg-navy dark-pink bw1 pa2 mr2 pointer" onclick="${saveMd}">Download</button>
+          <button class="ba dropshadow ba b--white bg-lightest-blue dark-pink bw1 pa2 mr2 pointer" onclick="${saveMd}">Download</button>
           <button class="ba dropshadow ba b--white bg-white purple bw1 pa2 pointer" onclick="${openFile}">Open</button>
           <input class="dn" type="file" id="fileSelect" onchange="${handleFiles}">
         </div>
