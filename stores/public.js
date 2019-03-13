@@ -8,6 +8,7 @@ function store (state, emitter) {
   state.selectedProject = {};
   state.users = [];
   state.selectedUser = {};
+  state.selectedUserProjects = [];
 
   emitter.on('fetch-projects', () => {
     feathersClient.service('/api/projects').find({}).then(result => {
@@ -38,10 +39,22 @@ function store (state, emitter) {
   })
 
   emitter.on('fetch-user', (username) => {
+    
     feathersClient.service('/users').find({username: username}).then(result => {
       state.selectedUser = result.data[0]
+
+      const queryParams = {
+        query:{
+            owner: state.selectedUser._id
+        }
+      }
+
+      return feathersClient.service('/api/projects').find(queryParams)
+    }).then(result => {
+      state.selectedUserProjects = result.data;
       emitter.emit('render');
-    }).catch(err => {
+    })
+    .catch(err => {
       console.log(err, "could not find user")
     })
   })

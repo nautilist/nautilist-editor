@@ -42,18 +42,27 @@ if (typeof window !== 'undefined') {
 app.use((state, emitter) => {                  // 1.
   emitter.on('navigate', () => {               // 2.
     console.log(`Navigated to ${state.route}`) // 3.
-    // emitter.emit('render');
-    if(state.route == 'public'){
-      emitter.emit("fetch-projects", {});
-    }
 
-    if(state.route == 'users' && state.params.hasOwnProperty('username')){
-      console.log('fetching', state.params.username)
-      emitter.emit('fetch-user', state.params.username);
-    } else if(state.route == 'users'){
-      emitter.emit("fetch-users", {});
-    }
-    
+    switch(state.route){
+      case 'public':
+        emitter.emit("fetch-projects", {});
+        break;
+      case 'users':
+        emitter.emit("fetch-users", {});
+        break;
+      case 'users/:username':
+        if(state.params.hasOwnProperty('username')){
+          emitter.emit('fetch-user', state.params.username);
+        }
+        break;
+      case 'projects/:id':
+        if(state.params.hasOwnProperty('id')){
+          emitter.emit("fetch-project", state.params.id);
+        }
+        break;
+      default:
+        break;
+    }    
 
   })
 })
