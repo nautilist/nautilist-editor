@@ -62,6 +62,11 @@ function view (state, emit) {
     return html`<p class="f6 ma0 black mr3">Hello, <a class="link black underline" href="/${state.user.username}">@${state.user.username}</a> | <span onclick="${logout}">👋</span> </p>`
   }
 
+  function handleSelectChange(e){
+    console.log()
+    emit('pushState', e.currentTarget.value)
+  }
+
 
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-projects')}>
@@ -71,10 +76,10 @@ function view (state, emit) {
           <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/public">Nautilist Public</a>
           <a class="link black mr4 pointer" href="/">Editor</a>
           <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
-          <select class="bn bg-light-gray br2 br--right h2 dn">
-            <option value="projects">Projects</option>
-            <option value="collections">Collections</option>
-            <option value="users">Users</option>
+          <select id="selectChange" class="bn bg-light-gray br2 br--right h2" onchange=${handleSelectChange}>
+            <option name="public" value="/public">Projects</option>
+            <option class="dn" value="collections">Collections</option>
+            <option name="users" value="/users">Users</option>
           </select> 
           </div>
           <div>
@@ -84,7 +89,7 @@ function view (state, emit) {
         </nav>
       </header>
       <main class="w-100 pa4">
-        <h1 class="tc">Check out these public lists</h1>
+        <h1 class="tc">Check out these projects</h1>
         ${makeProjectList(state.projects, projectModal)}
       </main>
     </body>
