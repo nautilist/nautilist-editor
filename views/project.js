@@ -16,6 +16,34 @@ function openInEditor(state,emit){
   }
 }
 
+function deleteFeature(state, emit){
+  
+  function deleteProject(e){
+    let {_id} = state.selectedProject
+    let del = confirm("do you really want to delete this?");
+      if(del === true){
+        feathersClient.service("/api/projects").remove(_id).then(result => {
+          alert("project deleted!")
+          emit('pushState', '/public');
+        }).catch(err => {
+          alert(err);
+        })    
+      } else {
+        return;
+      }
+  }
+
+  if(state.user.authenticated === true){
+    if(state.selectedProject.hasOwnProperty("ownerDetails") && state.selectedProject.ownerDetails.username == state.user.username ){
+      return html`
+      <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-orange navy" onclick=${deleteProject}>Delete Project</button></li>
+      `
+    } else{
+      return ``
+    }
+  }
+}
+
 function saveToLists(state,emit){
   return e => {
     console.log("creating a copy and saving to lists")
@@ -28,7 +56,6 @@ function saveToLists(state,emit){
       }
       
       feathersClient.service('/api/projects').create(payload).then(result => {
-
         alert(`${result.name} - was saved to your projects!`)
       }).catch(err => {
         alert(err)
@@ -141,6 +168,7 @@ function view (state, emit) {
                         <ul class="list pl0 flex flex-column items-start w-80">
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Save to my projects</button></li>
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToGroup(state, emit)}">Add to collection</button></li>
+                            ${deleteFeature(state, emit)}
                         </ul>
                     </section>    
                     <section class="w-100 dn">
