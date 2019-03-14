@@ -1,6 +1,7 @@
 var html = require('choo/html')
 const copy = require('clipboard-copy')
 const feathersClient = require('../helpers/feathersClient');
+const AddToCollectionModal = require("../components/AddToCollectionModal");
 
 module.exports = view
 
@@ -74,9 +75,10 @@ function copyMarkdown(state, emit){
   }
 }
 
-function addToGroup(state,emit){
+function addToCollection(state,emit, modal){
   return e=>{
     console.log("opening add to group modal")
+    modal.open();
   }
 }
 
@@ -121,7 +123,7 @@ function createList(parentObject){
 } // end createList
 
 function view (state, emit) {
-  
+  const addToCollectionModal = new AddToCollectionModal("AddToCollectionModal", state, emit)
   let selectedProject = state.selectedProject;
 
   function checkOwner(project){
@@ -167,7 +169,7 @@ function view (state, emit) {
                         <h3 class="">Organize</h3>
                         <ul class="list pl0 flex flex-column items-start w-80">
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Save to my projects</button></li>
-                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToGroup(state, emit)}">Add to collection</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToCollection(state, emit, addToCollectionModal)}">Add to collection</button></li>
                             ${deleteFeature(state, emit)}
                         </ul>
                     </section>    
@@ -185,6 +187,7 @@ function view (state, emit) {
             </section>
             </section>
         </div>
+        ${addToCollectionModal.render()}
   </body>
   `
 }
