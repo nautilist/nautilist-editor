@@ -39,10 +39,14 @@ function store (state, emitter) {
   })
 
   emitter.on('fetch-user', (username) => {
-    
-    feathersClient.service('/users').find({username: username}).then(result => {
-      state.selectedUser = result.data[0]
+    const findByUsername = {
+      query:{
+        username
+      }
+    }
 
+    feathersClient.service('/users').find(findByUsername).then(result => {
+      state.selectedUser = result.data[0]
       const queryParams = {
         query:{
             owner: state.selectedUser._id
