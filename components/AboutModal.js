@@ -33,17 +33,23 @@ class AboutModal extends Component {
   createElement () {
     return html`
     <div id="helpModal" class="w-100 h-100 flex-column justify-center items-center ${this.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(255, 65, 180,0.7)">
-      <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
+      <div class="w-100 h-auto mw8 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
           <h2>About</h2>
           <button class="bn bg-navy dark-pink bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
-        <section class="w-100 mt2 mb2">
-          <p>Hello and welcome to the Nautilist Editor!</p>
-          <p>It's a lightweight editor for putting together flexible lists of resources using markdown.<a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
-          <p>To get get started - copy/paste this list boilerplate 👇 and press the "run" button:</p>
+        <section class="w-100 mt3 mb3">
+          <h1 class="f1 lh-solid">Welcome to the Nautilist Editor</h1>
+          <p>Nautilist is lightweight editor for putting together flexible lists of resources using markdown.<a class="link black underline" href="https://nautilist.github.io/" target="_blank">Learn more.</a></p>
+          <p>Co-create and co-curate interesting links from across the web with Nautilist. Watch this video to see how it works.</p>
+        </section>
+        <section class="w-100 mt3 mb3">
+
         </section>
         <!-- simple single list -->
+        <section class="w-100 mt3 mb3">
+        <h2 class="f2 lh-title">Quickstart</h2>
+        <p>To get get started - copy/paste this list boilerplate 👇 and press the "run" button:</p>
         <section>
         <h3>Simple list</h3>
 ${singleListExample()}
@@ -53,6 +59,15 @@ ${singleListExample()}
         <h3>Simple list of lists</h3>
 ${multiListExample()}
         </section>
+        </section>
+
+        <section class="w-100 mt3 mb3">
+        <h2 class="f2 lh-title">Acknowledgements</h2>
+        <p>Nautilist is supported and maintained by NYU's Intertelecommunications Program. The project was materialized by <a class="link black underline" href="https://jk-lee.com" target="_blank">Joey Lee</a> through ITP's <a href="https://tisch.nyu.edu/itp/itp-people/faculty/somethings-in-residence-sirs" target="_blank">Something in Residence Program</a> under the supervision of Shawn Van Every, Dan Shiffman, and Dan O'Sullivan.</p>
+        <p>Emojis via the <a class="link black underline" href="http://openmoji.org/index.html" target="_blank">OpenMoji Project</a> by the clever folks at <a class="link black underline" href="http://openmoji.org/about.html" target="_blank">Hfg Schwäbisch Gmünd</a>.</p>
+        <p>Built with <a class="link black underline" href="https://choo.io/" target="_blank">Choo.js</a> & <a class="link black underline" href="https://feathersjs.com/" target="_blank">Feathers.js</a></p>
+        </section>
+
         <button class="w-100 h3 bn bg-navy dark-pink pa2 mt3 mb3 pointer dn" onclick=${this.close()}>close</button>
       </div>
       <!-- invisible div under the modal to capture out of modal click to close -->
