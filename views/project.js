@@ -144,7 +144,7 @@ function view (state, emit) {
                   <header class="w-100 flex flex-column pl2 pr2">
                     <div class="w-100 flex flex-column">
                       <h1 class="f2 lh-title mb0">${selectedProject.name || "No list name yet"}</h1>
-                      <small class="ma0">created by ${checkOwner(selectedProject)} </small>
+                      <small class="ma0">created by <a class="link black underline" href="/users/${selectedProject.ownerDetails.username}">${checkOwner(selectedProject)}</a> </small>
                     </div>
                     
                     <p class="f5 lh-copy mt0 mb2">${selectedProject.description ||  "No list description yet"}</p>

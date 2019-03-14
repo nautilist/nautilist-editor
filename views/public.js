@@ -32,7 +32,7 @@ function view (state, emit) {
       <header class="w-100 h3 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
       <section class="pa2">
         <h3 class="ma0">${name}</h3>
-        <small class="ma0">created by ${checkOwner(project)} </small>
+        <small class="ma0">created by <a class="link black underline" href="/users/${project.ownerDetails.username}">${checkOwner(project)}</a> </small>
         <p class="ma0 truncate">${description}</p>
       </section>
     </div>
