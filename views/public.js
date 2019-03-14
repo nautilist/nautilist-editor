@@ -1,6 +1,7 @@
 var html = require('choo/html')
 const feathersClient = require('../helpers/feathersClient');
 const ProjectModal = require('../components/ProjectModal');
+const NavSelect = require('../components/NavSelect');
 
 module.exports = view
 
@@ -26,8 +27,8 @@ function view (state, emit) {
     const {name, description, _id, selectedColor, colors} = project;
 
     return html`
-    <a class="link black" href="/projects/${_id}">
-    <div class="h5 w5 dropshadow br2 bg-near-white ma2" data-type="projects" data-id=${_id} onclick=${handleRedirect}>
+    <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/projects/${_id}">
+    <div class="h-100 dropshadow br2 bg-near-white ma2" data-type="projects" data-id=${_id} onclick=${handleRedirect}>
       <header class="w-100 h3 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
       <section class="pa2">
         <h3 class="ma0">${name}</h3>
@@ -43,11 +44,16 @@ function view (state, emit) {
     const projectCards = projects.map(project=>{
       return projectCard(project, projectModal)
     })
-  
+    
+    // <section class="w-100 flex flex-row flex-wrap">
+    // </section>
+
     return html`
-      <section class="w-100 flex flex-row flex-wrap">
-        ${projectCards}
-      </section>
+      <div class="w-100">
+        <div class="mw9 center ph3-ns h-100">
+          ${projectCards}
+        </div>
+      </div>
     `
   }
 
@@ -76,11 +82,7 @@ function view (state, emit) {
           <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/public">Nautilist Public</a>
           <a class="link black mr4 pointer" href="/">Editor</a>
           <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
-          <select id="selectChange" class="bn bg-light-gray br2 br--right h2" onchange=${handleSelectChange}>
-            <option name="public" value="/public">Projects</option>
-            <option class="dn" value="collections">Collections</option>
-            <option name="users" value="/users">Users</option>
-          </select> 
+          ${state.cache(NavSelect, "NavSelect", state, emit).render()}
           </div>
           <div>
             ${isAuthd()}

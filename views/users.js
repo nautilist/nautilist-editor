@@ -1,4 +1,6 @@
 var html = require('choo/html')
+const NavSelect = require('../components/NavSelect');
+const staticAssetsUrl = "https://nautilist-public.herokuapp.com/images/user_placeholders/"
 
 module.exports = view
 
@@ -6,17 +8,20 @@ function view (state, emit) {
 
   function renderUsers(){
     const {users} = state;
+    // const emojis = ['🦄', '🦁', '🦕', '🌎', '🌼', '🌴', '🌈', '☃️']
+
     if(users.length > 0){
       return users.map(user => {
+        // let emojiSel = emojis[Math.floor(Math.random()* emojis.length)]
+        // console.log(emojiSel)
+        // <img src="https://nautilist.github.io/assets/howto.png" class="br-100 h4 w4 dib pa2" title="Photo of a kitty staring at you">
         return html`
-          <a href="/users/${user.username}">
-          <article class="mw5 bg-white br3 pa3 pa4-ns mv3 ba b--black-10">
-            <div class="tc">
-              <img src="http://tachyons.io/img/avatar_1.jpg" class="br-100 h4 w4 dib ba b--black-05 pa2" title="Photo of a kitty staring at you">
-              <h1 class="f3 mb2">${user.username}</h1>
-            </div>
-          </article>
-          </a>
+        <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/users/${user.username}">
+        <div class="h-100 dropshadow br2 bg-near-white ma2 tc pa3">
+            <img src="${staticAssetsUrl}${user.emojis[user.selectedEmoji]}" class="br-100 h4 w4 dib pa2">
+            <h1 class="f3 mb2">${user.username}</h1>
+        </div>
+        </a>
         `
       })
     }
@@ -34,25 +39,15 @@ function view (state, emit) {
     return html`<p class="f6 ma0 black mr3">Hello, <a class="link black underline" href="/${state.user.username}">@${state.user.username}</a> | <span onclick="${logout}">👋</span> </p>`
   }
 
-  function handleSelectChange(e){
-    console.log()
-    emit('pushState', e.currentTarget.value)
-  }
-
-
   return html`
-  <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-users')}>
+  <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-users') }>
     <header class="pt3 pl2 pr2 pb2 w-100">
       <nav class="w-100 flex flex-row items-center justify-between">
         <div>
         <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/public">Nautilist Public</a>
         <a class="link black mr4 pointer" href="/">Editor</a>
         <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
-        <select id="selectChange" class="bn bg-light-gray br2 br--right h2" onchange=${handleSelectChange}>
-            <option name="public" value="/public">Projects</option>
-            <option class="dn" value="collections">Collections</option>
-            <option name="users" value="/users">Users</option>
-          </select> 
+        ${state.cache(NavSelect, "NavSelect", state, emit).render()}
         </div>
         <div>
           ${isAuthd()}
@@ -62,7 +57,11 @@ function view (state, emit) {
     </header>
     <main class="w-100 pa4">
       <h1 class="tc">Check out these amazing contributors</h1>
+      <div class="w-100">
+      <div class="mw9 center ph3-ns h-100">
       ${renderUsers()}
+      </div>
+      </div>
     </main>
   </body>
   `
