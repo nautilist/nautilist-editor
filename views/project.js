@@ -1,5 +1,6 @@
 var html = require('choo/html')
 const copy = require('clipboard-copy')
+const feathersClient = require('../helpers/feathersClient');
 
 module.exports = view
 
@@ -18,6 +19,22 @@ function openInEditor(state,emit){
 function saveToLists(state,emit){
   return e => {
     console.log("creating a copy and saving to lists")
+    let payload = {
+        html:'',
+        md: state.selectedProject.md,
+        json: state.selectedProject.json,
+        name: state.selectedProject.name,
+        description: state.selectedProject.description
+      }
+      
+      feathersClient.service('/api/projects').create(payload).then(result => {
+
+        alert(`${result.name} - was saved to your projects!`)
+      }).catch(err => {
+        alert(err)
+        return err;
+      })
+
   }
 }
 
@@ -113,21 +130,27 @@ function view (state, emit) {
             <section class="w-30 h-100">
                 <div class="bn bg-light-gray br2 w-100 pa2 h-100">
                     <section>
-                        <h3 class="">Actions</h3>
-                        <ul class="list pl0 flex flex-column items-start w-50">
+                        <h3 class="">Use or Remix</h3>
+                        <ul class="list pl0 flex flex-column items-start w-80">
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-purple white" onclick="${openInEditor(state, emit)}">Open in Editor</button></li>
-                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Save to lists</button></li>
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-navy yellow" onclick="${copyMarkdown(state, emit)}">Copy Markdown</button></li>
-                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToGroup(state, emit)}">Add to group</button></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3 class="">Organize</h3>
+                        <ul class="list pl0 flex flex-column items-start w-80">
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Save to my projects</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToGroup(state, emit)}">Add to collection</button></li>
                         </ul>
                     </section>    
-                    <section class="w-100">
+                    <section class="w-100 dn">
+                        <h3 class="">Suggest Links</h3>
                         <form class="w-100">
                             <fieldset class="w-100">
                                 <legend>URL</legend>
                                 <input type="text" class="w-100 pa2 f5">
+                                <input type="submit" class="w-100 pa2 dropshadow bn mt2 bg-green" value="Send">
                             </fieldset>
-                            <input type="submit" class="w-100 pa2 dropshadow bn mt2 bg-green" value="Suggest">
                         </form>
                     </section>
                 </div>

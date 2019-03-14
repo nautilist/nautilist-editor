@@ -10,6 +10,8 @@ function store (state, emitter) {
   state.selectedUser = {};
   state.selectedUserProjects = [];
 
+  // state.events.saveProjectToLists = "saveProjectToLists";
+
   emitter.on('fetch-projects', () => {
     feathersClient.service('/api/projects').find({}).then(result => {
       state.projects = result.data
@@ -62,6 +64,16 @@ function store (state, emitter) {
       console.log(err, "could not find user")
     })
   })
+
+
+  // emitter.on(state.events.saveProjectToLists, function(_payload){
+
+  //   // TODO: check to see if user already has the project then throw err
+    
+  //   feathersClient.service("/api/projects").create()
+
+    
+  // })
 
 
   emitter.on('DOMContentLoaded', function () {})

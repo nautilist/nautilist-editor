@@ -22,6 +22,7 @@ function store (state, emitter) {
   state.events.addClientId = "json:addClientId";
   state.events.workspace_json_addfeature = "workspace:json:addfeature";
   state.events.workspace_findOneAndUpdate = "workspace:findOneAndUpdate";
+  
 
   // initialize by adding in clientId
   (function(){
@@ -32,6 +33,8 @@ function store (state, emitter) {
   emitter.on(state.events.addClientId, function(_payload){
     state.workspace.json = addClientId(_payload);
   })
+
+  
 
   // emitter.on(state.events.workspace_findOneAndUpdate, function(){
   //   const {_id} = state.workspace;
