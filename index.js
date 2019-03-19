@@ -71,15 +71,6 @@ app.use((state, emitter) => {                  // 1.
           emitter.emit("fetch-project", state.params.id);
         }
         break;
-      // case 'reset':
-      //   console.log('reset route!!!!')
-      //   if(state.query.hasOwnProperty('token')){
-      //     console.log('true!!!!')
-      //     emitter.emit("replaceState", '/reset/password');
-      //   } else {
-      //     emitter.emit("replaceState", '/reset');
-      //   }
-      //   break;
       default:
         break;
     }    

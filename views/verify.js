@@ -28,11 +28,11 @@ function onClose(state, emit){
 function showInput(state, emit){
   if(state.query.hasOwnProperty('token')){
     emit(state.events.user_sendVerificationToken);
-    
+
     return html`
     <div class="mw6 w-100 flex flex-column items-center">
         <h2>Your account was verified!</h2>
-        <a href="/">go to nautilists.com</a>
+        <a href="/login">go to nautilists.com/login</a>
     </div>
     `
   } else {

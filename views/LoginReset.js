@@ -1,4 +1,5 @@
 var html = require('choo/html')
+const feathersClient = require('../helpers/feathersClient')
 
 module.exports = view
 
@@ -12,7 +13,18 @@ function submitSendReset(state, emit){
   return e => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    emit(state.events.user_sendResetPassword, formData);
+    // emit(state.events.user_sendResetPassword, formData);
+      const obj = {
+        action: 'sendResetPwd',
+        value: {
+            email: formData.get('email')
+          }
+        }
+      feathersClient.service("authmanagement").create(obj).then(result => {
+        console.log('sending reset password!', result)
+      }).catch(err => {
+        return err;
+      })
   }
 }
 
@@ -20,10 +32,23 @@ function submitReset(state, emit){
   return e => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    emit(state.events.user_resetPassword, formData);
+    // emit(state.events.user_resetPassword, formData);
+      const token = state.query.token
+      const obj = {
+        action: 'resetPwdLong',
+        value: {
+          token: token,
+          password: formData.get('password')
+        }
+      }
+      feathersClient.service("authmanagement").create(obj).then(result => {
+        console.log('password changed!', result)
+        emit('pushState', '/login')
+      }).catch(err => {
+        return err;
+      })
+    };
   }
-
-}
 
 function showInput(state, emit){
   if(state.query.hasOwnProperty('token')){

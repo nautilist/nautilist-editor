@@ -25,7 +25,7 @@ function store(state, emitter) {
 
 
   // LISTENERS
-  emitter.on('DOMContentLoaded', function () {
+  
     // SIGNUP
     emitter.on(state.events.user_signup, auth.signup);
     // LOGIN
@@ -38,7 +38,7 @@ function store(state, emitter) {
     emitter.on(state.events.user_sendResetPassword, auth.sendResetPassword);
     // SEND RESET
     emitter.on(state.events.user_sendVerificationToken, auth.sendVerificationToken);
-  })
+    // emitter.on('DOMContentLoaded', function () {})
 
   // AUTH FUNCTIONS
   function Auth() {
@@ -51,9 +51,11 @@ function store(state, emitter) {
       }
       feathersClient.service('users').create(credentials).then(() => {
         console.log("sign up successful yo!")
-        emitter.emit(state.events.user_login, _formData)
+        // emitter.emit(state.events.user_login, _formData)
+        emitter.emit('pushState', "/verify")
       }).catch(err => {
         console.log("sign up unsuccessful! something went wrong!")
+
         return error;
       });
     };
@@ -127,7 +129,7 @@ function store(state, emitter) {
       emitter.emit('render');
     };
 
-    
+
     this.sendVerificationToken = function (_formData) {
 
       const token = state.query.token
@@ -151,7 +153,7 @@ function store(state, emitter) {
           }
         }
       feathersClient.service("authmanagement").create(obj).then(result => {
-        console.log('password changed!', result)
+        console.log('sending reset password!', result)
       }).catch(err => {
         return err;
       })
@@ -169,6 +171,7 @@ function store(state, emitter) {
       }
       feathersClient.service("authmanagement").create(obj).then(result => {
         console.log('password changed!', result)
+        emitter.emit('pushState', '/login')
       }).catch(err => {
         return err;
       })
