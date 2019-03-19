@@ -21,7 +21,17 @@ app.use(require('./stores/user'))
 
 app.route('/', require('./views/main'))
 app.route('/signup', require('./views/signup'))
+// login routes
 app.route('/login', require('./views/login'))
+// app.route('/login/verify', require('./views/login'))
+// app.route('/login/verifyChanges', require('./views/login'))
+
+app.route('/reset', require('./views/LoginReset'))
+// app.route('/reset/password', require('./views/LoginResetPassword'))
+// app.route('/login/changePassword', require('./views/login'))
+// app.route('/login/changeEmail', require('./views/login'))
+
+
 app.route('/public', require('./views/public'))
 app.route('/projects/:id', require('./views/project'))
 app.route('/users', require('./views/users'))
@@ -60,6 +70,15 @@ app.use((state, emitter) => {                  // 1.
           emitter.emit("fetch-project", state.params.id);
         }
         break;
+      // case 'reset':
+      //   console.log('reset route!!!!')
+      //   if(state.query.hasOwnProperty('token')){
+      //     console.log('true!!!!')
+      //     emitter.emit("replaceState", '/reset/password');
+      //   } else {
+      //     emitter.emit("replaceState", '/reset');
+      //   }
+      //   break;
       default:
         break;
     }    

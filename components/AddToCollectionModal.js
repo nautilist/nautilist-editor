@@ -44,9 +44,7 @@ class AddToCollectionModal extends Component {
     }
 
     const params = {
-
           "projects": [this.state.selectedProject._id]
-
     }
 
 

@@ -35,6 +35,7 @@ function view (state, emit) {
               <fieldset class="w-100 mb4 bn">
                 <legend>Password</legend>
                 <input type="password" class="w-100 h3 dropshadow pa2 f4 bn bg-near-white" name="password" required>
+                <a class="link black underline f7 b" href="/reset">I forgot my password 😬</a>
               </fieldset>
               <input class="w-100 ba bw2 mw5 mb3 dropshadow h3 b--dark-pink dark-pink bg-white b" type="submit" value="Log In">
             </form>

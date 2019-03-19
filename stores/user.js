@@ -3,18 +3,21 @@ const feathersClient = require('../helpers/feathersClient');
 module.exports = store
 
 store.storeName = 'user'
-function store (state, emitter) {
+
+function store(state, emitter) {
   const auth = new Auth();
 
   state.user = {
     username: "",
-    authenticated:""
+    authenticated: ""
   }
 
 
   state.events.user_signup = 'user:signup';
   state.events.user_login = 'user:login';
   state.events.user_logout = 'user:logout';
+  state.events.user_resetPassword = 'user:resetPassword';
+  state.events.user_sendResetPassword = 'user:sendResetPassword';
 
   // initialize the app by trying to login
   auth.checkLogin();
@@ -28,18 +31,22 @@ function store (state, emitter) {
     emitter.on(state.events.user_login, auth.login);
     // LOGOUT
     emitter.on(state.events.user_logout, auth.logout);
+    // RESET
+    emitter.on(state.events.user_resetPassword, auth.resetPassword);
+    // SEND RESET
+    emitter.on(state.events.user_sendResetPassword, auth.sendResetPassword);
   })
 
   // AUTH FUNCTIONS
-  function Auth(){
+  function Auth() {
     // SIGNUP
-    this.signup = function(_formData){
+    this.signup = function (_formData) {
       let credentials = {
         username: _formData.get("username"),
         email: _formData.get("email"),
         password: _formData.get("password")
       }
-      feathersClient.service('users').create(credentials).then( () =>{
+      feathersClient.service('users').create(credentials).then(() => {
         console.log("sign up successful yo!")
         emitter.emit(state.events.user_login, _formData)
       }).catch(err => {
@@ -48,8 +55,8 @@ function store (state, emitter) {
       });
     };
 
-    this.checkLogin = function(_formData){
-      feathersClient.authenticate().then( authResponse => {
+    this.checkLogin = function (_formData) {
+      feathersClient.authenticate().then(authResponse => {
         // try to auth using JWT from local Storage
         state.user.username = authResponse.username;
         state.user.id = authResponse._id;
@@ -58,16 +65,16 @@ function store (state, emitter) {
       }).catch(err => {
         console.log("not auth'd friend!")
         state.user.authenticated = false;
-        
+
         // emitter.emit("pushState", "/login")
         return err;
       });
     };
 
     // LOGIN
-    this.login = function(_formData){
+    this.login = function (_formData) {
       if (!_formData) {
-        feathersClient.authenticate().then( authResponse => {
+        feathersClient.authenticate().then(authResponse => {
           // try to auth using JWT from local Storage
           state.user.username = authResponse.username;
           state.user.id = authResponse._id;
@@ -80,8 +87,8 @@ function store (state, emitter) {
           // emitter.emit("pushState", "/login")
           return err;
         });
-    } else {
-      // If we get login information, add the strategy we want to use for login
+      } else {
+        // If we get login information, add the strategy we want to use for login
         let credentials = {
           username: _formData.get("username"),
           email: _formData.get("email"),
@@ -108,13 +115,46 @@ function store (state, emitter) {
     };
 
     // LOGOUT
-    this.logout = function(){
+    this.logout = function () {
       feathersClient.logout();
       state.user.username = null;
       state.user.authenticated = false;
       // TODO: clear the state of data, etc
-      emitter.emit('pushState',  "/");
+      emitter.emit('pushState', "/");
       emitter.emit('render');
+    };
+
+    this.sendResetPassword = function (_formData) {
+
+      const token = state.params.token
+      const obj = {
+        action: 'sendResetPwd',
+        value: {
+            email: _formData.get('email')
+          }
+        }
+      feathersClient.service("authmanagement").create(obj).then(result => {
+        console.log('password changed!', result)
+      }).catch(err => {
+        return err;
+      })
+    };
+
+    this.resetPassword = function (_formData) {
+
+      const token = state.query.token
+      const obj = {
+        action: 'resetPwdLong',
+        value: {
+          token: token,
+          password: _formData.get('password')
+        }
+      }
+      feathersClient.service("authmanagement").create(obj).then(result => {
+        console.log('password changed!', result)
+      }).catch(err => {
+        return err;
+      })
     };
 
   } // end Auth()
