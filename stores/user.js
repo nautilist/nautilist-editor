@@ -18,6 +18,7 @@ function store(state, emitter) {
   state.events.user_logout = 'user:logout';
   state.events.user_resetPassword = 'user:resetPassword';
   state.events.user_sendResetPassword = 'user:sendResetPassword';
+  state.events.user_sendVerificationToken = 'user:sendVerificationToken';
 
   // initialize the app by trying to login
   auth.checkLogin();
@@ -35,6 +36,8 @@ function store(state, emitter) {
     emitter.on(state.events.user_resetPassword, auth.resetPassword);
     // SEND RESET
     emitter.on(state.events.user_sendResetPassword, auth.sendResetPassword);
+    // SEND RESET
+    emitter.on(state.events.user_sendVerificationToken, auth.sendVerificationToken);
   })
 
   // AUTH FUNCTIONS
@@ -124,9 +127,23 @@ function store(state, emitter) {
       emitter.emit('render');
     };
 
+    
+    this.sendVerificationToken = function (_formData) {
+
+      const token = state.query.token
+      var obj = {
+        action: 'verifySignupLong',
+        value: token
+      }
+      feathersClient.service("authmanagement").create(obj).then(result => {
+        console.log('user verified!', result)
+      }).catch(err => {
+        return err;
+      })
+    };
+
     this.sendResetPassword = function (_formData) {
 
-      const token = state.params.token
       const obj = {
         action: 'sendResetPwd',
         value: {

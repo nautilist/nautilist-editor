@@ -27,6 +27,7 @@ app.route('/login', require('./views/login'))
 // app.route('/login/verifyChanges', require('./views/login'))
 
 app.route('/reset', require('./views/LoginReset'))
+app.route('/verify', require('./views/verify'))
 // app.route('/reset/password', require('./views/LoginResetPassword'))
 // app.route('/login/changePassword', require('./views/login'))
 // app.route('/login/changeEmail', require('./views/login'))
