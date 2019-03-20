@@ -2,16 +2,15 @@ const feathers = require('@feathersjs/feathers');
 const rest = require('@feathersjs/rest-client');
 const auth = require('@feathersjs/authentication-client');
 const config = require('../config.js');
-
 let restClientUrl;
+
 if(process.env.NODE_ENV !== 'production'){
-    restClientUrl =  'https://localhost:3030' || config.NAUTILISTAPI 
+    restClientUrl =  'https://localhost:3030' // local feathersjs url
 } else {
-    restClientUrl =  config.NAUTILISTAPI || 'https://localhost:3030'
+    restClientUrl =  config.NAUTILISTAPI // https://nautilist-public.herokuapp.com
 }
 
 console.log(`i'm in ${process.env.NODE_ENV} and my url is: ${restClientUrl}`)
-
 const restClient = rest(restClientUrl)
 const feathersClient = feathers().configure(restClient.fetch(window.fetch));
 
