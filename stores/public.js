@@ -13,7 +13,9 @@ function store (state, emitter) {
   state.users = [];
   state.selectedUser = {};
   state.selectedUserProjects = [];
+  state.selectedUserFollowingProjects = [];
   state.selectedUserCollections = [];
+  state.selectedUserFollowingCollections = []
 
   // state.events.saveProjectToLists = "saveProjectToLists";
 
@@ -92,6 +94,31 @@ function store (state, emitter) {
     })
     .then(result => {
       state.selectedUserCollections = result.data;
+
+      const queryParams = {
+        query:{
+          "followers":{
+            "$in":  state.selectedUser._id
+          }
+        }
+      }
+      
+      return feathersClient.service('/api/collections').find(queryParams)
+    })
+    .then(result => {
+      state.selectedUserFollowingCollections = result.data;
+
+      const queryParams = {
+        query:{
+          "followers":{
+            "$in":  state.selectedUser._id
+          }
+        }
+      }
+      return feathersClient.service('/api/projects').find(queryParams)
+    })
+    .then(result => {
+      state.selectedUserFollowingProjects = result.data;
       emitter.emit('render');
     })
     .catch(err => {

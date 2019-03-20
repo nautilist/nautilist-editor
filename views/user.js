@@ -1,4 +1,5 @@
 var html = require('choo/html')
+const NavSelect = require('../components/NavSelect');
 
 module.exports = view
 
@@ -17,6 +18,29 @@ function view (state, emit) {
   function renderUserProjects(){
     let projs = state.selectedUserProjects;
     if(!state.selectedUserProjects.length > 0){
+      return html`<p>no projects yet!</p>`
+    }
+    
+    return projs.map(proj => {
+      return html`
+        <li class="mw6 shadow-5 mb3">
+        <a class="link black" href="/projects/${proj._id}">
+          <div class="flex pa3-ns pa1 bg-light-gray flex flex-row-ns flex-column items-center">
+            <div class="h1 w-100 h2-ns w2-ns mr4-ns mr0" style="background-color:${proj.colors[proj.selectedColor]}"></div>
+            <div class="flex flex-column w-80-ns w-100">
+              <h3 class="ma0">${proj.name}</h3>
+              <p class="ma0 truncate f6">${proj.description}</p>
+            </div>
+          </div>
+        </a>
+        </li>
+      `
+    })
+  }
+
+  function renderFollowingProjects(){
+    let projs = state.selectedUserFollowingProjects;
+    if(!state.selectedUserFollowingProjects.length > 0){
       return html`<p>no projects yet!</p>`
     }
     
@@ -60,6 +84,29 @@ function view (state, emit) {
     })
   }
 
+  function renderFollowingCollections(){
+    let collections = state.selectedUserFollowingCollections;
+    if(!state.selectedUserFollowingCollections.length > 0){
+      return html`<p>no collections yet!</p>`
+    }
+    
+    return collections.map(collection => {
+      return html`
+        <li class="mw6 shadow-5 mb3">
+        <a class="link black" href="/collections/${collection._id}">
+          <div class="flex pa3-ns pa1 bg-light-gray flex flex-row-ns flex-column items-center">
+            <div class="h1 w-100 h2-ns w2-ns mr4-ns mr0" style="background-color:${collection.colors[collection.selectedColor]}"></div>
+            <div class="flex flex-column w-80-ns w-100">
+              <h3 class="ma0">${collection.name}</h3>
+              <p class="ma0 truncate f6">${collection.description}</p>
+            </div>
+          </div>
+        </a>
+        </li>
+      `
+    })
+  }
+
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${() => emit('fetch-user', state.params.username) }>
       
@@ -69,11 +116,6 @@ function view (state, emit) {
           <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/projects">Nautilist Projects</a>
           <a class="link black mr4 pointer" href="/">Editor</a>
           <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
-          <select class="bn bg-light-gray br2 br--right h2 dn">
-            <option value="projects">Projects</option>
-            <option value="collections">Collections</option>
-            <option value="users">Users</option>
-          </select> 
           </div>
           <div>
             ${isAuthd()}
@@ -81,22 +123,46 @@ function view (state, emit) {
         </nav>
       </header>
       <main class="w-100 pa4 flex flex-column">
-        
+        <a class="link black b underline" href="/users">← back to users page</a>
     
         <h1 class="tl">${state.selectedUser.username}</h1>
         <div class="flex flex-row-ns flex-column w-100">
-          <section class="w-50-ns w-100">
-          <h2>Projects</h2>
-          <ul class="list pl0 pr3 w-100">
-          ${renderUserProjects()}
-          </ul>
+          <section class="w-50-ns w-100 flex flex-column">
+            <section class="mb4">
+              <h2>My Projects</h2>
+              <ul class="list pl0 pr3 w-100">
+              ${renderUserProjects()}
+              </ul>
+            </section>
           </section>
 
-          <section class="w-50-ns w-100">
-          <h2>collections</h2>
-          <ul class="list pl0 pr3 w-100">
-          ${renderUserCollections()}
-          </ul>
+          <section class="w-50-ns w-100 flex flex-column">
+            <section class="mb4">
+              <h2>My Collections</h2>
+              <ul class="list pl0 pr3 w-100">
+              ${renderUserCollections()}
+              </ul>
+            </section>
+          </section>
+        </div>
+
+        <h1 class="tl">Things I'm Following</h1>
+        <div class="flex flex-row-ns flex-column w-100">
+          <section class="w-50-ns w-100 flex flex-column">
+            <section class="mb4">
+              <h2>Projects I follow</h2>
+              <ul class="list pl0 pr3 w-100">
+              ${renderFollowingProjects()}
+              </ul>
+            </section>
+          </section>
+          <section class="w-50-ns w-100 flex flex-column">
+            <section class="mb4">
+              <h2>Collections I follow</h2>
+              <ul class="list pl0 pr3 w-100">
+              ${renderFollowingCollections()}
+              </ul>
+            </section>
           </section>
         </div>
       </main>
