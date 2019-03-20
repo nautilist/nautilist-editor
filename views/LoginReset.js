@@ -22,6 +22,7 @@ function submitSendReset(state, emit){
         }
       feathersClient.service("authmanagement").create(obj).then(result => {
         console.log('sending reset password!', result)
+        document.querySelector("#update").innerHTML = "an email was sent to your inbox - please open that URL"
       }).catch(err => {
         return err;
       })
@@ -31,6 +32,7 @@ function submitSendReset(state, emit){
 function submitReset(state, emit){
   return e => {
     e.preventDefault();
+    document.querySelector("#update").innerHTML = "password changed - redirecting to login page!"
     const formData = new FormData(e.currentTarget);
     // emit(state.events.user_resetPassword, formData);
       const token = state.query.token
@@ -55,6 +57,7 @@ function showInput(state, emit){
     return html`
     <form class="mw6 w-100 flex flex-column items-center" onsubmit="${submitReset(state, emit)}">
       <h2>Set new password</h2>
+      <span id="update"></span>
       <fieldset class="w-100 mb3 bn">
         <legend>New Password</legend>
         <input type="password" class="w-100 h3 dropshadow pa2 f4 bn bg-near-white" name="password" required>
@@ -66,6 +69,7 @@ function showInput(state, emit){
     return html`
     <form class="mw6 w-100 flex flex-column items-center" onsubmit="${submitSendReset(state, emit)}">
       <h2>Send password reset email</h2>
+      <span id="update"></span>
       <fieldset class="w-100 mb3 bn">
         <legend>Email</legend>
         <input type="email" class="w-100 h3 dropshadow pa2 f4 bn bg-near-white" name="email" required>
