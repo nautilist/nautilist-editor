@@ -5,14 +5,19 @@ const feathersClient = require('../helpers/feathersClient')
 class AddToCollectionModal extends Component {
   constructor (id, state, emit) {
     super(id)
-    this.local = state.components[id] = {}
+    this.local = state.components[id] = {
+      searchResults: []
+    }
     this.state = state;
     this.emit = emit;
     this.open = this.open.bind(this);
-    this.displayed = 'flex';
+    this.displayed = 'dn';
     this.rerender = this.rerender.bind(this)
     this.createAndAdd = this.createAndAdd.bind(this)
     this.addByUrl = this.addByUrl.bind(this)
+    this.searchByName = this.searchByName.bind(this)
+    this.searchResults = this.searchResults.bind(this)
+    this.selectAndAdd = this.selectAndAdd.bind(this)
   }
 
   open(){
@@ -46,6 +51,7 @@ class AddToCollectionModal extends Component {
 
     feathersClient.service('/api/collections').create(payload, {}).then(result => {
       alert(JSON.stringify(result)) ;
+      this.close();
     })
     .catch(err => {
       alert(err);
@@ -69,11 +75,76 @@ class AddToCollectionModal extends Component {
 
     feathersClient.service('/api/collections').patch(collectionId, params, {}).then(result => {
       alert(JSON.stringify(result)) ;
+      this.close();
     })
     .catch(err => {
       alert(err);
     })
 
+  }
+
+  searchByName(e){
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const name = form.get('name');
+
+    console.log(name)
+    const searchQuery = {
+      "query":{
+          "$search": name 
+        }
+      }
+    feathersClient.service('/api/collections').find(searchQuery).then(result => {
+      
+      this.local.searchResults = result.data;
+      this.rerender();
+    }).catch(err => {
+      console.log(err)
+      return err;
+    })
+  }
+
+  selectAndAdd(e){
+  console.log('clicked!');
+      const collectionId = e.currentTarget.dataset.collectionid;
+      const params = {
+        "$push":{
+          "projects": this.state.selectedProject._id
+        } 
+      }
+  
+      feathersClient.service('/api/collections').patch(collectionId, params, {}).then(result => {
+        alert(JSON.stringify(result)) ;
+        this.close();
+      })
+      .catch(err => {
+        alert(err);
+      })
+  }
+
+  searchResults(){
+    if(this.local.searchResults.length > 0){
+      let collections = this.local.searchResults.map(collection => {
+        return html`
+          <div class="w-100 bn bg-light-gray flex flex-column">
+            <div class="w-100 h1" style="background-color:${collection.colors[collection.selectedColor]}"></div>
+            <div class="w-100 pa3 flex flex-row items-center">
+              <div class="w-two-thirds">
+              <p class=" w-100 ma0 b">${collection.name}</p>
+              <p class="w-100 ma0">${collection.description}</p>
+              </div>
+              <div class="w-third tr">
+              <button data-collectionid="${collection._id}" class="dropshadow pa3 bg-light-yellow bn" onclick=${this.selectAndAdd}>Select</button>
+              </div>
+            </div>
+          </div>
+        `
+      })
+      return collections
+    }
+    else{
+      return ''
+    }
   }
 
   createElement () {
@@ -113,17 +184,18 @@ class AddToCollectionModal extends Component {
         <section class="w-100 mt2 mb2">
           <p>Add this project to an existing collection</p>
           <!-- Search bar -->
+          <form id="searchByName" name="searchByName" onsubmit=${this.searchByName}>
           <fieldset class="w-100 ba bw1 b--black flex flex-row-ns flex-column items-center">
           <legend>Search</legend>
-          <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="search" placeholder="e.g. title">
-          <button class="w-100 w-third-ns h3 pa2 bg-light-blue bn mt2 ma0-ns">Search</button>
-        </fieldset>
-         
-         <!-- Search results -->
-         <section>
-          ${'search results'}
-         </section>
-
+          <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="search" name="name" placeholder="e.g. Super Cool Collection Name">
+          <input class="w-100 w-third-ns h3 pa2 bg-light-blue bn mt2 ma0-ns" form="searchByName" type="submit" value="search">
+          </fieldset>
+          </form>
+          <!-- Search results -->
+          <section id="searchResults" class="pa3 flex flex-column h5 overflow-y-scroll bg-white">
+            <p>Search Results</p>
+           ${this.searchResults()}
+          </section>
         </section>
       </div>
       <!-- invisible div under the modal to capture out of modal click to close -->

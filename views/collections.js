@@ -16,6 +16,7 @@ function view (state, emit) {
       console.log('go to selected project!', id, type)
       emit('fetch-collection', id);
     }
+
     function checkOwner(collection){
       if(collection.hasOwnProperty('owner')){
         return `${collection.ownerDetails.username}`
@@ -24,16 +25,34 @@ function view (state, emit) {
       }
     }
 
+    function projectIndicator(projects){
+        return projects.map(project => {
+            return html`
+            <div class="h1 w1 bg-yellow br2 bn mr1 mb1"></div>
+            `
+        })
+    }
+    // ${projectIndicator(collection.projects)}
+
     const {name, description, _id, selectedColor, colors} = collection;
+
+
 
     return html`
     <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/collections/${_id}">
     <div class="h-100 dropshadow br2 bg-near-white ma2" data-type="collections" data-id=${_id} onclick=${handleRedirect}>
-      <header class="w-100 h3 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
-      <section class="pa2">
+      <header class="w-100 h3 br2 br--top flex flex-column justify-center items-end pr2" style="background-color:${colors[selectedColor]};">
+        <div class="br-100 bn bg-white h2 w2 dib tc flex flex-column items-center justify-center"><h3 class="ma0 f6">${collection.projects.length}</h3></div>
+      </header>
+      <section class="pa2 flex flex-column justify-between">
+        <div>
         <h3 class="ma0">${name}</h3>
         <small class="ma0">created by <a class="link black underline" href="/users/${collection.ownerDetails.username}">${checkOwner(collection)}</a> </small>
         <p class="ma0 truncate">${description}</p>
+        </div>
+        <div class="flex flex-row flex-wrap">
+            
+        </div>
       </section>
     </div>
     </a>
