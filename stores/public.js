@@ -6,13 +6,14 @@ store.storeName = 'public'
 function store (state, emitter) {
   state.projects = [];
   state.selectedProject = {};
-  
+
   state.collections = [];
   state.selectedCollection = {};
   
   state.users = [];
   state.selectedUser = {};
   state.selectedUserProjects = [];
+  state.selectedUserCollections = [];
 
   // state.events.saveProjectToLists = "saveProjectToLists";
 
@@ -64,6 +65,7 @@ function store (state, emitter) {
   })
 
   emitter.on('fetch-user', (username) => {
+    // TODO: add in search for collaborations
     const findByUsername = {
       query:{
         username
@@ -77,10 +79,19 @@ function store (state, emitter) {
             owner: state.selectedUser._id
         }
       }
-
       return feathersClient.service('/api/projects').find(queryParams)
-    }).then(result => {
+    })
+    .then(result => {
+      const queryParams = {
+        query:{
+            owner: state.selectedUser._id
+        }
+      }
       state.selectedUserProjects = result.data;
+      return feathersClient.service('/api/collections').find(queryParams)
+    })
+    .then(result => {
+      state.selectedUserCollections = result.data;
       emitter.emit('render');
     })
     .catch(err => {

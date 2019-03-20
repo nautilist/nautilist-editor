@@ -9,7 +9,8 @@ function store(state, emitter) {
 
   state.user = {
     username: "",
-    authenticated: ""
+    authenticated: "",
+    id:""
   }
 
 
@@ -64,7 +65,7 @@ function store(state, emitter) {
       feathersClient.authenticate().then(authResponse => {
         // try to auth using JWT from local Storage
         state.user.username = authResponse.username;
-        state.user.id = authResponse._id;
+        state.user.id = authResponse.id;
         state.user.authenticated = true;
         emitter.emit(state.events.RENDER);
       }).catch(err => {
@@ -82,7 +83,7 @@ function store(state, emitter) {
         feathersClient.authenticate().then(authResponse => {
           // try to auth using JWT from local Storage
           state.user.username = authResponse.username;
-          state.user.id = authResponse._id;
+          state.user.id = authResponse.id;
           state.user.authenticated = true;
           emitter.emit("pushState", "/")
           // emitter.emit("pushState", `/${state.user.username}/projects`) //${state.user.username}
@@ -107,7 +108,7 @@ function store(state, emitter) {
         feathersClient.authenticate(payload).then(authResponse => {
           state.user.authenticated = true;
           state.user.username = authResponse.username;
-          state.user.id = authResponse._id;
+          state.user.id = authResponse.id;
           emitter.emit("pushState", "/")
           // emitter.emit("pushState", `/${state.user.username}/projects`) //${state.user.username}
         }).catch(err => {
@@ -124,6 +125,7 @@ function store(state, emitter) {
       feathersClient.logout();
       state.user.username = null;
       state.user.authenticated = false;
+      state.user.id = null;
       // TODO: clear the state of data, etc
       emitter.emit('pushState', "/");
       emitter.emit('render');

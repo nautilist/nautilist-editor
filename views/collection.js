@@ -3,6 +3,24 @@ const feathersClient = require('../helpers/feathersClient');
 
 module.exports = view
 
+function followCollection(state, emit){
+    return e=> {
+    const collectionId = state.selectedCollection._id
+    const params = {
+        "$push":{
+            "followers": state.user.id
+        }
+    }
+    feathersClient.service('/api/collections').patch(collectionId, params, {}).then(result =>{
+        alert("you started following this list!");
+        return result
+    }).catch(err => {
+        alert(err);
+        return err;
+    })
+}
+}
+
 function createlistItem(feature){
   return html`
   <li class="item w5 h5 pa2 ba bw1 mb1 mt1 bg-white mr1 ml1">
@@ -19,7 +37,7 @@ function createList(parentObject){
   
     let {projectsDetails} = parentObject;
     return html`
-    <ul class="list pl0 list-container flex flex-row flex-row-wrap">
+    <ul class="list pl0 list-container flex flex-row flex-wrap">
       ${
         projectsDetails.map(project => {
             return createlistItem(project)
@@ -62,7 +80,17 @@ function view (state, emit) {
                   ${createList(selectedCollection)}
                   </section>
                 </div>
-            </section>    
+            </section>  
+            <section class="w-30 h-100">
+                <div class="bn bg-light-gray br2 w-100 pa2 h-100">
+                    <section>
+                        <h3 class="">Save or Watch Collection</h3>
+                        <ul class="list pl0 flex flex-column items-start w-80">
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-purple white" onclick=${followCollection(state, emit)}>Follow Collection</button></li>
+                        </ul>
+                    </section>
+                </div>
+            </section>  
         </section>
         </div>
   </body>

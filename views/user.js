@@ -37,6 +37,29 @@ function view (state, emit) {
     })
   }
 
+  function renderUserCollections(){
+    let collections = state.selectedUserCollections;
+    if(!state.selectedUserCollections.length > 0){
+      return html`<p>no collections yet!</p>`
+    }
+    
+    return collections.map(collection => {
+      return html`
+        <li class="mw6 shadow-5 mb3">
+        <a class="link black" href="/collections/${collection._id}">
+          <div class="flex pa3-ns pa1 bg-light-gray flex flex-row-ns flex-column items-center">
+            <div class="h1 w-100 h2-ns w2-ns mr4-ns mr0" style="background-color:${collection.colors[collection.selectedColor]}"></div>
+            <div class="flex flex-column w-80-ns w-100">
+              <h3 class="ma0">${collection.name}</h3>
+              <p class="ma0 truncate f6">${collection.description}</p>
+            </div>
+          </div>
+        </a>
+        </li>
+      `
+    })
+  }
+
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${() => emit('fetch-user', state.params.username) }>
       
@@ -57,12 +80,25 @@ function view (state, emit) {
           </div>
         </nav>
       </header>
-      <main class="w-100 pa4">
+      <main class="w-100 pa4 flex flex-column">
+        
+    
         <h1 class="tl">${state.selectedUser.username}</h1>
-        <h2>Projects</h2>
-        <ul class="list pl0">
-        ${renderUserProjects()}
-        </ul>
+        <div class="flex flex-row-ns flex-column w-100">
+          <section class="w-50-ns w-100">
+          <h2>Projects</h2>
+          <ul class="list pl0 pr3 w-100">
+          ${renderUserProjects()}
+          </ul>
+          </section>
+
+          <section class="w-50-ns w-100">
+          <h2>collections</h2>
+          <ul class="list pl0 pr3 w-100">
+          ${renderUserCollections()}
+          </ul>
+          </section>
+        </div>
       </main>
     </body>
   `
