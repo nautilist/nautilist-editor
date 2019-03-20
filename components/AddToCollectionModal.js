@@ -9,7 +9,7 @@ class AddToCollectionModal extends Component {
     this.state = state;
     this.emit = emit;
     this.open = this.open.bind(this);
-    this.displayed = 'flex';
+    this.displayed = 'dn';
     this.rerender = this.rerender.bind(this)
     this.createAndAdd = this.createAndAdd.bind(this)
   }

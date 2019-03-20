@@ -45,16 +45,19 @@ function view (state, emit) {
       return projectCard(project, projectModal)
     })
     
-    // <section class="w-100 flex flex-row flex-wrap">
-    // </section>
-
-    return html`
+    if(projects.length > 0){
+      return html`
       <div class="w-100">
         <div class="mw9 center ph3-ns h-100">
           ${projectCards}
         </div>
       </div>
     `
+    } else {
+      return html`<p>loading...</p>`
+    }
+
+    
   }
 
   function logout(){
