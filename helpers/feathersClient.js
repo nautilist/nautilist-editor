@@ -3,10 +3,15 @@ const rest = require('@feathersjs/rest-client');
 const auth = require('@feathersjs/authentication-client');
 const config = require('../config.js');
 
-// Connect to a different URL
-const restClientUrl =  config.NAUTILISTAPI || 'https://localhost:3030'
-// const restClientUrl =  'https://localhost:3030' || config.NAUTILISTAPI 
-console.log(restClientUrl)
+let restClientUrl;
+if(process.env.NODE_ENV !== 'production'){
+    restClientUrl =  'https://localhost:3030' || config.NAUTILISTAPI 
+} else {
+    restClientUrl =  config.NAUTILISTAPI || 'https://localhost:3030'
+}
+
+console.log(`i'm in ${process.env.NODE_ENV} and my url is: ${restClientUrl}`)
+
 const restClient = rest(restClientUrl)
 const feathersClient = feathers().configure(restClient.fetch(window.fetch));
 

@@ -4,6 +4,8 @@ const config = require('./config.js');
 
 css('tachyons')
 
+console.log(process.env.NODE_ENV)
+
 var app = choo()
 if (process.env.NODE_ENV !== 'production') {
   app.use(require('choo-devtools')())
@@ -23,15 +25,8 @@ app.route('/', require('./views/main'))
 app.route('/signup', require('./views/signup'))
 // login routes
 app.route('/login', require('./views/login'))
-// app.route('/login/verify', require('./views/login'))
-// app.route('/login/verifyChanges', require('./views/login'))
-
 app.route('/reset', require('./views/LoginReset'))
 app.route('/verify', require('./views/verify'))
-// app.route('/reset/password', require('./views/LoginResetPassword'))
-// app.route('/login/changePassword', require('./views/login'))
-// app.route('/login/changeEmail', require('./views/login'))
-
 
 app.route('/public', require('./views/public'))
 app.route('/projects/:id', require('./views/project'))
