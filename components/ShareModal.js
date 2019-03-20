@@ -46,7 +46,7 @@ class ShareModal extends Component {
         // submit the payload to the server annonymously
         feathersClient.service("/api/projects").create(payload).then(result => {
           console.log(results)
-          this.emit('pushState', '/public');
+          this.emit('pushState', '/projects');
           this.emit('render');
         }).catch(err => {
           return err;
@@ -65,7 +65,7 @@ class ShareModal extends Component {
           <button class="bn bg-navy yellow bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
         <section class="w-100 mt2 mb2">
-          <p>Share your list in <a class="link black underline b" href="/public" target="_blank">Nautilist Public</a> or as an HTML page. More formats coming soon!</p>
+          <p>Share your list in <a class="link black underline b" href="/projects" target="_blank">Nautilist Projects</a> or as an HTML page. More formats coming soon!</p>
         </section>
         <!-- Sharing Options -->
         <section class="flex flex-column">

@@ -25,7 +25,7 @@ function deleteFeature(state, emit){
       if(del === true){
         feathersClient.service("/api/projects").remove(_id).then(result => {
           alert("project deleted!")
-          emit('pushState', '/public');
+          emit('pushState', '/projects');
         }).catch(err => {
           alert(err);
         })    
@@ -138,7 +138,7 @@ function view (state, emit) {
   <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-project', state.params.id)}>
     <div class="w-100 flex flex-column h-100 pl2 pr2">
             <div class="w-100 pt3 pb2 ">
-              <a class="link black underline pointer" href="/public">Back to Public</a>
+              <a class="link black underline pointer" href="/projects">Back to Projects</a>
             </div>
         <section class="w-100 h-auto flex flex-row pb4">
             <section class="w-70 h-100 pr2">

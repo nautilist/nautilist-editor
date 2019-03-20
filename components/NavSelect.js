@@ -21,8 +21,8 @@ class NavSelect extends Component {
   createElement () {
     return html`
     <select id="selectChange" class="bn bg-light-gray br2 br--right h2" onchange=${this.handleSelectChange}>
-      <option name="public" value="/public">Projects</option>
-      <option class="dn" value="collections">Collections</option>
+      <option name="projects" value="/projects">Projects</option>
+      <option name="collections" value="/collections">Collections</option>
       <option name="users" value="/users">Users</option>
     </select> 
     `

@@ -134,7 +134,7 @@ function view(state, emit) {
           state.workspace.json = result.json
           state.workspace.md = result.md
           state.workspace._id = result._id
-          // this.emit('pushState', '/public');
+
           // add in clientIDs
           alert("new list created!")
           emit("json:addClientId", state.workspace.json)
@@ -152,7 +152,7 @@ function view(state, emit) {
             state.workspace.json = result.json
             state.workspace.md = result.md
             state.workspace._id = result._id
-            // this.emit('pushState', '/public');
+
             alert("new list created!")
             emit("json:addClientId", state.workspace.json)
             // rerender
@@ -173,7 +173,7 @@ function view(state, emit) {
             state.workspace.json = result.json
             state.workspace.md = result.md
             state.workspace._id = result._id
-            // this.emit('pushState', '/public');
+
             document.querySelector("#lastUpdated").innerHTML = `updated: ${result.updatedAt}  `;
             emit("json:addClientId", state.workspace.json)
             // rerender
@@ -195,7 +195,7 @@ function view(state, emit) {
       <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
           <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2"> Nautilist Editor </button>
-          <a class="link ba ba b--white bg-white navy bw1 pa2 mr2 pointer" href="/public"> Public </a>
+          <a class="link ba ba b--white bg-white navy bw1 pa2 mr2 pointer" href="/projects"> Projects </a>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${aboutModal.open()}"> About </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer dn" onclick="${shareModal.open()}"> Share </button>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer dn" onclick="${searchModal.open()}"> 🔎 Search </button>

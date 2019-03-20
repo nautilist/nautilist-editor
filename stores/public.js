@@ -6,6 +6,10 @@ store.storeName = 'public'
 function store (state, emitter) {
   state.projects = [];
   state.selectedProject = {};
+  
+  state.collections = [];
+  state.selectedCollection = {};
+  
   state.users = [];
   state.selectedUser = {};
   state.selectedUserProjects = [];
@@ -18,6 +22,25 @@ function store (state, emitter) {
       emitter.emit('render');
     }).catch(err => {
       console.log("could not find projects")
+    })
+  })
+
+  emitter.on('fetch-collections', () => {
+    feathersClient.service('/api/collections').find({}).then(result => {
+      state.collections = result.data
+      emitter.emit('render');
+    }).catch(err => {
+      console.log("could not find collections")
+    })
+  })
+
+  emitter.on('fetch-collection', (id) => {
+    console.log(id)
+    feathersClient.service('/api/collections').get(id).then(result => {
+      state.selectedCollection = result
+      emitter.emit('render');
+    }).catch(err => {
+      console.log(err, "could not find collection")
     })
   })
 

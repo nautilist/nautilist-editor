@@ -4,15 +4,10 @@ const config = require('./config.js');
 
 css('tachyons')
 
-console.log(process.env.NODE_ENV)
-
 var app = choo()
 if (process.env.NODE_ENV !== 'production') {
   app.use(require('choo-devtools')())
 } else {
-  
-  // app.feathersRestApi = config.NAUTILISTAPI;
-  // console.log(app.feathersRestApi)
   app.use(require('choo-service-worker')())
 }
 
@@ -28,8 +23,12 @@ app.route('/login', require('./views/login'))
 app.route('/reset', require('./views/LoginReset'))
 app.route('/verify', require('./views/verify'))
 
-app.route('/public', require('./views/public'))
+app.route('/projects', require('./views/projects'))
 app.route('/projects/:id', require('./views/project'))
+
+app.route('/collections', require('./views/collections'))
+app.route('/collections/:id', require('./views/collection'))
+
 app.route('/users', require('./views/users'))
 app.route('/users/:username', require('./views/user'))
 
@@ -50,9 +49,25 @@ app.use((state, emitter) => {                  // 1.
     console.log(`Navigated to ${state.route}`) // 3.
 
     switch(state.route){
-      case 'public':
+      // projects
+      case 'projects':
         emitter.emit("fetch-projects", {});
         break;
+      case 'projects/:id':
+        if(state.params.hasOwnProperty('id')){
+          emitter.emit("fetch-project", state.params.id);
+        }
+        break;
+      // collections
+      case 'collections':
+        emitter.emit("fetch-collections", {});
+        break;
+      case 'collections/:id':
+        if(state.params.hasOwnProperty('id')){
+          emitter.emit("fetch-collection", state.params.id);
+        }
+        break;
+      // users
       case 'users':
         emitter.emit("fetch-users", {});
         break;
@@ -61,11 +76,7 @@ app.use((state, emitter) => {                  // 1.
           emitter.emit('fetch-user', state.params.username);
         }
         break;
-      case 'projects/:id':
-        if(state.params.hasOwnProperty('id')){
-          emitter.emit("fetch-project", state.params.id);
-        }
-        break;
+      // default
       default:
         break;
     }    

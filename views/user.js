@@ -43,7 +43,7 @@ function view (state, emit) {
       <header class="pt3 pl2 pr2 pb2 w-100">
         <nav class="w-100 flex flex-row items-center justify-between">
           <div>
-          <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/public">Nautilist Public</a>
+          <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/projects">Nautilist Projects</a>
           <a class="link black mr4 pointer" href="/">Editor</a>
           <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
           <select class="bn bg-light-gray br2 br--right h2 dn">

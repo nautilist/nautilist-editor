@@ -38,7 +38,7 @@ class SearchModal extends Component {
           <button class="bn bg-navy washed-green bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
         <section class="w-100 mt2 mb2">
-          <p>Quick search <a class="link black underline b" href="/public" target="_blank">Nautilist Public</a> for the list of your dreams. Or go to the <a class="link black underline b" href="/public" target="_blank">main site</a> for more.</p>
+          <p>Quick search <a class="link black underline b" href="/projects" target="_blank">Nautilist Public</a> for the list of your dreams. Or go to the <a class="link black underline b" href="/projects" target="_blank">main site</a> for more.</p>
         </section>
         <!-- Search section -->
         <section>
