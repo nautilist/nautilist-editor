@@ -196,9 +196,9 @@ function view(state, emit) {
   }
 
   return html `
-    <body class="w-100 h-100 code lh-copy">
+    <body class="w-100 h-100 code lh-copy flex flex-column">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
-      <main class="w-100 h-100 flex flex-column justify-start items-start">
+      <main class="w-100 h-auto flex flex-column justify-start items-start" style="flex:1">
       <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${editorHelpModal.open()}"> Help </button>
