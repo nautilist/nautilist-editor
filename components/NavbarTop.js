@@ -49,7 +49,7 @@ class NavbarTop extends Component {
           <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/about"><img src="/assets/1F4A5.png"></a></li>
           <li class="f6 pl3"><a class="link black" href="/">Editor</a></li>
           <li class="f6 pl3"><a class="link black" href="/browse">Browse</a></li>
-          <li class="f6 pl3 flex-row items-center ${this.local.navSelectDisplayed}">Explore: ${this.state.cache(NavSelect, "NavSelect", this.state, this.emit).render()}</li>
+          <li class="f6 pl3 flex-row items-center ${this.local.navSelectDisplayed}">by: ${this.state.cache(NavSelect, "NavSelect", this.state, this.emit).render()}</li>
         </ul>
         
         <!-- NAVBAR RIGHT -->
