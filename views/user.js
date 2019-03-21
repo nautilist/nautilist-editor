@@ -1,6 +1,7 @@
 var html = require('choo/html')
 const NavSelect = require('../components/NavSelect');
 const feathersClient = require('../helpers/feathersClient')
+const NavbarTop = require("../components/NavbarTop");
 
 module.exports = view
 
@@ -160,18 +161,7 @@ function view (state, emit) {
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${() => emit('fetch-user', state.params.username) }>
       
-      <header class="pt3 pl2 pr2 pb2 w-100">
-        <nav class="w-100 flex flex-row items-center justify-between">
-          <div>
-          <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/projects">Nautilist Projects</a>
-          <a class="link black mr4 pointer" href="/">Editor</a>
-          <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
-          </div>
-          <div>
-            ${isAuthd()}
-          </div>
-        </nav>
-      </header>
+    ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 pa4 flex flex-column">
         <a class="link black b underline" href="/users">← back to users page</a>
     

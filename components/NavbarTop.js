@@ -1,5 +1,6 @@
 var Component = require('choo/component')
-var html = require('choo/html')
+var html = require('choo/html');
+const NavSelect = require('./NavSelect');
 
 class NavbarTop extends Component {
   constructor (id, state, emit) {
@@ -7,9 +8,11 @@ class NavbarTop extends Component {
     this.state = state;
     this.emit = emit;
     this.local = state.components[id] = {
-      mobileMenuToggled: 'dn'
+      mobileMenuToggled: 'dn',
+      navSelectDisplayed: 'dn'
     }
     this.toggleMobileMenu = this.toggleMobileMenu.bind(this);
+    this.showNavSelect = this.showNavSelect.bind(this);
   }
 
 
@@ -25,6 +28,19 @@ class NavbarTop extends Component {
     this.rerender();
   }
 
+  // TODO: right now we show the select always
+  // Is it necessary to check the route? or show always?
+  showNavSelect(){
+    let routes = ['projects','users','collections', 'users/:id', 'projects/:id', 'collections/:id']
+    if(routes.includes(this.state.route)){
+      console.log("from navbartop:",this.state.route)
+      this.local.navSelectDisplayed = 'flex';
+    } else {
+      this.local.navSelectDisplayed = 'flex'; // to only show at routes set 'dn'
+    }
+    this.rerender();
+  }
+
   createElement () {
     return html`
       <nav class="w-100 b--dotted h3 flex flex-row justify-between items-center">
@@ -33,6 +49,7 @@ class NavbarTop extends Component {
           <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/about"><img src="/assets/1F4A5.png"></a></li>
           <li class="f6 pl3"><a class="link black" href="/">Editor</a></li>
           <li class="f6 pl3"><a class="link black" href="/browse">Browse</a></li>
+          <li class="f6 pl3 flex-row items-center ${this.local.navSelectDisplayed}">Explore: ${this.state.cache(NavSelect, "NavSelect", this.state, this.emit).render()}</li>
         </ul>
         
         <!-- NAVBAR RIGHT -->
@@ -56,7 +73,8 @@ class NavbarTop extends Component {
   }
 
   update () {
-    console.log("from navbartop:",this.state.route)
+    
+    this.showNavSelect();
     return true
   }
 }

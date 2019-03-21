@@ -6,11 +6,17 @@ class NavSelect extends Component {
     super(id)
     this.state = state;
     this.emit = emit;
-    this.local = state.components[id] = {}
+    this.local = state.components[id] = {
+      selectedValue:''
+    }
     this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.handleRouteUpdate = this.handleRouteUpdate.bind(this);
     // this.setSelected = this.setSelected.bind(this);
   }
 
+  handleRouteUpdate(){
+    this.local.selectedValue = `/${this.state.route}`
+  }
   
 
   handleSelectChange(e){
@@ -20,7 +26,7 @@ class NavSelect extends Component {
 
   createElement () {
     return html`
-    <select id="selectChange" class="bn bg-light-gray br2 br--right h2" onchange=${this.handleSelectChange}>
+    <select id="selectChange" class="bn bg-light-gray pl3 pr3 h2" onchange=${this.handleSelectChange}>
       <option name="projects" value="/projects">Projects</option>
       <option name="collections" value="/collections">Collections</option>
       <option name="users" value="/users">Users</option>
@@ -29,11 +35,24 @@ class NavSelect extends Component {
   }
 
   update () {
-    return false
+    // e.value = `/${this.state.route}`
+    this.handleRouteUpdate();
+    return true
   }
 
-  load(e){
-    e.value = `/${this.state.route}`
+  afterupdate(el){
+    el.value = `/${this.state.route}`
+    el.childNodes.forEach( (item, idx) => {
+      if(item.value == el.value){
+        console.log('true')
+        el.selectedIndex = idx;
+      }
+    })
+  }
+  
+
+  load(el){
+    el.value = `/${this.state.route}`
   }
 
 }

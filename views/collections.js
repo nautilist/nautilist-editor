@@ -1,7 +1,7 @@
 var html = require('choo/html')
 const feathersClient = require('../helpers/feathersClient');
 // const ProjectModal = require('../components/ProjectModal');
-const NavSelect = require('../components/NavSelect');
+const NavbarTop = require("../components/NavbarTop");
 
 module.exports = view
 
@@ -98,20 +98,8 @@ function view (state, emit) {
 
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-collections')}>
-      <header class="pt3 pl2 pr2 pb2 w-100">
-        <nav class="w-100 flex flex-row items-center justify-between">
-          <div>
-          <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/projects">Nautilist Projects</a>
-          <a class="link black mr4 pointer" href="/">Editor</a>
-          <input type="search" class="w5 h2 pa2 bn bg-light-gray dn" placeholder="🔎 search">
-          ${state.cache(NavSelect, "NavSelect", state, emit).render()}
-          </div>
-          <div>
-            ${isAuthd()}
-
-          </div>
-        </nav>
-      </header>
+        ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
+    
       <main class="w-100 pa4">
         <h1 class="tc">Check out these collections</h1>
         ${makeCollectionsList(state.collections)}

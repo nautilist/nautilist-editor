@@ -1,5 +1,6 @@
 var html = require('choo/html')
 const feathersClient = require('../helpers/feathersClient');
+const NavbarTop = require("../components/NavbarTop");
 
 module.exports = view
 
@@ -132,6 +133,7 @@ function view(state, emit) {
 
     return html `
   <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-collection', state.params.id)}>
+  ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
     <div class="w-100 flex flex-column h-100 pl2 pr2">
             <div class="w-100 pt3 pb2 ">
               <a class="link black underline pointer" href="/collections">Back to Collections</a>
