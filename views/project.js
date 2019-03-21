@@ -5,7 +5,7 @@ const AddToCollectionModal = require("../components/AddToCollectionModal");
 
 module.exports = view
 
-function openInEditor(state,emit){
+function openInEditor(state, emit) {
   return e => {
     console.log("opening in editor")
     // TODO: set this in another way?
@@ -17,57 +17,59 @@ function openInEditor(state,emit){
   }
 }
 
-function deleteFeature(state, emit){
-  
-  function deleteProject(e){
-    let {_id} = state.selectedProject
+function deleteFeature(state, emit) {
+
+  function deleteProject(e) {
+    let {
+      _id
+    } = state.selectedProject
     let del = confirm("do you really want to delete this?");
-      if(del === true){
-        feathersClient.service("/api/projects").remove(_id).then(result => {
-          alert("project deleted!")
-          emit('pushState', '/projects');
-        }).catch(err => {
-          alert(err);
-        })    
-      } else {
-        return;
-      }
+    if (del === true) {
+      feathersClient.service("/api/projects").remove(_id).then(result => {
+        alert("project deleted!")
+        emit('pushState', '/projects');
+      }).catch(err => {
+        alert(err);
+      })
+    } else {
+      return;
+    }
   }
 
-  if(state.user.authenticated === true){
-    if(state.selectedProject.hasOwnProperty("ownerDetails") && state.selectedProject.ownerDetails.username == state.user.username ){
-      return html`
+  if (state.user.authenticated === true) {
+    if (state.selectedProject.hasOwnProperty("ownerDetails") && state.selectedProject.ownerDetails.username == state.user.username) {
+      return html `
       <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-orange navy" onclick=${deleteProject}>Delete Project</button></li>
       `
-    } else{
+    } else {
       return ``
     }
   }
 }
 
-function saveToLists(state,emit){
+function saveToLists(state, emit) {
   return e => {
     console.log("creating a copy and saving to lists")
     let payload = {
-        html:'',
-        md: state.selectedProject.md,
-        json: state.selectedProject.json,
-        name: state.selectedProject.name,
-        description: state.selectedProject.description
-      }
-      
-      feathersClient.service('/api/projects').create(payload).then(result => {
-        alert(`${result.name} - was saved to your projects!`)
-      }).catch(err => {
-        alert(err)
-        return err;
-      })
+      html: '',
+      md: state.selectedProject.md,
+      json: state.selectedProject.json,
+      name: state.selectedProject.name,
+      description: state.selectedProject.description
+    }
+
+    feathersClient.service('/api/projects').create(payload).then(result => {
+      alert(`${result.name} - was saved to your projects!`)
+    }).catch(err => {
+      alert(err)
+      return err;
+    })
 
   }
 }
 
-function copyMarkdown(state, emit){
-  return e=>{
+function copyMarkdown(state, emit) {
+  return e => {
     console.log("copying markdown")
     copy(state.selectedProject.md);
     /* Alert the copied text */
@@ -75,8 +77,8 @@ function copyMarkdown(state, emit){
   }
 }
 
-function addToCollection(state,emit, modal){
-  return e=>{
+function addToCollection(state, emit, modal) {
+  return e => {
     console.log("opening add to group modal")
     modal.open();
   }
@@ -84,8 +86,8 @@ function addToCollection(state,emit, modal){
 
 
 
-function createlistItem(feature){
-  return html`
+function createlistItem(feature) {
+  return html `
   <li class="item pa2 ba bw1 mb1 mt1 bg-white">
     <div class="w-100 flex flex-row justify-between items-start">
       <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
@@ -95,11 +97,13 @@ function createlistItem(feature){
   `
 } // end createListItem
 
-function createList(parentObject){
-  if(parentObject !== undefined){
-  
-    let {features} = parentObject;
-    return html`
+function createList(parentObject) {
+  if (parentObject !== undefined) {
+
+    let {
+      features
+    } = parentObject;
+    return html `
     <ul class="list pl0 list-container">
       ${
         features.map(feature => {
@@ -122,19 +126,37 @@ function createList(parentObject){
   }
 } // end createList
 
-function view (state, emit) {
+function followProject(state, emit) {
+  return e => {
+      const projectId = state.selectedProject._id
+      const params = {
+          "$push": {
+              "followers": state.user.id
+          }
+      }
+      feathersClient.service('/api/projects').patch(projectId, params, {}).then(result => {
+          alert("you started following this list!");
+          return result
+      }).catch(err => {
+          alert(err);
+          return err;
+      })
+  }
+} // end followProject
+
+function view(state, emit) {
   const addToCollectionModal = new AddToCollectionModal("AddToCollectionModal", state, emit)
   let selectedProject = state.selectedProject;
 
-  function checkOwner(project){
-    if(project.hasOwnProperty('owner')){
-      return html`<a class="link black underline" href="/users/${project.ownerDetails.username}">${project.ownerDetails.username}</a>`
+  function checkOwner(project) {
+    if (project.hasOwnProperty('owner')) {
+      return html `<a class="link black underline" href="/users/${project.ownerDetails.username}">${project.ownerDetails.username}</a>`
     } else {
       return '🤖'
     }
   }
 
-  return html`
+  return html `
   <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-project', state.params.id)}>
     <div class="w-100 flex flex-column h-100 pl2 pr2">
             <div class="w-100 pt3 pb2 ">
@@ -168,7 +190,8 @@ function view (state, emit) {
                     <section>
                         <h3 class="">Organize</h3>
                         <ul class="list pl0 flex flex-column items-start w-80">
-                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Save to my projects</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Copy to my projects</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-light-blue navy" onclick="${followProject(state, emit)}">Follow project</button></li>
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToCollection(state, emit, addToCollectionModal)}">Add to collection</button></li>
                             ${deleteFeature(state, emit)}
                         </ul>

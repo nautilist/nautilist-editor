@@ -3,91 +3,126 @@ const feathersClient = require('../helpers/feathersClient');
 
 module.exports = view
 
-function deleteFeature(state, emit){
-  
-    function deleteCollection(e){
-      let {_id} = state.selectedCollection
-      let del = confirm("do you really want to delete this?");
-        if(del === true){
-          feathersClient.service("/api/collections").remove(_id).then(result => {
-            alert("collection deleted!")
-            emit('pushState', '/collections');
-          }).catch(err => {
-            alert(err);
-          })    
+function deleteFeature(state, emit) {
+
+    function deleteCollection(e) {
+        let {
+            _id
+        } = state.selectedCollection
+        let del = confirm("do you really want to delete this?");
+        if (del === true) {
+            feathersClient.service("/api/collections").remove(_id).then(result => {
+                alert("collection deleted!")
+                emit('pushState', '/collections');
+            }).catch(err => {
+                alert(err);
+            })
         } else {
-          return;
+            return;
         }
     }
-  
-    if(state.user.authenticated === true){
-      if(state.selectedCollection.hasOwnProperty("ownerDetails") && state.selectedCollection.ownerDetails.username == state.user.username ){
-        return html`
+
+    if (state.user.authenticated === true) {
+        if (state.selectedCollection.hasOwnProperty("ownerDetails") && state.selectedCollection.ownerDetails.username == state.user.username) {
+            return html `
         <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-orange navy" onclick=${deleteCollection}>Delete Collection</button></li>
         `
-      } else{
-        return ``
-      }
-    }
-  }
-
-function followCollection(state, emit){
-    return e=> {
-    const collectionId = state.selectedCollection._id
-    const params = {
-        "$push":{
-            "followers": state.user.id
+        } else {
+            return ``
         }
     }
-    feathersClient.service('/api/collections').patch(collectionId, params, {}).then(result =>{
-        alert("you started following this list!");
-        return result
-    }).catch(err => {
-        alert(err);
-        return err;
-    })
-}
 }
 
-function createlistItem(feature){
-  return html`
-  <li class="item w5 h5 pa2 ba bw1 mb1 mt1 bg-white mr1 ml1">
-    <div class="w-100 flex flex-row justify-between items-start">
-      <a class="link underline black f7 b" href="/projects/${feature._id}">${feature.name}</a>
-    </div>
-    <p class="ma0 f7">${feature.description}</p>
-  </li>
-  `
-} // end createListItem
-
-function createList(parentObject){
-  if(parentObject !== undefined && parentObject.hasOwnProperty('projectsDetails') ){
-  
-    let {projectsDetails} = parentObject;
-    return html`
-    <ul class="list pl0 list-container flex flex-row flex-wrap">
-      ${
-        projectsDetails.map(project => {
-            return createlistItem(project)
+function followCollection(state, emit) {
+    return e => {
+        const collectionId = state.selectedCollection._id
+        const params = {
+            "$push": {
+                "followers": state.user.id
+            }
+        }
+        feathersClient.service('/api/collections').patch(collectionId, params, {}).then(result => {
+            alert("you started following this list!");
+            return result
+        }).catch(err => {
+            alert(err);
+            return err;
         })
-      }
-    </ul>
-    `
-  }
-} // end createList
-
-function view (state, emit) {
-  let selectedCollection = state.selectedCollection;
-
-  function checkOwner(project){
-    if(project.hasOwnProperty('owner')){
-      return html`<a class="link black underline" href="/users/${project.ownerDetails.username}">${project.ownerDetails.username}</a>`
-    } else {
-      return '🤖'
     }
-  }
+}
 
-  return html`
+
+
+function view(state, emit) {
+    let selectedCollection = state.selectedCollection;
+
+    function createlistItem(feature) {
+
+        function removeFromCollection(e) {
+            e.preventDefault();
+            const collectionId = state.selectedCollection._id
+            const projectId = feature._id;
+
+            const params = {
+                "$pull": {
+                    "projects": projectId
+                }
+            }
+
+            let del = confirm("do you really want to delete this?");
+            if (del === true) {
+                feathersClient.service("/api/collections").patch(collectionId, params, {}).then(result => {
+                    alert("project removed!")
+                    emit('pushState', `/collections/${collectionId}`);
+                }).catch(err => {
+                    alert(err);
+                })
+            } else {
+                return;
+            }
+
+        }
+
+        return html `
+      <li class="item w5 h5 pa2 ba bw1 mb1 mt1 bg-white mr1 ml1">
+        <div class="w-100 h-100 flex flex-column justify-between items-start">
+            <div>
+                <a class="link underline black f7 b" href="/projects/${feature._id}">${feature.name}</a>
+                <p class="ma0 f7">${feature.description}</p>
+            </div>
+          <button class="f7 bn self-end" onclick=${removeFromCollection}>remove from collection</button>
+        </div>
+      </li>
+      `
+    } // end createListItem
+
+    function createList(parentObject) {
+        if (parentObject !== undefined && parentObject.hasOwnProperty('projectsDetails')) {
+
+            let {
+                projectsDetails
+            } = parentObject;
+            return html `
+        <ul class="list pl0 list-container flex flex-row flex-wrap">
+          ${
+            projectsDetails.map(project => {
+                return createlistItem(project)
+            })
+          }
+        </ul>
+        `
+        }
+    } // end createList
+
+    function checkOwner(project) {
+        if (project.hasOwnProperty('owner')) {
+            return html `<a class="link black underline" href="/users/${project.ownerDetails.username}">${project.ownerDetails.username}</a>`
+        } else {
+            return '🤖'
+        }
+    }
+
+    return html `
   <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-collection', state.params.id)}>
     <div class="w-100 flex flex-column h-100 pl2 pr2">
             <div class="w-100 pt3 pb2 ">
@@ -112,14 +147,9 @@ function view (state, emit) {
             <section class="w-30 h-100">
                 <div class="bn bg-light-gray br2 w-100 pa2 h-100">
                     <section>
-                        <h3 class="">Save or Watch Collection</h3>
-                        <ul class="list pl0 flex flex-column items-start w-80">
-                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-purple white" onclick=${followCollection(state, emit)}>Follow Collection</button></li>
-                        </ul>
-                    </section>
-                    <section>
                         <h3 class="">Organize</h3>
                         <ul class="list pl0 flex flex-column items-start w-80">
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-light-blue navy" onclick=${followCollection(state, emit)}>Follow Collection</button></li>
                             ${deleteFeature(state, emit)}
                         </ul>
                     </section>
