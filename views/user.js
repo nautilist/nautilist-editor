@@ -23,22 +23,27 @@ function newCollectionBtn(state, emit){
     })
 
   }
-
-  return html`
-  <li class="mw6 shadow-5 mb3">
-      <div class="flex pa3-ns pa1 bg-light-gray flex flex-row-ns flex-column items-center">
-        <form id="newCollectionForm" name="newCollectionForm" class="flex flex-row-ns flex-column w-100" onsubmit=${createNewCollection}>
-          <div class="w-two-thirds-ns w-100">
-            <input class="w-100 pa2 f6 bn mb1" type="text" name="name" placeholder="New Collection Name">
-            <input class="w-100 pa2 f6 bn" type="text" name="description" placeholder="New Collection Description">
+  if (state.user.authenticated === true && state.params.username === state.user.username) {
+    
+      return html`
+      <li class="mw6 shadow-5 mb3">
+          <div class="flex pa3-ns pa1 bg-light-gray flex flex-row-ns flex-column items-center">
+            <form id="newCollectionForm" name="newCollectionForm" class="flex flex-row-ns flex-column w-100" onsubmit=${createNewCollection}>
+              <div class="w-two-thirds-ns w-100">
+                <input class="w-100 pa2 f6 bn mb1" type="text" name="name" placeholder="New Collection Name">
+                <input class="w-100 pa2 f6 bn" type="text" name="description" placeholder="New Collection Description">
+              </div>
+              <div class="w-third-ns w-100 tr">
+              <input class="pointer bn pa3 bg-yellow navy h-100" type="submit" form="newCollectionForm" value="create">
+              </div>
+            </div>
           </div>
-          <div class="w-third-ns w-100 tr">
-          <input class="pointer bn pa3 bg-yellow navy h-100" type="submit" form="newCollectionForm" value="create">
-          </div>
-        </div>
-      </div>
-  </li>
-  `
+      </li>
+      `
+  }
+  else{
+    return ''
+    }
 }
 
 
