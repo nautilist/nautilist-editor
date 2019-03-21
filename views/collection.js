@@ -83,6 +83,14 @@ function view(state, emit) {
 
         }
 
+        function removeFromCollectionBtn(){
+            if(state.user.authenticated === true && state.selectedCollection.ownerDetails.username === state.user.username){
+                return html`<button class="f7 bn self-end" onclick=${removeFromCollection}>remove from collection</button>`
+            } else{
+                return ''
+            }
+        }
+
         return html `
       <li class="item w5 h5 pa2 ba bw1 mb1 mt1 bg-white mr1 ml1">
         <div class="w-100 h-100 flex flex-column justify-between items-start">
@@ -90,7 +98,7 @@ function view(state, emit) {
                 <a class="link underline black f7 b" href="/projects/${feature._id}">${feature.name}</a>
                 <p class="ma0 f7">${feature.description}</p>
             </div>
-          <button class="f7 bn self-end" onclick=${removeFromCollection}>remove from collection</button>
+          ${removeFromCollectionBtn()}
         </div>
       </li>
       `
