@@ -103,7 +103,11 @@ function view (state, emit) {
   function renderUserCollections(){
     let collections = state.selectedUserCollections;
     if(!state.selectedUserCollections.length > 0){
-      return html`<p>no collections yet!</p>`
+      return html`
+      <div>
+      <p>no collections yet!</p>
+      ${newCollectionBtn(state, emit)}
+      </div>`
     }
     
     return collections.map(collection => {
@@ -129,7 +133,6 @@ function view (state, emit) {
       return html`
       <div>
       <p>no collections yet!</p>
-      ${newCollectionBtn(state, emit)}
       </div>`
     }
     
