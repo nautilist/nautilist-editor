@@ -106,7 +106,6 @@ function view (state, emit) {
       return html`
       <div>
       <p>no collections yet!</p>
-      ${newCollectionBtn(state, emit)}
       </div>`
     }
     
