@@ -2,6 +2,7 @@ var html = require('choo/html')
 const copy = require('clipboard-copy')
 const feathersClient = require('../helpers/feathersClient');
 const AddToCollectionModal = require("../components/AddToCollectionModal");
+const AddCollaboratorModal = require("../components/AddCollaboratorModal");
 
 module.exports = view
 
@@ -84,6 +85,25 @@ function addToCollection(state, emit, modal) {
   }
 }
 
+function addCollaborator(state, emit, modal) {
+  return e => {
+    console.log("opening add collaborator modal")
+    modal.open();
+  }
+}
+
+function addCollaboratorBtn(state, emit, modal){
+  if (state.user.authenticated === true) {
+    if (state.selectedProject.hasOwnProperty("ownerDetails") && state.selectedProject.ownerDetails.username == state.user.username) {
+      return html `
+      <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-dark-green yellow" onclick="${addCollaborator(state, emit, modal)}">Add Collaborator</button></li>
+      `
+    } else {
+      return ``
+    }
+  }
+}
+
 
 
 function createlistItem(feature) {
@@ -146,6 +166,8 @@ function followProject(state, emit) {
 
 function view(state, emit) {
   const addToCollectionModal = new AddToCollectionModal("AddToCollectionModal", state, emit)
+  const addCollaboratorModal = new AddCollaboratorModal("AddCollaboratorModal", state, emit)
+  
   let selectedProject = state.selectedProject;
 
   function checkOwner(project) {
@@ -193,6 +215,7 @@ function view(state, emit) {
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-yellow navy" onclick="${saveToLists(state, emit)}">Copy to my projects</button></li>
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-light-blue navy" onclick="${followProject(state, emit)}">Follow project</button></li>
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-pink navy" onclick="${addToCollection(state, emit, addToCollectionModal)}">Add to collection</button></li>
+                            ${addCollaboratorBtn(state, emit, addCollaboratorModal)}
                             ${deleteFeature(state, emit)}
                         </ul>
                     </section>    
@@ -211,6 +234,7 @@ function view(state, emit) {
             </section>
         </div>
         ${addToCollectionModal.render()}
+        ${addCollaboratorModal.render()}
   </body>
   `
 }
