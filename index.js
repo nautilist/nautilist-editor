@@ -32,6 +32,10 @@ app.route('/collections/:id', require('./views/collection'))
 app.route('/users', require('./views/users'))
 app.route('/users/:username', require('./views/user'))
 
+app.route('/test', require('./views/test'))
+app.route('/about', require('./views/about'))
+app.route('/browse', require('./views/browse'))
+
 app.route('/*', require('./views/404'))
 
 // if (typeof navigator !== 'undefined') {
@@ -52,6 +56,12 @@ app.use((state, emitter) => {                  // 1.
       // projects
       case 'projects':
         emitter.emit("fetch-projects", {});
+        break;
+      case 'about':
+        // emitter.emit("fetch-projects", {});
+        break;
+      case 'browse':
+        // emitter.emit("fetch-projects", {});
         break;
       case 'projects/:id':
         if(state.params.hasOwnProperty('id')){

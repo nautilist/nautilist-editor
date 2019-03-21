@@ -10,16 +10,22 @@ const TITLE = 'Nautilist Web Editor'
 
 const CodeEditor = require("../components/CodeEditor");
 const VisualEditor = require("../components/VisualEditor");
-const AboutModal = require("../components/AboutModal");
+const EditorHelpModal = require("../components/EditorHelpModal");
 const ShareModal = require("../components/ShareModal");
 const SearchModal = require("../components/SearchModal");
 const EditFeatureModal = require("../components/EditFeatureModal");
+const NavbarTop = require("../components/NavbarTop");
 
 css `
 html{
   width:100%;
   height:100%;
-  padding: 1em;
+  /** padding: 1em; **/
+}
+
+.reverse-img{
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 .dropshadow{
@@ -49,7 +55,7 @@ function view(state, emit) {
   const codeEditor = new CodeEditor("CodeEditor", state, emit);
   const editFeatureModal = new EditFeatureModal("EditFeatureModal", state, emit)
   const visualEditor = new VisualEditor("VisualEditor", state, emit, editFeatureModal);
-  const aboutModal = new AboutModal("AboutModal", state, emit)
+  const editorHelpModal = new EditorHelpModal("EditorHelpModal", state, emit)
   const shareModal = new ShareModal("ShareModal", state, emit)
   const searchModal = new SearchModal("SearchModal", state, emit)
 
@@ -191,14 +197,11 @@ function view(state, emit) {
 
   return html `
     <body class="w-100 h-100 code lh-copy">
+      ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 h-100 flex flex-column justify-start items-start">
       <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
-          <button class="ba br-pill dropshadow ba b--dark-pink bg-white dark-pink bw1 pa2 mr2"> Nautilist Editor </button>
-          <a class="link ba ba b--white bg-white navy bw1 pa2 mr2 pointer" href="/projects"> Projects </a>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${aboutModal.open()}"> About </button>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer dn" onclick="${shareModal.open()}"> Share </button>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer dn" onclick="${searchModal.open()}"> 🔎 Search </button>
+          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${editorHelpModal.open()}"> Help </button>
         </div>
         <div class="flex flex-row items-center">
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
@@ -210,7 +213,6 @@ function view(state, emit) {
       </header>
       <div class=" w-100 flex flex-row justify-end items-center pa2">
         <small class="f7" id="lastUpdated"></small>
-        ${isAuthd()}
       </div>
       <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
         <div class="w-50 h-100 pa1">
@@ -225,9 +227,7 @@ function view(state, emit) {
         </div>
       </section>
       </main>
-      ${aboutModal.render()}
-      ${shareModal.render()}
-      ${searchModal.render()}
+      ${editorHelpModal.render()}
       ${editFeatureModal.render()}
     </body>
   `
