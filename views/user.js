@@ -1,7 +1,46 @@
 var html = require('choo/html')
 const NavSelect = require('../components/NavSelect');
+const feathersClient = require('../helpers/feathersClient')
 
 module.exports = view
+
+function newCollectionBtn(state, emit){
+  
+  function createNewCollection(e){
+    e.preventDefault();
+    let formData = new FormData(e.currentTarget);
+    
+    const payload = {
+      name: formData.get('name') || "new collection",
+      description: formData.get('name') || "new collection about something interesting",
+    }
+
+    feathersClient.service('/api/collections').create(payload).then(result => {
+      alert("new collection created!");
+      emit('fetch-user') 
+    }).catch(err => {
+      alert(err);
+    })
+
+  }
+
+  return html`
+  <li class="mw6 shadow-5 mb3">
+      <div class="flex pa3-ns pa1 bg-light-gray flex flex-row-ns flex-column items-center">
+        <form id="newCollectionForm" name="newCollectionForm" class="flex flex-row-ns flex-column w-100" onsubmit=${createNewCollection}>
+          <div class="w-two-thirds-ns w-100">
+            <input class="w-100 pa2 f6 bn mb1" type="text" name="name" placeholder="New Collection Name">
+            <input class="w-100 pa2 f6 bn" type="text" name="description" placeholder="New Collection Description">
+          </div>
+          <div class="w-third-ns w-100 tr">
+          <input class="pointer bn pa3 bg-yellow navy h-100" type="submit" form="newCollectionForm" value="create">
+          </div>
+        </div>
+      </div>
+  </li>
+  `
+}
+
 
 function view (state, emit) {
   function logout(){
@@ -87,7 +126,11 @@ function view (state, emit) {
   function renderFollowingCollections(){
     let collections = state.selectedUserFollowingCollections;
     if(!state.selectedUserFollowingCollections.length > 0){
-      return html`<p>no collections yet!</p>`
+      return html`
+      <div>
+      <p>no collections yet!</p>
+      ${newCollectionBtn(state, emit)}
+      </div>`
     }
     
     return collections.map(collection => {
@@ -141,6 +184,7 @@ function view (state, emit) {
               <h2>My Collections</h2>
               <ul class="list pl0 pr3 w-100">
               ${renderUserCollections()}
+              ${newCollectionBtn(state, emit)}
               </ul>
             </section>
           </section>
