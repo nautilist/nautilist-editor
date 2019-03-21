@@ -3,6 +3,34 @@ const feathersClient = require('../helpers/feathersClient');
 
 module.exports = view
 
+function deleteFeature(state, emit){
+  
+    function deleteCollection(e){
+      let {_id} = state.selectedCollection
+      let del = confirm("do you really want to delete this?");
+        if(del === true){
+          feathersClient.service("/api/collections").remove(_id).then(result => {
+            alert("collection deleted!")
+            emit('pushState', '/collections');
+          }).catch(err => {
+            alert(err);
+          })    
+        } else {
+          return;
+        }
+    }
+  
+    if(state.user.authenticated === true){
+      if(state.selectedCollection.hasOwnProperty("ownerDetails") && state.selectedCollection.ownerDetails.username == state.user.username ){
+        return html`
+        <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-orange navy" onclick=${deleteCollection}>Delete Collection</button></li>
+        `
+      } else{
+        return ``
+      }
+    }
+  }
+
 function followCollection(state, emit){
     return e=> {
     const collectionId = state.selectedCollection._id
@@ -87,6 +115,12 @@ function view (state, emit) {
                         <h3 class="">Save or Watch Collection</h3>
                         <ul class="list pl0 flex flex-column items-start w-80">
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-purple white" onclick=${followCollection(state, emit)}>Follow Collection</button></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3 class="">Organize</h3>
+                        <ul class="list pl0 flex flex-column items-start w-80">
+                            ${deleteFeature(state, emit)}
                         </ul>
                     </section>
                 </div>
