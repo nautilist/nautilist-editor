@@ -24,6 +24,13 @@ function view (state, emit) {
       }
     }
 
+    function showCollaborators(project){
+      if(project.collaboratorDetails.length > 0){
+        return `+ ${project.collaboratorDetails.length} collaborators`
+      }
+      
+    }
+
     const {name, description, _id, selectedColor, colors} = project;
 
     return html`
@@ -32,7 +39,7 @@ function view (state, emit) {
       <header class="w-100 h3 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
       <section class="pa2">
         <h3 class="ma0">${name}</h3>
-        <small class="ma0">created by <a class="link black underline" href="/users/${project.ownerDetails.username}">${checkOwner(project)}</a> </small>
+        <small class="ma0">created by <a class="link black underline" href="/users/${project.ownerDetails.username}">${checkOwner(project)}</a> ${showCollaborators(project)}</small>
         <p class="ma0 truncate">${description}</p>
       </section>
     </div>

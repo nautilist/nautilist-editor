@@ -167,14 +167,24 @@ function followProject(state, emit) {
 function view(state, emit) {
   const addToCollectionModal = new AddToCollectionModal("AddToCollectionModal", state, emit)
   const addCollaboratorModal = new AddCollaboratorModal("AddCollaboratorModal", state, emit)
-  
+
   let selectedProject = state.selectedProject;
 
   function checkOwner(project) {
     if (project.hasOwnProperty('owner')) {
-      return html `<a class="link black underline" href="/users/${project.ownerDetails.username}">${project.ownerDetails.username}</a>`
+      return html`<a class="link black underline" href="/users/${project.ownerDetails.username}">${project.ownerDetails.username}</a>`
     } else {
       return '🤖'
+    }
+  }
+
+  function checkCollaborators(project) {
+    if (project.hasOwnProperty('collaboratorDetails') && project.collaboratorDetails.length > 0 ) {
+      return project.collaboratorDetails.map(collaborator => {
+        return html`<li class="mr2"><a class="link black underline f7" href="/users/${collaborator.username}">${collaborator.username}</a></li>`
+      }) 
+    } else {
+      return ''
     }
   }
 
@@ -191,6 +201,7 @@ function view(state, emit) {
                     <div class="w-100 flex flex-column">
                       <h1 class="f2 lh-title mb0">${selectedProject.name || "No list name yet"}</h1>
                       <small class="ma0">created by ${checkOwner(selectedProject)} </small>
+                      <ul class="list pl0 flex flex-row f7 ma0">collaborators: ${checkCollaborators(selectedProject)}</ul>
                     </div>
                     
                     <p class="f5 lh-copy mt0 mb2">${selectedProject.description ||  "No list description yet"}</p>

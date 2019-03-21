@@ -3,13 +3,14 @@ const feathersClient = require('../helpers/feathersClient')
 module.exports = store
 
 store.storeName = 'public'
-function store (state, emitter) {
+
+function store(state, emitter) {
   state.projects = [];
   state.selectedProject = {};
 
   state.collections = [];
   state.selectedCollection = {};
-  
+
   state.users = [];
   state.selectedUser = {};
   state.selectedUserProjects = [];
@@ -69,70 +70,78 @@ function store (state, emitter) {
   emitter.on('fetch-user', (username) => {
     // TODO: add in search for collaborations
     const findByUsername = {
-      query:{
+      query: {
         username
       }
     }
 
     feathersClient.service('/users').find(findByUsername).then(result => {
-      state.selectedUser = result.data[0]
-      const queryParams = {
-        query:{
-            owner: state.selectedUser._id
-        }
-      }
-      return feathersClient.service('/api/projects').find(queryParams)
-    })
-    .then(result => {
-      const queryParams = {
-        query:{
-            owner: state.selectedUser._id
-        }
-      }
-      state.selectedUserProjects = result.data;
-      return feathersClient.service('/api/collections').find(queryParams)
-    })
-    .then(result => {
-      state.selectedUserCollections = result.data;
-
-      const queryParams = {
-        query:{
-          "followers":{
-            "$in":  state.selectedUser._id
+        state.selectedUser = result.data[0]
+        const queryParams = {
+          query: {
+            $or: [{
+                owner: state.selectedUser._id
+              },
+              {
+                "collaborators": {
+                  "$in": state.selectedUser._id,
+                }
+              }
+            ]
           }
         }
-      }
-      
-      return feathersClient.service('/api/collections').find(queryParams)
-    })
-    .then(result => {
-      state.selectedUserFollowingCollections = result.data;
-
-      const queryParams = {
-        query:{
-          "followers":{
-            "$in":  state.selectedUser._id
+        return feathersClient.service('/api/projects').find(queryParams)
+      })
+      .then(result => {
+        const queryParams = {
+          query: {
+            owner: state.selectedUser._id
           }
         }
-      }
-      return feathersClient.service('/api/projects').find(queryParams)
-    })
-    .then(result => {
-      state.selectedUserFollowingProjects = result.data;
-      emitter.emit('render');
-    })
-    .catch(err => {
-      console.log(err, "could not find user")
-    })
+        state.selectedUserProjects = result.data;
+        return feathersClient.service('/api/collections').find(queryParams)
+      })
+      .then(result => {
+        state.selectedUserCollections = result.data;
+
+        const queryParams = {
+          query: {
+            "followers": {
+              "$in": state.selectedUser._id
+            }
+          }
+        }
+
+        return feathersClient.service('/api/collections').find(queryParams)
+      })
+      .then(result => {
+        state.selectedUserFollowingCollections = result.data;
+
+        const queryParams = {
+          query: {
+            "followers": {
+              "$in": state.selectedUser._id
+            }
+          }
+        }
+        return feathersClient.service('/api/projects').find(queryParams)
+      })
+      .then(result => {
+        state.selectedUserFollowingProjects = result.data;
+        emitter.emit('render');
+      })
+      .catch(err => {
+        console.log(err, "could not find user")
+      })
   })
 
 
   // emitter.on(state.events.saveProjectToLists, function(_payload){
 
   //   // TODO: check to see if user already has the project then throw err
-    
+
   //   feathersClient.service("/api/projects").create()
 
-    
+
   // })
 }
