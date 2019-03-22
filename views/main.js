@@ -199,6 +199,9 @@ function view(state, emit) {
     <body class="w-100 h-100 code lh-copy flex flex-column">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 h-auto flex flex-column justify-start items-start" style="flex:1">
+      <div class=" w-100 flex flex-row justify-end items-center pa2">
+        <small class="f7" id="lastUpdated"></small>
+      </div>
       <header class="w-100 flex flex-row justify-between items-center pa2">
         <div>
           <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${editorHelpModal.open()}"> Help </button>
@@ -211,9 +214,6 @@ function view(state, emit) {
           <input class="dn" type="file" id="fileSelect" onchange="${handleFiles}">
         </div>
       </header>
-      <div class=" w-100 flex flex-row justify-end items-center pa2">
-        <small class="f7" id="lastUpdated"></small>
-      </div>
       <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
         <div class="w-50 h-100 pa1">
           <div class="ba bw2 b--black w-100 h-100">
