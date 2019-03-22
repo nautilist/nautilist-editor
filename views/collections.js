@@ -2,6 +2,7 @@ var html = require('choo/html')
 const feathersClient = require('../helpers/feathersClient');
 // const ProjectModal = require('../components/ProjectModal');
 const NavbarTop = require("../components/NavbarTop");
+const Footer = require('../components/Footer');
 
 module.exports = view
 
@@ -44,16 +45,15 @@ function view (state, emit) {
       <header class="w-100 h3 br2 br--top flex flex-column justify-center items-end pr2" style="background-color:${colors[selectedColor]};">
         <div class="br-100 bn bg-white h2 w2 dib tc flex flex-column items-center justify-center"><h3 class="ma0 f6">${collection.projects.length}</h3></div>
       </header>
+      <div class="hide-child">
       <section class="pa2 flex flex-column justify-between">
         <div>
         <h3 class="ma0">${name}</h3>
-        <small class="ma0">created by <a class="link black underline" href="/users/${collection.ownerDetails.username}">${checkOwner(collection)}</a> </small>
-        <p class="ma0 truncate">${description}</p>
-        </div>
-        <div class="flex flex-row flex-wrap">
-            
+        <small class="ma0">by <a class="link black underline" href="/users/${collection.ownerDetails.username}">${checkOwner(collection)}</a> </small>
         </div>
       </section>
+        <p class="ma0 pa2 child f7">${description}</p>
+      </div>
     </div>
     </a>
     `
@@ -99,11 +99,15 @@ function view (state, emit) {
   return html`
     <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-collections')}>
         ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
-    
-      <main class="w-100 pa4">
-        <h1 class="tc">Check out these collections</h1>
+        <header class="w-100 tc flex flex-column items-center">
+          <h1 class="w-100 mw6 tc f1 lh-title">Collections</h1>
+          <img class="w4" src="/assets/1F490.png">
+          <p class="pa2 mw6">Collections are groups of projects. Collections may contain similar themed projects such as for a class or larger project.</p>
+        </header>
+      <main class="w-100 h-100 pa4">
         ${makeCollectionsList(state.collections)}
       </main>
+      ${Footer()}
     </body>
     `
 }
