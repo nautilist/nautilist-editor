@@ -41,8 +41,8 @@ function view (state, emit) {
 
     return html`
     <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/collections/${_id}">
-    <div class="h-100 dropshadow br2 bg-near-white ma2" data-type="collections" data-id=${_id} onclick=${handleRedirect}>
-      <header class="w-100 h3 br2 br--top flex flex-column justify-center items-end pr2" style="background-color:${colors[selectedColor]};">
+    <div class="h-100 shadow-5  bg-near-white ma2" data-type="collections" data-id=${_id} onclick=${handleRedirect}>
+      <header class="w-100 h3  br--top flex flex-column justify-center items-end pr2" style="background-color:${colors[selectedColor]};">
         <div class="br-100 bn bg-white h2 w2 dib tc flex flex-column items-center justify-center"><h3 class="ma0 f6">${collection.projects.length}</h3></div>
       </header>
       <div class="hide-child">

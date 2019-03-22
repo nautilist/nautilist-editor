@@ -37,8 +37,8 @@ function view (state, emit) {
 
     return html`
     <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/projects/${_id}">
-    <div class="h-100 dropshadow br2 bg-near-white ma2" data-type="projects" data-id=${_id} onclick=${handleRedirect}>
-      <header class="w-100 h2 br2 br--top" style="background-color:${colors[selectedColor]};"></header>
+    <div class="h-100 shadow-5 bg-near-white ma2" data-type="projects" data-id=${_id} onclick=${handleRedirect}>
+      <header class="w-100 h2  br--top" style="background-color:${colors[selectedColor]};"></header>
       <div class="hide-child">
         <section class="pa2">
           <h3 class="ma0">${name}</h3>
