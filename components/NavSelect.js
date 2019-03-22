@@ -26,10 +26,10 @@ class NavSelect extends Component {
 
   createElement () {
     return html`
-    <select id="selectChange" class="bn bg-light-gray pl3 pr3 h2" onchange=${this.handleSelectChange}>
-      <option name="projects" value="/projects">Projects</option>
-      <option name="collections" value="/collections">Collections</option>
-      <option name="users" value="/users">Users</option>
+    <select id="selectChange" class="input-reset bn  pl1 pr1 h2 f5 underline" onchange=${this.handleSelectChange}>
+      <option name="projects" value="/projects">Projects ▾</option>
+      <option name="collections" value="/collections">Collections ▾</option>
+      <option name="users" value="/users">Users ▾</option>
     </select> 
     `
   }

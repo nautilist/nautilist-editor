@@ -43,12 +43,12 @@ class NavbarTop extends Component {
 
   createElement () {
     return html`
-      <nav class="w-100 b--dotted h3 flex flex-row justify-between items-center">
+      <nav class="w-100 bb bw2 navy h3 flex flex-row justify-between items-center">
         <!-- NAVBAR LEFT -->
         <ul class="list pl0 h-100 dn flex-ns flex-row items-center">
           <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/about"><img src="/assets/1F4A5.png"></a></li>
-          <li class="f6 pl3"><a class="link black" href="/">Editor</a></li>
-          <li class="f6 pl3"><a class="link black" href="/browse">Browse</a></li>
+          <li class="f6 pl3"><a class="link navy" href="/">Editor</a></li>
+          <li class="f6 pl3"><a class="link navy" href="/browse">Browse</a></li>
           <li class="f6 pl3 flex-row items-center ${this.local.navSelectDisplayed}">by: ${this.state.cache(NavSelect, "NavSelect", this.state, this.emit).render()}</li>
         </ul>
         
