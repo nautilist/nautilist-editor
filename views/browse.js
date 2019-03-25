@@ -38,21 +38,21 @@ function searchCategoriesSection(state, emit){
     <div class="w-100 flex flex-row-ns flex-column items-center justify-center tc">
       <div class="w-third-ns w-100">
         <a class="link black w-100" href="/projects">
-          <img src="/assets/1F33C.png">  
+          <img style="max-width:60%" src="/assets/1F33C.png">  
         <h3 class="f2 lh-title">Projects</h3>
         </a>
         <p class="pa2">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
       </div>
       <div class="w-third-ns w-100">
         <a class="link black w-100" href="/collections">
-        <img src="/assets/1F490.png"> 
+        <img style="max-width:60%" src="/assets/1F490.png"> 
         <h3 class="f2 lh-title">Collections</h3>
         </a>
         <p class="pa2">Collections are groups of projects. Collections may contain similar themed projects such as for a class or larger project.</p>
       </div>
       <div class="w-third-ns w-100">
         <a class="link black w-100" href="/users">
-        <img src="/assets/1F984.png">
+        <img style="max-width:60%" src="/assets/1F984.png">
         <h3 class="f2 lh-title">Users</h3>
         </a>
         <p class="pa2">Oh and what would we be without our wonderful users? Go checkout their projects and collections for inspiration or to collaborate!</p>
