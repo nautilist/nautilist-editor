@@ -195,16 +195,21 @@ function view(state, emit) {
     }
   }
 
+  /**
+   * <div class=" w-100 flex flex-row justify-end items-center pt1 pb1 pr2">
+            <small class="f7" id="lastUpdated"></small>
+          </div>
+   */
   return html `
     <body class="w-100 h-100 code lh-copy flex flex-column">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 h-auto flex flex-column justify-start items-start" style="flex:1">
-      <div class=" w-100 flex flex-row justify-end items-center pa2">
-        <small class="f7" id="lastUpdated"></small>
-      </div>
-      <header class="w-100 flex flex-row justify-between items-center pa2">
-        <div>
-          <button class="ba ba b--white bg-white navy bw1 pa2 mr2 pointer" onclick="${editorHelpModal.open()}"> Help </button>
+      <header class="w-100 flex flex-row justify-between items-center pl1 pt1 pb1 pr2">
+        <div class="flex flex-row items-center">
+          <button class="ba ba b--black dropshadow bg-white navy bw1 pa2 mr2 pointer" onclick="${editorHelpModal.open()}"> ? </button>
+          <div class=" w-100 flex flex-row justify-end items-center pt1 pb1 pr2">
+            <small class="f7" id="lastUpdated"></small>
+          </div>
         </div>
         <div class="flex flex-row items-center">
           <button class="ba dropshadow ba b--white bg-yellow navy bw1 pa2 mr2 pointer" onclick="${updateEditorView}">▶ Run</button>
