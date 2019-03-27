@@ -76,7 +76,7 @@ function acknowledgementsSection(state, emit){
   <section class="w-100 pa4 flex flex-column items-center">
     <h2 class="w-100 tc f2 lh-title">Acknowledgements</h2>
     <div class="w-100 tl mw7 mt4">
-    <p>Nautilist is supported and maintained by NYU's Intertelecommunications Program. The project was materialized by <a class="link black underline" class="link black underline" href="https://jk-lee.com" target="_blank">Joey Lee</a> through ITP's <a href="https://tisch.nyu.edu/itp/itp-people/faculty/somethings-in-residence-sirs" target="_blank">Something in Residence Program</a> under the supervision of Shawn Van Every, Dan Shiffman, and Dan O'Sullivan.</p>
+    <p>Nautilist is supported and maintained by NYU's Intertelecommunications Program. The project was materialized by <a class="link black underline" href="https://jk-lee.com" target="_blank">Joey Lee</a> through ITP's <a class="link black underline"  href="https://tisch.nyu.edu/itp/itp-people/faculty/somethings-in-residence-sirs" target="_blank">Something in Residence Program</a> under the supervision of Shawn Van Every, Dan Shiffman, and Dan O'Sullivan.</p>
     <p>Emojis via the <a class="link black underline" href="http://openmoji.org/index.html" target="_blank">OpenMoji Project</a> by the clever folks at <a class="link black underline" href="http://openmoji.org/about.html" target="_blank">Hfg Schwäbisch Gmünd</a>.</p>
     <p>Built with <a class="link black underline" href="https://choo.io/" target="_blank">Choo.js</a> & <a class="link black underline" href="https://feathersjs.com/" target="_blank">Feathers.js</a></p>
     <p>Other really cool projects worth exploring: 
