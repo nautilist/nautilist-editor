@@ -3,6 +3,7 @@ const NavSelect = require('../components/NavSelect');
 const staticAssetsUrl = "https://nautilist-public.herokuapp.com/images/user_placeholders/"
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer');
+const BrowseSearchBar = require('../components/BrowseSearchBar')
 
 module.exports = view
 
@@ -51,6 +52,7 @@ function view(state, emit) {
           <img class="w4" src="/assets/1F984.png">
           <p class="pa2 mw6">Oh and what would we be without our wonderful users? Go checkout their projects and collections for inspiration or to collaborate!</p>
     </header>
+    ${state.cache(BrowseSearchBar, 'UserSearch', state,emit, 'users', 'users').render() }
     <main class="w-100 h-100 pa4">
       <div class="w-100">
         <div class="mw9 center ph3-ns h-100">

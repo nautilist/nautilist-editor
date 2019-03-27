@@ -27,9 +27,9 @@ class NavSelect extends Component {
   createElement () {
     return html`
     <select id="selectChange" class="input-reset bn pl1 pr1 h2 f5 underline" onchange=${this.handleSelectChange}>
-      <option name="projects" value="/projects">Projects ▾</option>
-      <option name="collections" value="/collections">Collections ▾</option>
-      <option name="users" value="/users">Users ▾</option>
+      <option name="projects" value="/projects">Projects</option>
+      <option name="collections" value="/collections">Collections</option>
+      <option name="users" value="/users">Users</option>
     </select> 
     `
   }

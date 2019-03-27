@@ -3,6 +3,7 @@ const feathersClient = require('../helpers/feathersClient');
 // const ProjectModal = require('../components/ProjectModal');
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer');
+const BrowseSearchBar = require('../components/BrowseSearchBar')
 
 module.exports = view
 
@@ -104,6 +105,9 @@ function view (state, emit) {
           <img class="w4" src="/assets/1F490.png">
           <p class="pa2 mw6">Collections are groups of projects. Collections may contain similar themed projects such as for a class or larger project.</p>
         </header>
+
+      ${state.cache(BrowseSearchBar, 'CollectionsSearch', state,emit, '/api/collections', 'collections').render() }
+
       <main class="w-100 h-100 pa4">
         ${makeCollectionsList(state.collections)}
       </main>

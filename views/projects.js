@@ -4,6 +4,7 @@ const ProjectModal = require('../components/ProjectModal');
 const NavSelect = require('../components/NavSelect');
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer');
+const BrowseSearchBar = require('../components/BrowseSearchBar');
 
 module.exports = view
 
@@ -89,6 +90,7 @@ function view (state, emit) {
           <img class="w4" src="/assets/1F33C.png">
           <p class="pa2 mw6">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
       </header>
+      ${state.cache(BrowseSearchBar, 'ProjectsSearch', state,emit, '/api/projects', 'projects').render() }
       <main class="w-100 h-100 pa4">
         ${makeProjectList(state.projects, projectModal)}
       </main>

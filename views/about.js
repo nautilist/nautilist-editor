@@ -37,12 +37,12 @@ function gettingStartedSection(state, emit){
     </div>
     <div class="w-100 tl mw7 mt4">
       <h3>Create an account</h3>
-      <p>Create a Nautilist account at <a href="https://editor.nautilists.com/signup">editor.nautilists.com/signup</a>. If you've already created an account you can also simply, <a href="https://editor.nautilists.com/login">log in</a> to start making and saving lists.</p>
+      <p>Create a Nautilist account at <a class="link black underline" href="https://editor.nautilists.com/signup">editor.nautilists.com/signup</a>. If you've already created an account you can also simply, <a class="link black underline" href="https://editor.nautilists.com/login">log in</a> to start making and saving lists.</p>
     </div>
 
     <div class="w-100 tl mw7 mt4">
       <h3>Create a new list</h3>
-      <p>Start building a list of links using the <a href="https://editor.nautilists.com/">Nautilist Editor</a>. You can build your lists using the visual editor or using the special markdown syntax.</p>
+      <p>Start building a list of links using the <a class="link black underline" href="https://editor.nautilists.com/">Nautilist Editor</a>. You can build your lists using the visual editor or using the special markdown syntax.</p>
       <div class="w-100" style="height:380px">
       <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9em72QpAsmc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
@@ -76,7 +76,7 @@ function acknowledgementsSection(state, emit){
   <section class="w-100 pa4 flex flex-column items-center">
     <h2 class="w-100 tc f2 lh-title">Acknowledgements</h2>
     <div class="w-100 tl mw7 mt4">
-    <p>Nautilist is supported and maintained by NYU's Intertelecommunications Program. The project was materialized by <a class="link black underline" href="https://jk-lee.com" target="_blank">Joey Lee</a> through ITP's <a href="https://tisch.nyu.edu/itp/itp-people/faculty/somethings-in-residence-sirs" target="_blank">Something in Residence Program</a> under the supervision of Shawn Van Every, Dan Shiffman, and Dan O'Sullivan.</p>
+    <p>Nautilist is supported and maintained by NYU's Intertelecommunications Program. The project was materialized by <a class="link black underline" class="link black underline" href="https://jk-lee.com" target="_blank">Joey Lee</a> through ITP's <a href="https://tisch.nyu.edu/itp/itp-people/faculty/somethings-in-residence-sirs" target="_blank">Something in Residence Program</a> under the supervision of Shawn Van Every, Dan Shiffman, and Dan O'Sullivan.</p>
     <p>Emojis via the <a class="link black underline" href="http://openmoji.org/index.html" target="_blank">OpenMoji Project</a> by the clever folks at <a class="link black underline" href="http://openmoji.org/about.html" target="_blank">Hfg Schwäbisch Gmünd</a>.</p>
     <p>Built with <a class="link black underline" href="https://choo.io/" target="_blank">Choo.js</a> & <a class="link black underline" href="https://feathersjs.com/" target="_blank">Feathers.js</a></p>
     <p>Other really cool projects worth exploring: 
