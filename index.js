@@ -15,6 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(require('./stores/workspace'))
 app.use(require('./stores/public'))
 app.use(require('./stores/user'))
+app.use(require('./stores/editor'))
 
 app.route('/', require('./views/main'))
 app.route('/signup', require('./views/signup'))

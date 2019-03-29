@@ -5,6 +5,8 @@ const slugify = require('slugify')
 // const yaml = require('js-yaml');
 const md2jt = require('../helpers/md2jt');
 const feathersClient = require('../helpers/feathersClient')
+const Sortable = require('sortablejs');
+const Editor = require('../components/Editor');
 
 const TITLE = 'Nautilist Web Editor'
 
@@ -204,7 +206,137 @@ function view(state, emit) {
     <body class="w-100 h-100 code lh-copy flex flex-column">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 h-auto flex flex-column justify-start items-start" style="flex:1">
-      <header class="w-100 flex flex-row justify-between items-center pl1 pt1 pb1 pr2">
+      
+      <section class="w-100 h-100 flex flex-row-ns flex-column justify-start items-start min-height-0">
+      <div class="w-100 w-third-ns h-100-ns pa1">
+        ${supplyArea(state, emit)}
+      </div>
+      <div class="w-100 w-two-thirds-ns h-100 pa1">
+        ${state.cache(Editor, 'Editor', state, emit).render()}
+      </div>
+      </section>
+      </main>
+      ${editorHelpModal.render()}
+      ${editFeatureModal.render()}
+    </body>
+  `
+
+}
+
+function supplyArea(state, emit){
+
+  function showSelected(data){
+    return e=> {
+    switch(data){
+      case 'projects':
+        feathersClient.service('/api/projects').find({}).then(result =>{
+          state.projects = result.data
+          state.editor.currentTab = 'projects'
+          emit('render');
+        }).catch(err => {
+          alert(err)
+        })
+        break;
+      case 'collections':
+        feathersClient.service('/api/collections').find({}).then(result =>{
+          state.collections = result.data
+          state.editor.currentTab = 'collections'
+          emit('render');
+        }).catch(err => {
+          alert(err)
+        })
+        break
+      default:
+        return [];
+        break
+    }
+
+    }
+  }
+
+  function renderSelected(){
+    if(!state[state.editor.currentTab].length > 0){
+      showSelected(state.editor.currentTab)
+    } 
+
+    return state[state.editor.currentTab].map(feat => {
+      return html`
+        <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" id="${feat._id}" style="border-color:${feat.colors[feat.selectedColor]}">
+          <h4 class="ma0 f7 b">${feat.name}</h4>
+          <small class="f7">by ${feat.ownerDetails.username}</small>
+          <p class="ma0 f7">${feat.description}</p>
+        </li>
+      `
+    })
+    
+  }
+
+  function sortableList(){
+    let sortableEl = html`
+      <ul class="w-100 pa2 pl0 overflow-scroll-y">
+      ${renderSelected()}
+      </ul>
+    `
+
+    let sortable =  new Sortable(sortableEl, {
+      group: {
+          name: 'shared',
+          pull: 'clone'
+      },
+      animation: 150
+    });
+    return sortable.el
+  }
+
+  return html`
+  <div class="bn bw1 b--black w-100 h-100 pa2">
+    <ul class="pl0 list w-100 flex flex-row justify-center ma0">
+      <li class="mr2"><button class="f7 bn dropshadow pa2"
+        onclick=${showSelected('links')}>links</button></li>
+      <li class="mr2"><button class="f7 bn dropshadow pa2"
+        onclick=${showSelected('projects')}>projects</button></li>
+      <li class=""><button class="f7 bn dropshadow pa2"
+        onclick=${showSelected('collections')}>collections</button></li>
+    </ul>
+    <form class="w-100 mt3 shadow-5">
+    <input class="w-100 ba bw1 b--green f7 pa2" type="search" placeholder="search">
+    </form>
+    <div class="w-100">
+      ${sortableList()}
+    </div>
+  </div>
+  `
+}
+
+function workspaceArea(){
+
+  function sortableList(){
+    let sortableEl = html`
+      <ul class="w-100 h-100 pa2 pl0 overflow-scroll-y">
+
+      </ul>
+    `
+
+    let sortable =  new Sortable(sortableEl, {
+      group: {
+          name: 'shared',
+          pull: 'clone'
+      },
+      animation: 150
+    });
+    return sortable.el
+  }
+
+  return html`
+  <div class="bn bw2 b--black w-100 h-100 bg-near-white">
+    ${sortableList()}
+  </div>
+  `
+}
+
+/**
+ * 
+ <header class="w-100 flex flex-row justify-between items-center pl1 pt1 pb1 pr2">
         <div class="flex flex-row items-center">
           <button class="ba ba b--black dropshadow bg-white navy bw1 pa2 mr2 pointer" onclick="${editorHelpModal.open()}"> ? </button>
           <div class=" w-100 flex flex-row justify-end items-center pt1 pb1 pr2">
@@ -219,8 +351,11 @@ function view(state, emit) {
           <input class="dn" type="file" id="fileSelect" onchange="${handleFiles}">
         </div>
       </header>
-      <section class="w-100 h-100 flex flex-row justify-start items-start min-height-0">
-        <div class="w-50 h-100 pa1">
+ */
+
+/**
+ * 
+ * <div class="w-50 h-100 pa1">
           <div class="ba bw2 b--black w-100 h-100">
           ${visualEditor.render()}
           </div>
@@ -230,11 +365,4 @@ function view(state, emit) {
           ${codeEditor.render()}
           </div>
         </div>
-      </section>
-      </main>
-      ${editorHelpModal.render()}
-      ${editFeatureModal.render()}
-    </body>
-  `
-
-}
+ */
