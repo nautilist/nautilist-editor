@@ -7,6 +7,7 @@ const md2jt = require('../helpers/md2jt');
 const feathersClient = require('../helpers/feathersClient')
 const Sortable = require('sortablejs');
 const Editor = require('../components/Editor');
+const EditorResourcesSidebar = require('../components/EditorResourcesSidebar');
 
 const TITLE = 'Nautilist Web Editor'
 
@@ -209,7 +210,7 @@ function view(state, emit) {
       
       <section class="w-100 h-100 flex flex-row-ns flex-column justify-start items-start min-height-0">
       <div class="w-100 w-third-ns h-100-ns pa1">
-        ${supplyArea(state, emit)}
+        ${state.cache(EditorResourcesSidebar, 'EditorResourcesSidebar', state, emit).render()}
       </div>
       <div class="w-100 w-two-thirds-ns h-100 pa1">
         ${state.cache(Editor, 'Editor', state, emit).render()}
@@ -223,116 +224,6 @@ function view(state, emit) {
 
 }
 
-function supplyArea(state, emit){
-
-  function showSelected(data){
-    return e=> {
-    switch(data){
-      case 'projects':
-        feathersClient.service('/api/projects').find({}).then(result =>{
-          state.projects = result.data
-          state.editor.currentTab = 'projects'
-          emit('render');
-        }).catch(err => {
-          alert(err)
-        })
-        break;
-      case 'collections':
-        feathersClient.service('/api/collections').find({}).then(result =>{
-          state.collections = result.data
-          state.editor.currentTab = 'collections'
-          emit('render');
-        }).catch(err => {
-          alert(err)
-        })
-        break
-      default:
-        return [];
-        break
-    }
-
-    }
-  }
-
-  function renderSelected(){
-    if(!state[state.editor.currentTab].length > 0){
-      showSelected(state.editor.currentTab)
-    } 
-
-    return state[state.editor.currentTab].map(feat => {
-      return html`
-        <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" id="${feat._id}" style="border-color:${feat.colors[feat.selectedColor]}">
-          <h4 class="ma0 f7 b">${feat.name}</h4>
-          <small class="f7">by ${feat.ownerDetails.username}</small>
-          <p class="ma0 f7">${feat.description}</p>
-        </li>
-      `
-    })
-    
-  }
-
-  function sortableList(){
-    let sortableEl = html`
-      <ul class="w-100 pa2 pl0 overflow-scroll-y">
-      ${renderSelected()}
-      </ul>
-    `
-
-    let sortable =  new Sortable(sortableEl, {
-      group: {
-          name: 'shared',
-          pull: 'clone'
-      },
-      animation: 150
-    });
-    return sortable.el
-  }
-
-  return html`
-  <div class="bn bw1 b--black w-100 h-100 pa2">
-    <ul class="pl0 list w-100 flex flex-row justify-center ma0">
-      <li class="mr2"><button class="f7 bn dropshadow pa2"
-        onclick=${showSelected('links')}>links</button></li>
-      <li class="mr2"><button class="f7 bn dropshadow pa2"
-        onclick=${showSelected('projects')}>projects</button></li>
-      <li class=""><button class="f7 bn dropshadow pa2"
-        onclick=${showSelected('collections')}>collections</button></li>
-    </ul>
-    <form class="w-100 mt3 shadow-5">
-    <input class="w-100 ba bw1 b--green f7 pa2" type="search" placeholder="search">
-    </form>
-    <div class="w-100">
-      ${sortableList()}
-    </div>
-  </div>
-  `
-}
-
-function workspaceArea(){
-
-  function sortableList(){
-    let sortableEl = html`
-      <ul class="w-100 h-100 pa2 pl0 overflow-scroll-y">
-
-      </ul>
-    `
-
-    let sortable =  new Sortable(sortableEl, {
-      group: {
-          name: 'shared',
-          pull: 'clone'
-      },
-      animation: 150
-    });
-    return sortable.el
-  }
-
-  return html`
-  <div class="bn bw2 b--black w-100 h-100 bg-near-white">
-    ${sortableList()}
-  </div>
-  `
-}
 
 /**
  * 

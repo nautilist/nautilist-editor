@@ -8,7 +8,9 @@ class Editor extends Component {
     super(id);
     this.state = state;
     this.emit = emit;
-    this.local = state.components[id] = {}
+    this.local = state.components[id] = {
+      childNodes: []
+    }
     this.sortableList = this.sortableList.bind(this);
   }
 
@@ -23,16 +25,28 @@ class Editor extends Component {
           name: 'shared',
           pull: 'clone'
       },
-      animation: 150
+      animation: 150,
+      onSort: (evt) => {
+        console.log(evt)
+        let {childNodes} = evt.srcElement;
+        this.local.childNodes = [];
+        this.local.childNodes = childNodes
+
+        evt.item.querySelector('.expand-details').classList.remove('dn');
+      }
     });
     return sortable.el
   }
 
   createElement () {
     return html`
-    <div class="bn bw2 b--black w-100 h-100 bg-near-white">
-      ${this.sortableList()}
-    </div>
+    <section class="w-100 h-100">
+      <h1 class="ma0">New List</h1>
+      <p class="ma0">A radical description for the list of awesomeness!</p>
+      <div class="bn bw2 b--black w-100 h-100 bg-near-white">
+        ${this.sortableList()}
+      </div>
+    </section>
     `
   }
 
