@@ -94,7 +94,7 @@ class EditorResourcesSidebar extends Component {
 
   createElement () {
     return html`
-      <div class="bn bw1 b--black w-100 h-100 pa2">
+      <div class="bn bw1 b--black w-100 h-100 pa2 shadow-5">
       <ul class="pl0 list w-100 flex flex-row justify-center ma0">
         <li class="mr2"><button class="f7 bn dropshadow pa2"
           onclick=${this.fetchSelected('links', this.state, this.emit)}>links</button></li>
@@ -106,6 +106,7 @@ class EditorResourcesSidebar extends Component {
       <form class="w-100 mt3 shadow-5">
       <input class="w-100 ba bw1 b--green f7 pa2" type="search" placeholder="search">
       </form>
+      <p class="pa2 tc ma0">drag and drop these items into your workspace</p>
       <div class="w-100">
         ${this.makeSortable()}
       </div>

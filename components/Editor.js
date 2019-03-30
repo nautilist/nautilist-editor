@@ -16,7 +16,7 @@ class Editor extends Component {
 
   sortableList(){
     let sortableEl = html`
-      <ul class="w-100 h-100 pa2 pl0 overflow-scroll-y">
+      <ul class="w-100 h-100 pa2 overflow-scroll-y">
       </ul>
     `
 
@@ -41,11 +41,16 @@ class Editor extends Component {
   createElement () {
     return html`
     <section class="w-100 h-100">
-      <h1 class="ma0">New List</h1>
-      <p class="ma0">A radical description for the list of awesomeness!</p>
-      <div class="bn bw2 b--black w-100 h-100 bg-near-white">
+      <fieldset class="w-100 h-100 bg-white ba b--black bw2">
+      <legend class="pl2 pr2 ba bw2">workspace</legend>
+        <div class="bn w-100 bg-near-white">
+          <form class="w-100 flex flex-column">
+            <input class="bn pa2 f4" type="text" value="New Title">
+            <textarea class="bn pa2 resize-none"  type="text">New Project description</textarea>
+          </form>
+        </div>
         ${this.sortableList()}
-      </div>
+      </fieldset>
     </section>
     `
   }

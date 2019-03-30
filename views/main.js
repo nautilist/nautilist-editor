@@ -7,6 +7,7 @@ const md2jt = require('../helpers/md2jt');
 const feathersClient = require('../helpers/feathersClient')
 const Sortable = require('sortablejs');
 const Editor = require('../components/Editor');
+const EditorMenu = require('../components/EditorMenu');
 const EditorResourcesSidebar = require('../components/EditorResourcesSidebar');
 
 const TITLE = 'Nautilist Web Editor'
@@ -207,7 +208,7 @@ function view(state, emit) {
     <body class="w-100 h-100 code lh-copy flex flex-column">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 h-auto flex flex-column justify-start items-start" style="flex:1">
-      
+      ${state.cache(EditorMenu, "EditorMenu", state, emit).render()}
       <section class="w-100 h-100 flex flex-row-ns flex-column justify-start items-start min-height-0">
       <div class="w-100 w-third-ns h-100-ns pa1">
         ${state.cache(EditorResourcesSidebar, 'EditorResourcesSidebar', state, emit).render()}
