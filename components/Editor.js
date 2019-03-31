@@ -12,6 +12,8 @@ class Editor extends Component {
       childNodes: []
     }
     this.sortableList = this.sortableList.bind(this);
+    this.updateProjectName = this.updateProjectName.bind(this);
+    this.updateProjectDescription = this.updateProjectDescription.bind(this);
   }
 
   sortableList(){
@@ -38,6 +40,15 @@ class Editor extends Component {
     return sortable.el
   }
 
+  updateProjectName(e){
+    let {value} = e.target;
+    this.state.workspace.name = value;
+  }
+  updateProjectDescription(e){
+    let {value} = e.target;
+    this.state.workspace.name = value;
+  }
+
   createElement () {
     return html`
     <section class="w-100 h-100">
@@ -45,8 +56,8 @@ class Editor extends Component {
       <legend class="pl2 pr2 ba bw2">workspace</legend>
         <div class="bn w-100 bg-near-white">
           <form class="w-100 flex flex-column">
-            <input class="bn pa2 f4" type="text" value="New Title">
-            <textarea class="bn pa2 resize-none"  type="text">New Project description</textarea>
+            <input class="bn pa2 f4" type="text" value="New Title" onchange=${this.updateProjectName}>
+            <textarea class="bn pa2 resize-none"  type="text" onchange=${this.updateProjectDescription}>New Project description</textarea>
           </form>
         </div>
         ${this.sortableList()}

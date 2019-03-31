@@ -8,6 +8,9 @@ function store(state, emitter) {
   state.projects = [];
   state.selectedProject = {};
 
+  state.links = [];
+  state.selectedLink = {};
+
   state.collections = [];
   state.selectedCollection = {};
 

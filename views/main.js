@@ -19,6 +19,7 @@ const ShareModal = require("../components/ShareModal");
 const SearchModal = require("../components/SearchModal");
 const EditFeatureModal = require("../components/EditFeatureModal");
 const NavbarTop = require("../components/NavbarTop");
+const AddFeatureModal = require("../components/AddFeatureModal");
 
 css `
 html{
@@ -62,6 +63,7 @@ function view(state, emit) {
   const editorHelpModal = new EditorHelpModal("EditorHelpModal", state, emit)
   const shareModal = new ShareModal("ShareModal", state, emit)
   const searchModal = new SearchModal("SearchModal", state, emit)
+  const addFeatureModal = new AddFeatureModal("AddFeatureModal", state, emit)
 
   // const editFeatureModal = state.cache( EditFeatureModal, "EditFeatureModal", state, emit)
 
@@ -211,7 +213,7 @@ function view(state, emit) {
       ${state.cache(EditorMenu, "EditorMenu", state, emit).render()}
       <section class="w-100 h-100 flex flex-row-ns flex-column justify-start items-start min-height-0">
       <div class="w-100 w-third-ns h-100-ns pa1">
-        ${state.cache(EditorResourcesSidebar, 'EditorResourcesSidebar', state, emit).render()}
+        ${state.cache(EditorResourcesSidebar, 'EditorResourcesSidebar', state, emit, addFeatureModal).render()}
       </div>
       <div class="w-100 w-two-thirds-ns h-100 pa1">
         ${state.cache(Editor, 'Editor', state, emit).render()}
@@ -220,6 +222,7 @@ function view(state, emit) {
       </main>
       ${editorHelpModal.render()}
       ${editFeatureModal.render()}
+      ${addFeatureModal.render()}
     </body>
   `
 

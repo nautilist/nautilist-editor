@@ -13,7 +13,9 @@ function store (state, emitter) {
   state.workspace = {
     json: {},//md2jt.md2json(initialMd),
     md:'', //initialMd,
-    _id: null // the id in the database
+    _id: null, // the id in the database,
+    name:'',
+    description:''
   }
 
   state.events.workspace_md_update = 'workspace:md:update'

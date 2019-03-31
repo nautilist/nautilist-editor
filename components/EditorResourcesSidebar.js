@@ -8,20 +8,33 @@ class EditorResourcesSidebar extends Component {
     super(id)
     this.state = state;
     this.emit = emit;
-    this.local = state.components[id] = {}
-
+    this.local = state.components[id] = {
+      currentSelection: ''
+    }
     this.fetchSelected = this.fetchSelected.bind(this);
     this.buildList = this.buildList.bind(this);
     this.makeSortable = this.makeSortable.bind(this);
+    this.addFeature = this.addFeature.bind(this);
   }
 
   fetchSelected(data, state, emit){
     return e=> {
     switch(data){
+      case 'links':
+        feathersClient.service('/api/links').find({}).then(result =>{
+          state.links = result.data
+          state.editor.currentTab = 'links'
+          this.local.currentSelection = 'links'
+          emit('render');
+        }).catch(err => {
+          alert(err)
+        })
+        break;
       case 'projects':
         feathersClient.service('/api/projects').find({}).then(result =>{
           state.projects = result.data
           state.editor.currentTab = 'projects'
+          this.local.currentSelection = 'projects'
           emit('render');
         }).catch(err => {
           alert(err)
@@ -31,6 +44,7 @@ class EditorResourcesSidebar extends Component {
         feathersClient.service('/api/collections').find({}).then(result =>{
           state.collections = result.data
           state.editor.currentTab = 'collections'
+          this.local.currentSelection = 'collections'
           emit('render');
         }).catch(err => {
           alert(err)
@@ -74,9 +88,34 @@ class EditorResourcesSidebar extends Component {
     
   }
 
+  // triggers the add feature modal
+  addFeature(data, state, emit){
+    
+    return e => {
+      switch(data){
+        case 'links':
+          state.editor.currentTab = 'links'
+          this.local.currentSelection = 'links'
+          state.components.AddFeatureModal.open();
+          break;
+        case 'projects':
+          state.editor.currentTab = 'projects'
+          this.local.currentSelection = 'projects'
+          state.components.AddFeatureModal.open();
+          break;
+        case 'collections':
+          state.editor.currentTab = 'collections'
+          this.local.currentSelection = 'collections'
+          state.components.AddFeatureModal.open();
+          break;
+      }
+    }
+  }
+
   makeSortable(){
     let sortableEl = html`
       <ul class="w-100 pa2 pl0 overflow-scroll-y">
+        <li><button onclick=${this.addFeature(this.local.currentSelection, this.state, this.emit)}>add new</button></li>
       ${this.buildList()}
       </ul>
     `
@@ -116,6 +155,10 @@ class EditorResourcesSidebar extends Component {
 
   update () {
     return true
+  }
+
+  load(){
+    this.fetchSelected('projects', this.state, this.emit).call()
   }
 }
 
