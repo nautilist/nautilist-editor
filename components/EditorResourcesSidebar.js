@@ -15,6 +15,7 @@ class EditorResourcesSidebar extends Component {
     this.buildList = this.buildList.bind(this);
     this.makeSortable = this.makeSortable.bind(this);
     this.addFeature = this.addFeature.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
 
   fetchSelected(data, state, emit){
@@ -58,30 +59,38 @@ class EditorResourcesSidebar extends Component {
     }
   }
 
+  removeItem(state, emit){
+    
+    return e => {
+      let {childNodes} = state.workspace
+      
+      let newChildNodes = childNodes.filter(item => {
+        return item.id !== e.target.parentElement.parentElement.id
+      })
+
+      state.workspace.childNodes = newChildNodes
+      e.target.parentElement.parentElement.remove()
+    }
+    
+  }
+
   buildList(){
     const {currentTab} = this.state.editor
+    
     if(!this.state[currentTab].length > 0){
       this.fetchSelected(currentTab)
-    } 
-
-    function removeItem(){
-      return e=>{
-        e.target.parentElement.remove()
-        console.log(e.target)
-      }
-        
-    }
+    }         
 
     return this.state[currentTab].map(feat => {
       return html`
-        <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" id="${feat._id}" style="border-color:${feat.colors[feat.selectedColor]}">
+        <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" data-db="${currentTab}" id="${feat._id}" style="border-color:${feat.colors[feat.selectedColor]}">
+          <div class="w-100 flex flex-row justify-end"><button class="bn underline workspace-view dn" 
+            onclick=${this.removeItem(this.state, this.emit)}>remove</button></div>
           <h4 class="ma0 f7 b">${feat.name}</h4>
           <small class="f7">by ${feat.ownerDetails.username}</small>
           <p class="ma0 f7">${feat.description}</p>
-          <button class="workspace-view dn" onclick=${removeItem()}>remove</button>
 
           <section class="dn workspace-view">
-            <p>I'm a bunch of really awesome details!</p>
             <p>${currentTab == 'projects' ? createList(feat.json) : ''}</p>
           </section>
         </li>
@@ -133,14 +142,25 @@ class EditorResourcesSidebar extends Component {
   }
 
   createElement () {
+
+    function showSelected(currentSelection, selection){
+      if(currentSelection === selection){
+        return 'bg-dark-pink white'
+      } else{
+        return 'bg-near-white navy'
+      }
+    }
+
+    console.log(this.state.editor.currentTab)
+
     return html`
-      <div class="bn bw1 b--black w-100 h-100 pa2 shadow-5">
+      <div class="bn bw1 b--black w-100 h-100 pa2">
       <ul class="pl0 list w-100 flex flex-row justify-center ma0">
-        <li class="mr2"><button class="f7 bn dropshadow pa2"
+        <li class="mr2"><button class="f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'links')}"
           onclick=${this.fetchSelected('links', this.state, this.emit)}>links</button></li>
-        <li class="mr2"><button class="f7 bn dropshadow pa2"
+        <li class="mr2"><button class="f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'projects')}"
           onclick=${this.fetchSelected('projects', this.state, this.emit)}>projects</button></li>
-        <li class=""><button class="f7 bn dropshadow pa2"
+        <li class=""><button class="f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'collections')}"
           onclick=${this.fetchSelected('collections', this.state, this.emit)}>collections</button></li>
       </ul>
       <form class="w-100 mt3 shadow-5">
@@ -194,6 +214,16 @@ function createList(parentObject){
               </fieldset>
             </li>
           `
+        } else if(feature.hasOwnProperty('json')){
+          return html`
+          <li class="item mt2 mb4">
+            <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+              <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
+              <p class="ma0 pl2 mb3">${feature.description}</p>
+              ${createList(feature.json)}
+            </fieldset>
+          </li>
+        `
         }
         return createlistItem(parentObject, feature);
       })

@@ -11,11 +11,17 @@ function store (state, emitter) {
   const initialMd= setInitialMd('single');
 
   state.workspace = {
-    json: {},//md2jt.md2json(initialMd),
+    // json: {}, //md2jt.md2json(initialMd),
     md:'', //initialMd,
     _id: null, // the id in the database,
-    name:'',
-    description:''
+    name:'New Project',
+    description:'New project description for all to see',
+    childNodes: [],
+    json:{
+      name: '',
+      description: '',
+      features:[]
+    }
   }
 
   state.events.workspace_md_update = 'workspace:md:update'

@@ -56,6 +56,7 @@ class AddFeatureModal extends Component {
         feathersClient.service(`/api/${this.state.editor.currentTab}`).create(payload).then(result => {
           console.log(result)
           // this.emit('pushState', '/projects');
+          // this.state[this.state.editor.currentTab].unshift(result)
           this.close();
           this.emit('render');
         }).catch(err => {
