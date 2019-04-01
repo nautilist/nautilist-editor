@@ -34,7 +34,10 @@ class Editor extends Component {
         this.local.childNodes = [];
         this.local.childNodes = childNodes
 
-        evt.item.querySelector('.expand-details').classList.remove('dn');
+        let items = evt.item.querySelectorAll('.workspace-view')
+        items.forEach(item => {
+          item.classList.remove('dn');
+        })
       }
     });
     return sortable.el

@@ -59,8 +59,9 @@ class EditorResourcesSidebar extends Component {
   }
 
   buildList(){
-    if(!this.state[this.state.editor.currentTab].length > 0){
-      this.fetchSelected(this.state.editor.currentTab)
+    const {currentTab} = this.state.editor
+    if(!this.state[currentTab].length > 0){
+      this.fetchSelected(currentTab)
     } 
 
     function removeItem(){
@@ -71,16 +72,17 @@ class EditorResourcesSidebar extends Component {
         
     }
 
-    return this.state[this.state.editor.currentTab].map(feat => {
+    return this.state[currentTab].map(feat => {
       return html`
         <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" id="${feat._id}" style="border-color:${feat.colors[feat.selectedColor]}">
           <h4 class="ma0 f7 b">${feat.name}</h4>
           <small class="f7">by ${feat.ownerDetails.username}</small>
           <p class="ma0 f7">${feat.description}</p>
-          <button onclick=${removeItem()}>remove</button>
+          <button class="workspace-view dn" onclick=${removeItem()}>remove</button>
 
-          <section class="dn expand-details">
+          <section class="dn workspace-view">
             <p>I'm a bunch of really awesome details!</p>
+            <p>${currentTab == 'projects' ? createList(feat.json) : ''}</p>
           </section>
         </li>
       `
@@ -114,9 +116,8 @@ class EditorResourcesSidebar extends Component {
 
   makeSortable(){
     let sortableEl = html`
-      <ul class="w-100 pa2 pl0 overflow-scroll-y">
-        <li><button onclick=${this.addFeature(this.local.currentSelection, this.state, this.emit)}>add new</button></li>
-      ${this.buildList()}
+      <ul class="w-100 pa2 pl0 overflow-scroll-y list ">
+        ${this.buildList()}
       </ul>
     `
 
@@ -145,7 +146,8 @@ class EditorResourcesSidebar extends Component {
       <form class="w-100 mt3 shadow-5">
       <input class="w-100 ba bw1 b--green f7 pa2" type="search" placeholder="search">
       </form>
-      <p class="pa2 tc ma0">drag and drop these items into your workspace</p>
+      <p><button class="ba w-100 h2 dropshadow bg-light-green" onclick=${this.addFeature(this.local.currentSelection, this.state, this.emit)}>add new</button></p>
+      <p class="pa2 tc ma0 f7">drag and drop these items into your workspace</p>
       <div class="w-100">
         ${this.makeSortable()}
       </div>
@@ -158,9 +160,44 @@ class EditorResourcesSidebar extends Component {
   }
 
   load(){
-    this.fetchSelected('projects', this.state, this.emit).call()
+    this.fetchSelected('links', this.state, this.emit).call()
   }
 }
 
 module.exports = EditorResourcesSidebar
 
+function createlistItem(parentObject, feature){
+  return html`
+  <li class="item pa2 ba bw1 mb1 mt1 bg-white">
+    <div class="w-100 flex flex-row justify-between items-start">
+      <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+    </div>
+    <p class="ma0 f7">${feature.description}</p>
+  </li>
+  `
+} // end createListItem
+
+function createList(parentObject){
+  const {features} = parentObject;
+
+  return html`
+  <ul class="list pl0 list-container">
+    ${
+      features.map(feature => {
+        if(feature.hasOwnProperty('features')){
+          return html`
+            <li class="item mt2 mb4">
+              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
+                <p class="ma0 pl2 mb3">${feature.description}</p>
+                ${createList(feature)}
+              </fieldset>
+            </li>
+          `
+        }
+        return createlistItem(parentObject, feature);
+      })
+    }
+  </ul>
+  `
+} // end createList

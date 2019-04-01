@@ -7,7 +7,7 @@ store.storeName = 'editor'
 function store(state, emitter) {
 
     state.editor = {
-        currentTab: 'projects'
+        currentTab: 'links'
     }
   
 
