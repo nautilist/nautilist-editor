@@ -2,6 +2,7 @@ var Component = require('choo/component')
 var html = require('choo/html')
 const feathersClient = require('../helpers/feathersClient');
 const Sortable = require('sortablejs')
+const EditorSearchBar = require('./EditorSearchBar');
 
 class EditorResourcesSidebar extends Component {
   constructor (id, state, emit) {
@@ -9,9 +10,10 @@ class EditorResourcesSidebar extends Component {
     this.state = state;
     this.emit = emit;
     this.local = state.components[id] = {
-      currentSelection: ''
+      currentSelection: '',
+      fetchSelected: this.fetchSelected.bind(this)
     }
-    this.fetchSelected = this.fetchSelected.bind(this);
+    
     this.buildList = this.buildList.bind(this);
     this.makeSortable = this.makeSortable.bind(this);
     this.addFeature = this.addFeature.bind(this);
@@ -63,13 +65,16 @@ class EditorResourcesSidebar extends Component {
     
     return e => {
       let {childNodes} = state.workspace
-      
+      let rm = confirm('are you sure you want to remove this?')
+        
       let newChildNodes = childNodes.filter(item => {
         return item.id !== e.target.parentElement.parentElement.id
       })
 
       state.workspace.childNodes = newChildNodes
       e.target.parentElement.parentElement.remove()
+
+      
     }
     
   }
@@ -125,7 +130,7 @@ class EditorResourcesSidebar extends Component {
 
   makeSortable(){
     let sortableEl = html`
-      <ul class="w-100 pa2 pl0 overflow-scroll-y list ">
+      <ul class="w-100 pa2 pl0 overflow-scroll-y list">
         ${this.buildList()}
       </ul>
     `
@@ -156,17 +161,17 @@ class EditorResourcesSidebar extends Component {
     return html`
       <div class="bn bw1 b--black w-100 h-100 pa2">
       <ul class="pl0 list w-100 flex flex-row justify-center ma0">
-        <li class="mr2"><button class="f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'links')}"
+        <li class="mr2 w-third"><button class="w-100 f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'links')}"
           onclick=${this.fetchSelected('links', this.state, this.emit)}>links</button></li>
-        <li class="mr2"><button class="f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'projects')}"
+        <li class="mr2 w-third"><button class="w-100 f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'projects')}"
           onclick=${this.fetchSelected('projects', this.state, this.emit)}>projects</button></li>
-        <li class=""><button class="f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'collections')}"
+        <li class="w-third"><button class="w-100 f7 bn dropshadow pa2 ${showSelected(this.local.currentSelection, 'collections')}"
           onclick=${this.fetchSelected('collections', this.state, this.emit)}>collections</button></li>
       </ul>
+      <p><button class="ba b--white w-100 h2 dropshadow bg-light-green" onclick=${this.addFeature(this.local.currentSelection, this.state, this.emit)}>add new</button></p>
       <form class="w-100 mt3 shadow-5">
       <input class="w-100 ba bw1 b--green f7 pa2" type="search" placeholder="search">
       </form>
-      <p><button class="ba w-100 h2 dropshadow bg-light-green" onclick=${this.addFeature(this.local.currentSelection, this.state, this.emit)}>add new</button></p>
       <p class="pa2 tc ma0 f7">drag and drop these items into your workspace</p>
       <div class="w-100">
         ${this.makeSortable()}

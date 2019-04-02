@@ -13,6 +13,12 @@ function openInEditor(state, emit) {
     console.log("opening in editor")
     // TODO: set this in another way?
     state.workspace._id = state.selectedProject._id
+    
+    // TODO: need to add remove button to childNodes and create function to convert json to childNodes
+    // document.querySelector('#listParent').childNodes.forEach(item=>{
+    //   state.workspace.childNodes.push(item);
+    // })
+    
     // get the selectedProject.json
     emit(state.events.workspace_all_update, state.selectedProject.json);
     // then render!
@@ -110,7 +116,7 @@ function addCollaboratorBtn(state, emit, modal){
 
 function createlistItem(feature) {
   return html `
-  <li class="item pa2 ba bw1 mb1 mt1 bg-white">
+  <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-db="${feature.featureType}" id="${feature._id}">
     <div class="w-100 flex flex-row justify-between items-start">
       <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
     </div>
@@ -126,12 +132,12 @@ function createList(parentObject) {
       features
     } = parentObject;
     return html `
-    <ul class="list pl0 list-container">
+    <ul id="listParent" class="list pl0 list-container">
       ${
         features.map(feature => {
           if(feature.hasOwnProperty('features')){
             return html`
-              <li class="item mt2 mb4">
+              <li class="item mt2 mb4" data-db="${feature.featureType}" id="${feature._id}">
                 <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
                   <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
                   <p class="ma0 pl2 mb3">${feature.description}</p>
@@ -139,6 +145,16 @@ function createList(parentObject) {
                 </fieldset>
               </li>
             `
+          } else if(feature.hasOwnProperty('json')){
+            return html`
+            <li class="item mt2 mb4" data-db="${feature.featureType}" id="${feature._id}">
+              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
+                <p class="ma0 pl2 mb3">${feature.description}</p>
+                ${createList(feature.json)}
+              </fieldset>
+            </li>
+          `
           }
           return createlistItem(feature);
         })
@@ -220,7 +236,7 @@ function view(state, emit) {
                         <h3 class="">Use or Remix</h3>
                         <ul class="list pl0 flex flex-column items-start w-80">
                             <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-purple white" onclick="${openInEditor(state, emit)}">Open in Editor</button></li>
-                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-navy yellow" onclick="${copyMarkdown(state, emit)}">Copy Markdown</button></li>
+                            <li class="mb2 w-100"><button class="w-100 pa2 bn dropshadow bg-navy yellow dn" onclick="${copyMarkdown(state, emit)}">Copy Markdown</button></li>
                         </ul>
                     </section>
                     <section>

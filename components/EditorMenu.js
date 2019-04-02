@@ -113,8 +113,8 @@ class EditorMenu extends Component {
 
   createElement () {
     return html`
-    <ul class="w-100 flex flex-row list justify-end pr2 pl2 pt2">
-      <li class="pr2"><p id="lastUpdated"></p></li>
+    <ul class="w-100 flex flex-row list justify-end items-end pr2 pl2 pt2">
+      <li class="pr2"><p class="f7 ma0" id="lastUpdated"></p></li>
       <li class="pr2"><buttton class="h2 pa2 dropshadow bg-yellow navy" onclick=${saveToPublic(this.state, this.emit)}>Save Project</button></li>
       <li class="pr2"><buttton class="h2 pa2 dropshadow bg-navy yellow" onclick=${newProject(this.state, this.emit)}>New Project</button></li>
       <li class="pr2"><buttton class="dn h2 pa2 dropshadow bg-white navy">Download</button></li>

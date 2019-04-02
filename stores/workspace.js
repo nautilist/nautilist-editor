@@ -112,6 +112,8 @@ function store (state, emitter) {
 
   emitter.on(state.events.workspace_all_update, function(_payload){
     state.workspace.json = addClientId(_payload);
+    state.workspace.name = _payload.name;
+    state.workspace.description = _payload.description;
     state.workspace.md = md2jt.json2md(_payload);
     emitter.emit(state.events.addClientId, state.workspace.json)
     emitter.emit(state.events.RENDER)

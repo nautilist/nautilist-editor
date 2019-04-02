@@ -2,6 +2,7 @@ var Component = require('choo/component')
 var html = require('choo/html')
 var feathersClient = require('../helpers/feathersClient');
 
+
 class AddFeatureModal extends Component {
   constructor (id, state, emit) {
     super(id)
@@ -47,19 +48,31 @@ class AddFeatureModal extends Component {
           name: formData.get('name'),
           description: formData.get('description'),
           tags: formData.get('description').split(','),
+          json: { 
+            name: formData.get('name'),
+            description:formData.get('description'),
+            features:[]
+          }
         }
 
-        if(this.state.currentTab == 'links') delete payload.url;
+        if(this.state.currentTab == 'links' || this.state.currentTab == 'collections') {
+          delete payload.url
+          delete payload.json
+        }
         
         console.log(payload)
         // submit the payload to the server annonymously
         feathersClient.service(`/api/${this.state.editor.currentTab}`).create(payload).then(result => {
-          console.log(result)
-          // this.emit('pushState', '/projects');
-          // this.state[this.state.editor.currentTab].unshift(result)
+          alert('feature added!')
+          return feathersClient.service(`/api/${this.state.editor.currentTab}`).find({})
+        })
+        .then(result => {
+          this.state[this.state.currentTab] = result.data;
+          console.log(this.state[this.state.currentTab])
           this.close();
-          this.emit('render');
-        }).catch(err => {
+          this.state.components.EditorResourcesSidebar.fetchSelected(this.state.editor.currentTab, this.state, this.emit).call()
+        })
+        .catch(err => {
           alert(err);
         })
 

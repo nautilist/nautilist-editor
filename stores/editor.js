@@ -10,5 +10,13 @@ function store(state, emitter) {
         currentTab: 'links'
     }
   
+    state.events.updateEditor = 'editor:update';
+
+    emitter.on(state.events.updateEditor, function(){
+        emitter.emit('render')
+        emitter.emit('pushState', "/")
+    })
+
+
 
 }

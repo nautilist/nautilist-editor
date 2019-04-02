@@ -25,7 +25,7 @@ class Editor extends Component {
 
   sortableList(){
     let sortableEl = html`
-      <ul class="w-100 h-100 pa2 overflow-scroll-y">
+      <ul class="w-100 h-100 pa2 overflow-scroll-y list">
       </ul>
     `
     // console.log(this.state.workspace.childNodes.length)
