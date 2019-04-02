@@ -39,11 +39,6 @@ app.route('/browse', require('./views/browse'))
 
 app.route('/*', require('./views/404'))
 
-// if (typeof navigator !== 'undefined') {
-//   console.log("not defined!!!!!")
-//   document.body.appendChild(app.start())
-// }
-
 if (typeof window !== 'undefined') {
   document.body.appendChild(app.start())
   app.mount('body')
