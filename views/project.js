@@ -1,6 +1,5 @@
 var html = require('choo/html')
 const copy = require('clipboard-copy')
-const feathersClient = require('../helpers/feathersClient');
 const AddToCollectionModal = require("../components/AddToCollectionModal");
 const AddCollaboratorModal = require("../components/AddCollaboratorModal");
 const NavbarTop = require("../components/NavbarTop");
@@ -34,7 +33,7 @@ function deleteFeature(state, emit) {
     } = state.selectedProject
     let del = confirm("do you really want to delete this?");
     if (del === true) {
-      feathersClient.service("/api/projects").remove(_id).then(result => {
+      state.api.projects.remove(_id).then(result => {
         alert("project deleted!")
         emit('pushState', '/projects');
       }).catch(err => {
@@ -67,7 +66,7 @@ function saveToLists(state, emit) {
       description: state.selectedProject.description
     }
 
-    feathersClient.service('/api/projects').create(payload).then(result => {
+    state.api.projects.create(payload).then(result => {
       alert(`${result.name} - was saved to your projects!`)
     }).catch(err => {
       alert(err)
@@ -172,7 +171,7 @@ function followProject(state, emit) {
               "followers": state.user.id
           }
       }
-      feathersClient.service('/api/projects').patch(projectId, params, {}).then(result => {
+      state.api.projects.patch(projectId, params, {}).then(result => {
           alert("you started following this list!");
           return result
       }).catch(err => {

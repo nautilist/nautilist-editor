@@ -1,5 +1,4 @@
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient');
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer')
 
@@ -13,7 +12,7 @@ function deleteFeature(state, emit) {
         } = state.selectedCollection
         let del = confirm("do you really want to delete this?");
         if (del === true) {
-            feathersClient.service("/api/collections").remove(_id).then(result => {
+            state.api.collections.remove(_id).then(result => {
                 alert("collection deleted!")
                 emit('pushState', '/collections');
             }).catch(err => {
@@ -43,7 +42,7 @@ function followCollection(state, emit) {
                 "followers": state.user.id
             }
         }
-        feathersClient.service('/api/collections').patch(collectionId, params, {}).then(result => {
+        state.api.collections.patch(collectionId, params, {}).then(result => {
             alert("you started following this list!");
             return result
         }).catch(err => {
@@ -73,7 +72,7 @@ function view(state, emit) {
 
             let del = confirm("do you really want to delete this?");
             if (del === true) {
-                feathersClient.service("/api/collections").patch(collectionId, params, {}).then(result => {
+                state.api.collections.patch(collectionId, params, {}).then(result => {
                     alert("project removed!")
                     emit('pushState', `/collections/${collectionId}`);
                 }).catch(err => {

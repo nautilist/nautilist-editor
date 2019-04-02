@@ -1,10 +1,10 @@
 var Component = require('choo/component')
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient');
+const feathersClient = require('../../helpers/feathersClient');
 const Sortable = require('sortablejs')
 const EditorSearchBar = require('./EditorSearchBar');
 
-class EditorResourcesSidebar extends Component {
+class EditorSidebar extends Component {
   constructor (id, state, emit) {
     super(id)
     this.state = state;
@@ -26,7 +26,7 @@ class EditorResourcesSidebar extends Component {
       case 'links':
         feathersClient.service('/api/links').find({}).then(result =>{
           state.links = result.data
-          state.editor.currentTab = 'links'
+          state.workspace.currentTab = 'links'
           this.local.currentSelection = 'links'
           emit('render');
         }).catch(err => {
@@ -36,7 +36,7 @@ class EditorResourcesSidebar extends Component {
       case 'projects':
         feathersClient.service('/api/projects').find({}).then(result =>{
           state.projects = result.data
-          state.editor.currentTab = 'projects'
+          state.workspace.currentTab = 'projects'
           this.local.currentSelection = 'projects'
           emit('render');
         }).catch(err => {
@@ -46,7 +46,7 @@ class EditorResourcesSidebar extends Component {
       case 'collections':
         feathersClient.service('/api/collections').find({}).then(result =>{
           state.collections = result.data
-          state.editor.currentTab = 'collections'
+          state.workspace.currentTab = 'collections'
           this.local.currentSelection = 'collections'
           emit('render');
         }).catch(err => {
@@ -80,7 +80,7 @@ class EditorResourcesSidebar extends Component {
   }
 
   buildList(){
-    const {currentTab} = this.state.editor
+    const {currentTab} = this.state.workspace
     
     if(!this.state[currentTab].length > 0){
       this.fetchSelected(currentTab)
@@ -110,17 +110,17 @@ class EditorResourcesSidebar extends Component {
     return e => {
       switch(data){
         case 'links':
-          state.editor.currentTab = 'links'
+          state.workspace.currentTab = 'links'
           this.local.currentSelection = 'links'
           state.components.AddFeatureModal.open();
           break;
         case 'projects':
-          state.editor.currentTab = 'projects'
+          state.workspace.currentTab = 'projects'
           this.local.currentSelection = 'projects'
           state.components.AddFeatureModal.open();
           break;
         case 'collections':
-          state.editor.currentTab = 'collections'
+          state.workspace.currentTab = 'collections'
           this.local.currentSelection = 'collections'
           state.components.AddFeatureModal.open();
           break;
@@ -156,7 +156,7 @@ class EditorResourcesSidebar extends Component {
       }
     }
 
-    console.log(this.state.editor.currentTab)
+    console.log(this.state.workspace.currentTab)
 
     return html`
       <div class="bn bw1 b--black w-100 h-100 pa2">
@@ -189,7 +189,7 @@ class EditorResourcesSidebar extends Component {
   }
 }
 
-module.exports = EditorResourcesSidebar
+module.exports = EditorSidebar;
 
 function createlistItem(parentObject, feature){
   return html`

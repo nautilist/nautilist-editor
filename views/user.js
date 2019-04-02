@@ -1,6 +1,5 @@
 var html = require('choo/html')
 const NavSelect = require('../components/NavSelect');
-const feathersClient = require('../helpers/feathersClient')
 const NavbarTop = require("../components/NavbarTop");
 
 module.exports = view
@@ -16,7 +15,7 @@ function newCollectionBtn(state, emit){
       description: formData.get('name') || "new collection about something interesting",
     }
 
-    feathersClient.service('/api/collections').create(payload).then(result => {
+    state.api.collections.create(payload).then(result => {
       alert("new collection created!");
       emit('fetch-user') 
     }).catch(err => {

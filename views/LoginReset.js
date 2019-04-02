@@ -1,5 +1,4 @@
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient')
 
 module.exports = view
 
@@ -20,7 +19,7 @@ function submitSendReset(state, emit){
             email: formData.get('email')
           }
         }
-      feathersClient.service("authmanagement").create(obj).then(result => {
+      state.api.authmanagement.create(obj).then(result => {
         console.log('sending reset password!', result)
         document.querySelector("#update").innerHTML = "an email was sent to your inbox - please open that URL"
       }).catch(err => {
@@ -43,7 +42,7 @@ function submitReset(state, emit){
           password: formData.get('password')
         }
       }
-      feathersClient.service("authmanagement").create(obj).then(result => {
+      state.api.authmanagement.create(obj).then(result => {
         console.log('password changed!', result)
         emit('pushState', '/login')
       }).catch(err => {

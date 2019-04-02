@@ -1,5 +1,3 @@
-const feathersClient = require('../helpers/feathersClient');
-
 module.exports = store
 
 store.storeName = 'user'
@@ -50,7 +48,7 @@ function store(state, emitter) {
         email: _formData.get("email"),
         password: _formData.get("password")
       }
-      feathersClient.service('users').create(credentials).then(() => {
+      state.api.users.create(credentials).then(() => {
         console.log("sign up successful yo!")
         // emitter.emit(state.events.user_login, _formData)
         emitter.emit('pushState', "/verify")
@@ -62,7 +60,7 @@ function store(state, emitter) {
     };
 
     this.checkLogin = function (_formData) {
-      feathersClient.authenticate().then(authResponse => {
+      state.api.authenticate().then(authResponse => {
         // try to auth using JWT from local Storage
         state.user.username = authResponse.username;
         state.user.id = authResponse.id;
@@ -80,7 +78,7 @@ function store(state, emitter) {
     // LOGIN
     this.login = function (_formData) {
       if (!_formData) {
-        feathersClient.authenticate().then(authResponse => {
+        state.api.authenticate().then(authResponse => {
           // try to auth using JWT from local Storage
           state.user.username = authResponse.username;
           state.user.id = authResponse.id;
@@ -105,7 +103,7 @@ function store(state, emitter) {
           strategy: 'local'
         }, credentials);
 
-        feathersClient.authenticate(payload).then(authResponse => {
+        state.api.authenticate(payload).then(authResponse => {
           state.user.authenticated = true;
           state.user.username = authResponse.username;
           state.user.id = authResponse.id;
@@ -122,7 +120,8 @@ function store(state, emitter) {
 
     // LOGOUT
     this.logout = function () {
-      feathersClient.logout();
+      state.api.logout;
+
       state.user.username = null;
       state.user.authenticated = false;
       state.user.id = null;
@@ -139,7 +138,7 @@ function store(state, emitter) {
         action: 'verifySignupLong',
         value: token
       }
-      feathersClient.service("authmanagement").create(obj).then(result => {
+      state.api.authmanagement.create(obj).then(result => {
         console.log('user verified!', result)
       }).catch(err => {
         return err;
@@ -154,7 +153,7 @@ function store(state, emitter) {
             email: _formData.get('email')
           }
         }
-      feathersClient.service("authmanagement").create(obj).then(result => {
+        state.api.authmanagement.create(obj).then(result => {
         console.log('sending reset password!', result)
       }).catch(err => {
         return err;
@@ -171,7 +170,7 @@ function store(state, emitter) {
           password: _formData.get('password')
         }
       }
-      feathersClient.service("authmanagement").create(obj).then(result => {
+      state.api.authmanagement.create(obj).then(result => {
         console.log('password changed!', result)
         emitter.emit('pushState', '/login')
       }).catch(err => {

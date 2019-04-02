@@ -1,5 +1,3 @@
-const feathersClient = require('../helpers/feathersClient')
-
 module.exports = store
 
 store.storeName = 'public'
@@ -12,10 +10,11 @@ function store(state, emitter) {
   state.selectedLink = {};
 
   state.collections = [];
-  state.selectedCollection = {};
-
+  state.selectedCollection = {}
+  
   state.users = [];
   state.selectedUser = {};
+
   state.selectedUserProjects = [];
   state.selectedUserFollowingProjects = [];
   state.selectedUserCollections = [];
@@ -24,7 +23,7 @@ function store(state, emitter) {
   // state.events.saveProjectToLists = "saveProjectToLists";
 
   emitter.on('fetch-projects', () => {
-    feathersClient.service('/api/projects').find({}).then(result => {
+    state.api.projects.find({}).then(result => {
       state.projects = result.data
       emitter.emit('render');
     }).catch(err => {
@@ -33,7 +32,7 @@ function store(state, emitter) {
   })
 
   emitter.on('fetch-collections', () => {
-    feathersClient.service('/api/collections').find({}).then(result => {
+    state.api.collections.find({}).then(result => {
       state.collections = result.data
       emitter.emit('render');
     }).catch(err => {
@@ -43,7 +42,7 @@ function store(state, emitter) {
 
   emitter.on('fetch-collection', (id) => {
     console.log(id)
-    feathersClient.service('/api/collections').get(id).then(result => {
+    state.api.collections.get(id).then(result => {
       state.selectedCollection = result
       emitter.emit('render');
     }).catch(err => {
@@ -53,7 +52,7 @@ function store(state, emitter) {
 
   emitter.on('fetch-project', (id) => {
     console.log(id)
-    feathersClient.service('/api/projects').get(id).then(result => {
+    state.api.projects.get(id).then(result => {
       state.selectedProject = result
       emitter.emit('render');
     }).catch(err => {
@@ -62,7 +61,7 @@ function store(state, emitter) {
   })
 
   emitter.on('fetch-users', () => {
-    feathersClient.service('/users').find({}).then(result => {
+    state.api.users.find({}).then(result => {
       state.users = result.data
       emitter.emit('render');
     }).catch(err => {
@@ -78,7 +77,7 @@ function store(state, emitter) {
       }
     }
 
-    feathersClient.service('/users').find(findByUsername).then(result => {
+    state.api.users.find(findByUsername).then(result => {
         state.selectedUser = result.data[0]
         const queryParams = {
           query: {
@@ -93,7 +92,7 @@ function store(state, emitter) {
             ]
           }
         }
-        return feathersClient.service('/api/projects').find(queryParams)
+        return state.api.projects.find(queryParams)
       })
       .then(result => {
         const queryParams = {
@@ -102,7 +101,7 @@ function store(state, emitter) {
           }
         }
         state.selectedUserProjects = result.data;
-        return feathersClient.service('/api/collections').find(queryParams)
+        return state.api.collections.find(queryParams)
       })
       .then(result => {
         state.selectedUserCollections = result.data;
@@ -115,7 +114,7 @@ function store(state, emitter) {
           }
         }
 
-        return feathersClient.service('/api/collections').find(queryParams)
+        return state.api.collections.find(queryParams)
       })
       .then(result => {
         state.selectedUserFollowingCollections = result.data;
@@ -127,7 +126,7 @@ function store(state, emitter) {
             }
           }
         }
-        return feathersClient.service('/api/projects').find(queryParams)
+        return state.api.projects.find(queryParams)
       })
       .then(result => {
         state.selectedUserFollowingProjects = result.data;

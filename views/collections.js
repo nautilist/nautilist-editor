@@ -1,5 +1,4 @@
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient');
 // const ProjectModal = require('../components/ProjectModal');
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer');

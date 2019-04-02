@@ -1,11 +1,11 @@
 var Component = require('choo/component')
 var html = require('choo/html')
 const Sortable = require('sortablejs');
-const EditorResourceSidebar = require('./EditorResourcesSidebar');
-const feathersClient = require('../helpers/feathersClient');
+const EditorSidebar = require('./EditorSidebar');
+const feathersClient = require('../../helpers/feathersClient');
 
 
-class Editor extends Component {
+class EditorWorkspace extends Component {
   constructor (id, state, emit) {
     super(id);
     this.state = state;
@@ -118,4 +118,4 @@ class Editor extends Component {
 
 }
 
-module.exports = Editor
+module.exports = EditorWorkspace

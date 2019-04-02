@@ -1,6 +1,6 @@
 var Component = require('choo/component')
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient');
+const feathersClient = require('../../helpers/feathersClient');
 
 class EditorSearchBar extends Component {
   constructor (id, state, emit, apiUrl, collectionName) {

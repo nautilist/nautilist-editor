@@ -55,22 +55,22 @@ class AddFeatureModal extends Component {
           }
         }
 
-        if(this.state.currentTab == 'links' || this.state.currentTab == 'collections') {
+        if(this.state.workspace.currentTab == 'links' || this.state.workspace.currentTab == 'collections') {
           delete payload.url
           delete payload.json
         }
         
         console.log(payload)
         // submit the payload to the server annonymously
-        feathersClient.service(`/api/${this.state.editor.currentTab}`).create(payload).then(result => {
+        feathersClient.service(`/api/${this.state.workspace.currentTab}`).create(payload).then(result => {
           alert('feature added!')
-          return feathersClient.service(`/api/${this.state.editor.currentTab}`).find({})
+          return feathersClient.service(`/api/${this.state.workspace.currentTab}`).find({})
         })
         .then(result => {
           this.state[this.state.currentTab] = result.data;
           console.log(this.state[this.state.currentTab])
           this.close();
-          this.state.components.EditorResourcesSidebar.fetchSelected(this.state.editor.currentTab, this.state, this.emit).call()
+          this.state.components.EditorSidebar.fetchSelected(this.state.workspace.currentTab, this.state, this.emit).call()
         })
         .catch(err => {
           alert(err);
@@ -80,12 +80,12 @@ class AddFeatureModal extends Component {
 
 
   createElement () {
-    let {currentTab} = this.state.editor;
+    let {currentTab} = this.state.workspace;
     return html`
     <div id="addFeatureModal" class="w-100 h-100 flex-column justify-center items-center ${this.local.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(255, 215, 0,0.7)">
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
-          <h2>Add Feature: ${this.state.editor.currentTab}</h2>
+          <h2>Add Feature: ${this.state.workspace.currentTab}</h2>
           <button class="bn bg-navy yellow bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
         </header>
         <!-- Add feature -->

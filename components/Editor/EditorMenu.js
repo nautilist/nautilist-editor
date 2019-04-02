@@ -1,6 +1,6 @@
 var Component = require('choo/component')
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient')
+const feathersClient = require('../../helpers/feathersClient')
 
 
 function newProject(state, emit){

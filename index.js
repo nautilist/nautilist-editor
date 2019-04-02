@@ -1,7 +1,6 @@
 var css = require('sheetify')
 var choo = require('choo')
 const config = require('./config.js');
-
 css('tachyons')
 
 var app = choo()
@@ -11,12 +10,13 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(require('choo-service-worker')())
 }
 
-// app.use(require('./stores/clicks'))
+// Stores
+app.use(require('./stores/api')) // make sure this is first to read in feathersClient from helpers
 app.use(require('./stores/workspace'))
 app.use(require('./stores/public'))
 app.use(require('./stores/user'))
-app.use(require('./stores/editor'))
 
+// Routes & Views
 app.route('/', require('./views/main'))
 app.route('/signup', require('./views/signup'))
 // login routes

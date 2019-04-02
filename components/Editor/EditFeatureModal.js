@@ -1,8 +1,8 @@
 var Component = require('choo/component')
 var html = require('choo/html')
 const yaml = require('js-yaml');
-const helpers = require('../helpers');
-const md2jt = require('../helpers/md2jt');
+const helpers = require('../../helpers');
+const md2jt = require('../../helpers/md2jt');
 
 class EditFeatureModal extends Component {
   constructor (id, state, emit) {
