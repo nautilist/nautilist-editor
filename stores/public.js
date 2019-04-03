@@ -46,6 +46,10 @@ function store(state, emitter) {
       })
       .then(result => {
         state.collections = result.data.reverse()
+        return state.api.users.find(query)
+      })
+      .then(result => {
+        state.users = result.data.reverse()
         return state.api.links.find(query)
       })
       .then(result => {

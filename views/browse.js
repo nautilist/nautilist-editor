@@ -2,6 +2,8 @@ var html = require('choo/html')
 const NavbarTop = require('../components/NavbarTop');
 const Footer = require('../components/Footer');
 const LinkCards = require('../components/LinkCards');
+const UserCards = require('../components/UserCards');
+const ListCards = require('../components/ListCards');
 
 module.exports = view
 
@@ -27,6 +29,7 @@ function SearchResults(state, emit){
       ${showLists(state, emit)}
       ${showTracks(state, emit)}
       ${showCollections(state, emit)}
+      ${nautilistUsers(state, emit)}
     </section>
   `
 }
@@ -115,6 +118,27 @@ function showLists(state, emit){
   `
 }
 
+function nautilistUsers(state, emit){
+  const {users} = state;
+  let cards;
+  if(users.length <= 0){
+    cards = html`<p class="w-100 tc">no users yet</p>`
+  }
+  else {
+    cards = UserCards(users);
+  }
+  
+
+  return html`
+  <section class="w-100 mt4">
+    <h2 class="f3 tc lh-title">Contributors</h2>
+    <div class="mw9 center ph3-ns h-100 overflow-scroll-x">
+      ${cards}
+    </div>
+  </section>
+  `
+}
+
 
 
 
@@ -143,21 +167,28 @@ function searchCategoriesSection(state, emit){
   <section class="w-100 pa4 flex flex-column items-center">
     <h2 class="w-100 tc f2 lh-title">Browse Categories</h2>
     <div class="w-100 flex flex-row-ns flex-column items-center justify-center tc">
-      <div class="w-third-ns w-100">
-        <a class="link black w-100" href="/projects">
+      <div class="w-25-ns w-100">
+        <a class="link black w-100" href="/lists">
+          <img style="max-width:60%" src="/assets/1F33C.png">  
+        <h3 class="f2 lh-title">lists</h3>
+        </a>
+        <p class="pa2">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
+      </div>  
+      <div class="w-25-ns w-100">
+        <a class="link black w-100" href="/tracks">
           <img style="max-width:60%" src="/assets/1F33C.png">  
         <h3 class="f2 lh-title">tracks</h3>
         </a>
         <p class="pa2">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
       </div>
-      <div class="w-third-ns w-100">
+      <div class="w-25-ns w-100">
         <a class="link black w-100" href="/collections">
         <img style="max-width:60%" src="/assets/1F490.png"> 
         <h3 class="f2 lh-title">Collections</h3>
         </a>
         <p class="pa2">Collections are groups of projects. Collections may contain similar themed projects such as for a class or larger project.</p>
       </div>
-      <div class="w-third-ns w-100">
+      <div class="w-25-ns w-100">
         <a class="link black w-100" href="/users">
         <img style="max-width:60%" src="/assets/1F984.png">
         <h3 class="f2 lh-title">Users</h3>
