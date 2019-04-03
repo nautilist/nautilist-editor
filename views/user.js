@@ -2,6 +2,8 @@ var html = require('choo/html')
 const NavSelect = require('../components/NavSelect');
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require("../components/Footer")
+const UserContributions = require("../components/UserContributions")
+
 module.exports = view
 
 function view (state, emit) {
@@ -10,8 +12,9 @@ function view (state, emit) {
     <body class="w-100 h-100 code lh-copy flex flex-column" onload=${() => emit('fetch-user', state.params.username) }>
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 flex flex-column flex-grow-1 items-center">
-        <section class="w-100 h-100 mw7">
-        ${UserDetails(state, emit)}
+        <section class="w-100 h-100 mw7 pa2">
+          ${UserDetails(state, emit)}
+          ${state.cache(UserContributions, "UserContributions", state, emit).render()}
         </section>
       </main>
       ${Footer()}
@@ -19,30 +22,48 @@ function view (state, emit) {
   `
 }
 
-function UserDetails(state, emit){
-  const { selectedUser }= state;
 
-  if(!selectedUser.hasOwnProperty('username')){
-    return html`<p>no user</p>`
+function EditUserDetailsBtn(state, emit){
+  const {user} = state;
+  const selectedUsername = state.params.username
+  
+  if(user.authenticated === true && user.username === selectedUsername ){
+    return html`
+      <button class="bn bg-white underline f7" onclick=${()=>alert('profile page')}>edit profile</button>
+    `
+  } else {
+    return ''
   }
-
-  const{username, bio, emojis, selectedEmoji} = selectedUser;
-  console.log(emojis)
-
-  return html`
-  <section class="w-100 flex flex-row">
-    <div class="w4 h4">
-      <img class="w-100 h-100" src="/assets/${emojis[selectedEmoji]}">
-    </div>
-    <div>
-      <h1>${username}</h1>
-      <p>${bio}</p>
-    </div>
-  </section>
-  `
 
 }
 
+
+function UserDetails(state, emit){
+  const { profile }= state.selectedUser;
+  if(!profile.hasOwnProperty('username')){
+    return html`<p>no user</p>`
+  }
+
+  const{username, bio, emojis, selectedEmoji} = profile;
+
+  return html`
+  <section class="w-100 flex flex-column mt4">
+    <section class="w-100 flex flex-row">
+    ${EditUserDetailsBtn(state, emit)}
+    </section>
+    <section class="w-100 h4 flex flex-row">
+      <div class="h-100">
+        <img class="h-100" src="/assets/${emojis[selectedEmoji]}">
+      </div>
+      <div class="w-100 h-100 flex flex-column justify-center pa2">
+        <h1 class="ma0">${username}</h1>
+        <p class="ma0">${bio}</p>
+      </div>
+    </section>
+    
+  </section>
+  `
+}
 
 
 

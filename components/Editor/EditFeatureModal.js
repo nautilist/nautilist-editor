@@ -64,7 +64,7 @@ class EditFeatureModal extends Component {
   }
 
   checkIfList(_json){
-    if(_json.type =="list"){
+    if(_json.type == "list"){
       return 'dn'
     } else {
       return ''

@@ -19,12 +19,21 @@ function store(state, emitter) {
   state.selectedCollection = {}
   
   state.users = [];
-  state.selectedUser = {};
+  state.selectedUser = {
+    profile:{},
+    links:[],
+    lists:[],
+    tracks:[],
+    collections:[],
+    following:[],
+    followers:[]
+  };
 
-  state.selectedUserProjects = [];
-  state.selectedUserFollowingProjects = [];
-  state.selectedUserCollections = [];
-  state.selectedUserFollowingCollections = []
+
+  // state.selectedUserProjects = [];
+  // state.selectedUserFollowingProjects = [];
+  // state.selectedUserCollections = [];
+  // state.selectedUserFollowingCollections = []
 
 
   emitter.on('fetch-navsearch', (payload) => {
@@ -155,73 +164,126 @@ function store(state, emitter) {
     })
   })
 
+  // TODO: include followers, and features following
   emitter.on('fetch-user', (username) => {
-    // TODO: add in search for collaborations
     const findByUsername = {
       query: {
         username
       }
+    };
+
+    let queryParams = {
+      query: {
+        $or: [
+          { owner: null},
+          { collaborators: {$in: null} }
+        ]
+      }
     }
 
-    state.api.users.find(findByUsername).then(result => {
-        state.selectedUser = result.data[0]
-        const queryParams = {
-          query: {
-            $or: [{
-                owner: state.selectedUser._id
-              },
-              {
-                "collaborators": {
-                  "$in": state.selectedUser._id,
-                }
-              }
-            ]
-          }
-        }
-        return state.api.projects.find(queryParams)
+    state.api.users.find(findByUsername)
+      .then(result => {
+        state.selectedUser.profile = result.data[0];
+        queryParams.query.$or[0].owner = state.selectedUser._id;
+        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
+        return state.api.links.find(queryParams)
       })
       .then(result => {
-        const queryParams = {
-          query: {
-            owner: state.selectedUser._id
-          }
-        }
-        state.selectedUserProjects = result.data;
+        state.selectedUser.links = result.data;
+        queryParams.query.$or[0].owner = state.selectedUser._id;
+        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
+        return state.api.lists.find(queryParams)
+      })
+      .then(result => {
+        state.selectedUser.lists = result.data;
+        queryParams.query.$or[0].owner = state.selectedUser._id;
+        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
+        return state.api.tracks.find(queryParams)
+      })
+      .then(result => {
+        state.selectedUser.lists = result.data;
+        queryParams.query.$or[0].owner = state.selectedUser._id;
+        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
         return state.api.collections.find(queryParams)
       })
       .then(result => {
-        state.selectedUserCollections = result.data;
-
-        const queryParams = {
-          query: {
-            "followers": {
-              "$in": state.selectedUser._id
-            }
-          }
-        }
-
-        return state.api.collections.find(queryParams)
-      })
-      .then(result => {
-        state.selectedUserFollowingCollections = result.data;
-
-        const queryParams = {
-          query: {
-            "followers": {
-              "$in": state.selectedUser._id
-            }
-          }
-        }
-        return state.api.projects.find(queryParams)
-      })
-      .then(result => {
-        state.selectedUserFollowingProjects = result.data;
+        state.selectedUser.collections = result.data;
         emitter.emit('render');
       })
-      .catch(err => {
-        console.log(err, "could not find user")
+      .catch(err =>{
+        alert(err);
       })
-  })
+      
+      //       const queryParams = {
+      //         query: {
+      //           "followers": {
+      //             "$in": state.selectedUser._id
+      //           }
+      //         }
+      //       }
+  });
+
+  // emitter.on('fetch-user', (username) => {
+
+  //   state.api.users.find(findByUsername).then(result => {
+  //       state.selectedUser = result.data[0]
+  //       const queryParams = {
+  //         query: {
+  //           $or: [{
+  //               owner: state.selectedUser._id
+  //             },
+  //             {
+  //               "collaborators": {
+  //                 "$in": state.selectedUser._id,
+  //               }
+  //             }
+  //           ]
+  //         }
+  //       }
+  //       return state.api.projects.find(queryParams)
+  //     })
+  //     .then(result => {
+  //       const queryParams = {
+  //         query: {
+  //           owner: state.selectedUser._id
+  //         }
+  //       }
+  //       state.selectedUserProjects = result.data;
+  //       return state.api.collections.find(queryParams)
+  //     })
+  //     .then(result => {
+  //       state.selectedUserCollections = result.data;
+
+  //       const queryParams = {
+  //         query: {
+  //           "followers": {
+  //             "$in": state.selectedUser._id
+  //           }
+  //         }
+  //       }
+
+  //       return state.api.collections.find(queryParams)
+  //     })
+  //     .then(result => {
+  //       state.selectedUserFollowingCollections = result.data;
+
+  //       const queryParams = {
+  //         query: {
+  //           "followers": {
+  //             "$in": state.selectedUser._id
+  //           }
+  //         }
+  //       }
+  //       return state.api.projects.find(queryParams)
+  //     })
+  //     .then(result => {
+  //       state.selectedUserFollowingProjects = result.data;
+  //       emitter.emit('render');
+  //     })
+  //     .catch(err => {
+  //       console.log(err, "could not find user")
+  //     })
+  // })
 
 
   // emitter.on(state.events.saveProjectToLists, function(_payload){

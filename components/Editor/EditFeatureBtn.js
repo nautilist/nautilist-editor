@@ -14,10 +14,11 @@ module.exports = EditFeatureBtn
 
 
 
-function EditFeatureBtn(state, emit){
+function EditFeatureBtn(state, emit, feat){
         
         function openEditModal(){
             return e => {
+                
                 state.components.EditFeatureModal.open();
             }
             
