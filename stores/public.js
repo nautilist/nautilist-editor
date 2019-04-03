@@ -12,6 +12,9 @@ function store(state, emitter) {
   state.lists = [];
   state.selectedList = {};
 
+  state.tracks = [];
+  state.selectedTrack = {};
+
   state.collections = [];
   state.selectedCollection = {}
   
@@ -22,6 +25,39 @@ function store(state, emitter) {
   state.selectedUserFollowingProjects = [];
   state.selectedUserCollections = [];
   state.selectedUserFollowingCollections = []
+
+
+  emitter.on('fetch-navsearch', (payload) => {
+    const {searchTerm} = payload;
+    const query = {
+      query: {
+        "$text":{"$search": searchTerm}
+      }
+    }
+
+    state.api.lists.find(query)
+      .then(result => {
+        state.lists = result.data.reverse()
+        return state.api.tracks.find(query)
+      })
+      .then(result => {
+        state.tracks = result.data.reverse()
+        return state.api.collections.find(query)
+      })
+      .then(result => {
+        state.collections = result.data.reverse()
+        return state.api.links.find(query)
+      })
+      .then(result => {
+        state.links = result.data.reverse()
+        emitter.emit('pushState', '/browse');
+      })
+      .catch(err => {
+        console.log(err)
+        alert(err);
+      })
+  })
+
 
   emitter.on('fetch-home', () => {
     const query = {

@@ -1,6 +1,7 @@
 var html = require('choo/html')
 const NavbarTop = require('../components/NavbarTop');
 const Footer = require('../components/Footer');
+const LinkCards = require('../components/LinkCards');
 
 module.exports = view
 
@@ -8,7 +9,122 @@ function view (state, emit) {
   return html`
     <body class="w-100 h-100 code lh-copy">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
-      <header class="w-100 pa4 flex flex-column items-center">
+      <main class="w-100 flex-grow-1 pa4 flex flex-column outline">
+        ${SearchResults(state, emit)}
+        ${searchCategoriesSection(state, emit)}
+      </main>
+      ${Footer()}
+    </body>
+  `
+}
+
+
+function SearchResults(state, emit){
+  return html`
+    <section class="w-100 flex flex-column">
+      <h2 class="f2 lh-title tc">Search Results by category</h2>
+      ${showLinks(state, emit)}
+      ${showLists(state, emit)}
+      ${showTracks(state, emit)}
+      ${showCollections(state, emit)}
+    </section>
+  `
+}
+
+function showTracks(state, emit){
+  const {tracks} = state;
+  let cards;
+  if(tracks.length <= 0){
+    cards = html`<p class="w-100 tc">no tracks yet</p>`
+  } else {
+    cards = LinkCards(links);
+  }
+  
+
+  return html`
+  <section class="w-100 mt4">
+    <h2 class="f3 tc lh-title">Tracks</h2>
+    <div class="mw9 center ph3-ns h-100">
+    ${cards}
+    </div>
+  </section>
+  `
+}
+
+
+
+function showCollections(state, emit){
+  const {collections} = state;
+  let cards;
+  if(collections.length <= 0){
+    cards = html`<p class="w-100 tc">no collections yet</p>`
+  } else {
+    cards = LinkCards(links);
+  }
+  
+
+  return html`
+  <section class="w-100 mt4">
+    <h2 class="f3 tc lh-title">Collections</h2>
+    <div class="mw9 center ph3-ns h-100">
+    ${cards}
+    </div>
+  </section>
+  `
+}
+
+
+function showLinks(state, emit){
+  const {links} = state;
+  let cards;
+  if(links.length <= 0){
+    cards = html`<p class="w-100 tc">no links yet</p>`
+  } else {
+    cards = LinkCards(links);
+  }
+  
+
+  return html`
+  <section class="w-100 mt4">
+    <h2 class="f3 tc lh-title">Links</h2>
+    <div class="mw9 center ph3-ns h-100">
+    ${cards}
+    </div>
+  </section>
+  `
+}
+
+
+function showLists(state, emit){
+  const {lists} = state;
+  let cards;
+  if(lists.length <= 0){
+    cards = html`<p class="w-100 tc">no lists yet</p>`
+  } else {
+    cards = ListCards(lists);
+  }
+  
+
+  return html`
+  <section class="w-100 mt4">
+    <h2 class="f3 tc lh-title">Lists</h2>
+    <div class="mw9 center ph3-ns h-100">
+    ${cards}
+    </div>
+  </section>
+  `
+}
+
+
+
+
+// ${searchCategoriesSection(state, emit)}
+// ${projectsPreviewSection(state, emit)}
+// ${collectionsPreviewSection(state, emit)}
+
+function browseHeader(state, emit){
+  return html`
+  <header class="w-100 pa4 flex flex-column items-center">
         <div class="w-100 pa4 flex flex-row items-center justify-center">
           <img class="h3" src="/assets/1F308.png">
           <h1 class="f1 f-headline lh-solid tl pa2 tc">Find the list of your dreams</h1>
@@ -17,15 +133,6 @@ function view (state, emit) {
         <p class="tc mw6">Have you ever had to share the same list of stuff with friends over and over again? Have you ever wished you could quickly reuse parts of syllabus or tutorial? The core principle of Nautilist is to allow curating and sharing useful lists of links, fast and easy.</p>
       </header>
       
-      <main class="w-100 flex flex-column justify-start items-start mb4">
-        ${searchCategoriesSection(state, emit)}
-
-        ${projectsPreviewSection(state, emit)}
-
-        ${collectionsPreviewSection(state, emit)}
-      </main>
-      ${Footer()}
-    </body>
   `
 }
 
@@ -39,7 +146,7 @@ function searchCategoriesSection(state, emit){
       <div class="w-third-ns w-100">
         <a class="link black w-100" href="/projects">
           <img style="max-width:60%" src="/assets/1F33C.png">  
-        <h3 class="f2 lh-title">Projects</h3>
+        <h3 class="f2 lh-title">tracks</h3>
         </a>
         <p class="pa2">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
       </div>

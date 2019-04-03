@@ -6,6 +6,10 @@ html{
   /** padding: 1em; **/
 }
 
+*{
+  box-sizing:border-box;
+}
+
 .reverse-img{
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);

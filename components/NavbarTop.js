@@ -1,6 +1,7 @@
 var Component = require('choo/component')
 var html = require('choo/html');
 const NavSelect = require('./NavSelect');
+const NavSearchBar = require('./NavSearchBar');
 
 class NavbarTop extends Component {
   constructor (id, state, emit) {
@@ -47,6 +48,8 @@ class NavbarTop extends Component {
         <!-- NAVBAR LEFT -->
         <ul class="list pl0 h-100 dn flex-ns flex-row items-center">
           <li class="ml2 f2 lh-title h-100 w3 bg-white flex flex-column justify-center tc"><a class="link black" href="/"><img src="/assets/logo-wow.png"></a></li>
+          <li class="ml4 w5" >${this.state.cache(NavSearchBar, "NavSearchbar", this.state, this.emit).render()}</li>
+          <li class="f6 ml3"><a class="link navy" href="/browse">browse</a></li>
         </ul>
         
         <!-- NAVBAR RIGHT -->
