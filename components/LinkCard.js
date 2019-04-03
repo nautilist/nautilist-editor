@@ -28,13 +28,14 @@ module.exports = function(link){
         <div class="flex flex-column w-100">
             <button class="w-100 dn f7 bn bg-navy dark-pink">save for later</button>
             <button class="bn f7 w-100 h2 br--top" style="background-color:${colors[selectedColor]};"></button>
-        </div>
+
       <div class="hide-child">
         <section class="pa2">
-          <h3 class="ma0">${name}</h3>
+          <h3 class="ma0 overflow-y-scroll" style="max-height:4rem">${name}</h3>
           <small class="ma0">by <a class="link black underline" href="/users/${ownerDetails.username}">${checkOwner(link)}</a></small>
         </section>
-        <p class="ma0 pa2 child f7 overflow-y-scroll" style="max-height:6rem">${description}</p>
+        <p class="ma0 pa2 child f7 overflow-y-scroll" style="max-height:4rem">${description}</p>
+      </div>
       </div>
       <div class="w-100 pa2 flex flex-row justify-end">
         <button class="h2 w2 br-100 f7 bn bg-moon-gray white grow" onclick=${saveLink}>+</button>

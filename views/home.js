@@ -34,7 +34,7 @@ function nautilistUsers(state, emit){
   const {users} = state;
   let cards;
   if(users.length <= 0){
-    cards = html`<p>no users yet</p>`
+    cards = html`<p class="w-100 tc">no users yet</p>`
   }
   else {
     cards = UserCards(users);
@@ -55,7 +55,7 @@ function recentLinks(state, emit){
   const {links} = state;
   let cards;
   if(links.length <= 0){
-    cards = html`<p>no links yet</p>`
+    cards = html`<p class="w-100 tc">no links yet</p>`
   } else {
     cards = LinkCards(links);
   }
@@ -76,7 +76,7 @@ function recentLists(state, emit){
   const {lists} = state;
   let cards;
   if(lists.length <= 0){
-    cards = html`<p>no lists yet</p>`
+    cards = html`<p class="w-100 tc">no lists yet</p>`
   } else {
     cards = ListCards(lists);
   }

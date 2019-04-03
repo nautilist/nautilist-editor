@@ -1,5 +1,5 @@
 const html = require('choo/html')
-const Editor = require('../components/Editor');
+// const Editor = require('../components/Editor');
 // const EditorMenu = require('../components/EditorMenu');
 // const EditorResourcesSidebar = require('../components/EditorResourcesSidebar');
 const EditorHelpModal = require("../components/Editor/EditorHelpModal");
@@ -21,7 +21,7 @@ function view(state, emit) {
       <!-- nav bar -->  
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <!-- main -->
-      
+      ${Editor(state, emit)}
       <!-- modals --> 
       ${state.cache(EditorHelpModal,"EditorHelpModal", state, emit).render()}
       ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
@@ -30,6 +30,55 @@ function view(state, emit) {
   `
 
 }
+
+function Editor(state, emit){
+
+  return html`
+  <main class="w-100 flex flex-column flex-grow-1 pa2">
+    ${EditorMenu(state, emit)}
+    <div class="flex flex-row h-100">
+      ${EditorSidebar(state, emit)}
+      ${EditorWorkspace(state, emit)}
+    </div>
+  </main>
+  `
+}
+
+function EditorMenu(state, emit){
+
+  return html`
+    <fieldset class="w-100 ma0 h-auto b--black bw1 ba">
+      <legend class="f7 b--black bw1 ba pl2 pr2">edit by</legend>
+      <ul class="list pl0 ma0 h-100 flex flex-row">
+        <li class="h-100 mr2"><button class="bn dropshadow h-100 pl2 pr2">list</button></li>
+        <li class="h-100 mr2"><button class="bn dropshadow h-100 pl2 pr2">track</button></li>
+        <li class="h-100 mr2"><button class="bn dropshadow h-100 pl2 pr2">collection</button></li>
+      </ul>
+    </fieldset>
+  `
+}
+
+
+function EditorSidebar(state, emit){
+  
+  return html`
+    <section class="w-third-ns w-100 h-100 outline">
+    </section>
+  `
+}
+
+
+function EditorWorkspace(state, emit){
+
+  return html`
+    <section class="w-two-thirds-ns w-100 h-100 outline">
+    </section>
+  `
+
+}
+
+
+
 
 // const css = require('sheetify')
 // var FileSaver = require('file-saver');

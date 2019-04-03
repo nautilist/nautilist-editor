@@ -47,10 +47,6 @@ class NavbarTop extends Component {
         <!-- NAVBAR LEFT -->
         <ul class="list pl0 h-100 dn flex-ns flex-row items-center">
           <li class="ml2 f2 lh-title h-100 w3 bg-white flex flex-column justify-center tc"><a class="link black" href="/"><img src="/assets/logo-wow.png"></a></li>
-          <li class="f6 pl3"><a class="link navy" href="/about">About</a></li>
-          <li class="f6 pl3"><a class="link navy" href="/">Editor</a></li>
-          <li class="f6 pl3"><a class="link navy" href="/browse">Browse</a></li>
-          <li class="f6 pl3 flex-row items-center ${this.local.navSelectDisplayed}">by: ${this.state.cache(NavSelect, "NavSelect", this.state, this.emit).render()}</li>
         </ul>
         
         <!-- NAVBAR RIGHT -->
@@ -60,11 +56,11 @@ class NavbarTop extends Component {
 
         <!-- NAVBAR Mobile -->
         <ul class="w-100 list pl0 h-100 dn-ns flex flex-row justify-between items-center">
-        <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/about"><img src="/assets/1F4A5.png"></a></li>
+        <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/"><img src="/assets/logo-wow.png"></a></li>
         <li class="pr2"><span onclick=${this.toggleMobileMenu}>Menu</span>
           <ul class="w-100 ${this.local.mobileMenuToggled} fixed flex-column right-0 tr list pr2 mt2">
-            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="link black" href="/">Editor</a></li>
-            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="link black" href="/browse">Browse</a></li>
+            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="dn link black" href="/">Editor</a></li>
+            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="dn link black" href="/browse">Browse</a></li>
             <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100">${isAuthd(this.state, this.emit)}</span>
           </ul>
         </li>
@@ -82,6 +78,14 @@ class NavbarTop extends Component {
 
 module.exports = NavbarTop
 
+/**
+
+<li class="f6 pl3"><a class="dn link navy" href="/about">About</a></li>
+<li class="f6 pl3"><a class="link navy dn" href="/editor">Editor</a></li>
+<li class="f6 pl3"><a class="dn link navy dn" href="/browse">Browse</a></li>
+<li class="f6 pl3 flex-row items-center ${this.local.navSelectDisplayed}">Browse by: ${this.state.cache(NavSelect, "NavSelect", this.state, this.emit).render()}</li>
+
+ */
 
 /**
  * logout()

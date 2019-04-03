@@ -54,7 +54,7 @@ app.use((state, emitter) => {                  // 1.
 
     switch(state.route){
       // projects
-      case '':
+      case '/':
         emitter.emit("fetch-home", {});
         break;
       case 'projects':
