@@ -19,11 +19,18 @@ function view (state, emit) {
       </header>
       
       <main class="w-100 flex flex-column justify-start items-start mb4">
-        ${gettingStartedSection(state, emit)}
+        ${temp(state, emit)}
         ${acknowledgementsSection(state, emit)}
       </main>
       ${Footer()}
     </body>
+  `
+}
+// ${gettingStartedSection(state, emit)}
+
+function temp(state, emit){
+  return html`
+    <h3 class="w-100 f3 tc">→ <a class="link black b underline" href="/">Get started now!</a></h3>
   `
 }
 

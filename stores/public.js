@@ -9,6 +9,9 @@ function store(state, emitter) {
   state.links = [];
   state.selectedLink = {};
 
+  state.lists = [];
+  state.selectedList = {};
+
   state.collections = [];
   state.selectedCollection = {}
   
@@ -20,11 +23,54 @@ function store(state, emitter) {
   state.selectedUserCollections = [];
   state.selectedUserFollowingCollections = []
 
+  emitter.on('fetch-home', () => {
+    const query = {
+      query: {
+        $limit: 16
+      }
+    }
+
+    state.api.lists.find(query)
+      .then(result => {
+        state.lists = result.data.reverse()
+        return state.api.links.find(query)
+      })
+      .then(result => {
+        state.links = result.data.reverse()
+        return state.api.users.find(query)
+      })
+      .then(result => {
+        state.users = result.data.reverse()
+        emitter.emit('render');
+      })
+      .catch(err => {
+        alert(err);
+      })
+  })
+
   // state.events.saveProjectToLists = "saveProjectToLists";
+  emitter.on('fetch-links', () => {
+    state.api.links.find({}).then(result => {
+      state.links = result.data.reverse()
+      emitter.emit('render');
+    }).catch(err => {
+      console.log("could not find links")
+    })
+  })
+
+  emitter.on('fetch-link', (id) => {
+    console.log(id)
+    state.api.links.get(id).then(result => {
+      state.selectedLink = result
+      emitter.emit('render');
+    }).catch(err => {
+      alert(err);
+    })
+  })
 
   emitter.on('fetch-projects', () => {
     state.api.projects.find({}).then(result => {
-      state.projects = result.data
+      state.projects = result.data.reverse()
       emitter.emit('render');
     }).catch(err => {
       console.log("could not find projects")
@@ -33,7 +79,7 @@ function store(state, emitter) {
 
   emitter.on('fetch-collections', () => {
     state.api.collections.find({}).then(result => {
-      state.collections = result.data
+      state.collections = result.data.reverse()
       emitter.emit('render');
     }).catch(err => {
       console.log("could not find collections")

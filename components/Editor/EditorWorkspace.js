@@ -3,7 +3,7 @@ var html = require('choo/html')
 const Sortable = require('sortablejs');
 const EditorSidebar = require('./EditorSidebar');
 const feathersClient = require('../../helpers/feathersClient');
-
+const helpers = require('../../helpers')
 
 class EditorWorkspace extends Component {
   constructor (id, state, emit) {
@@ -12,15 +12,12 @@ class EditorWorkspace extends Component {
     this.emit = emit;
     this.local = state.components[id] = {
       childNodes: [],
-      json:{
-        name:state.workspace.name,
-        description:state.workspace.description,
-        features:[]
-      }
+      features:[]
     }
     this.sortableList = this.sortableList.bind(this);
     this.updateProjectName = this.updateProjectName.bind(this);
     this.updateProjectDescription = this.updateProjectDescription.bind(this);
+    // this.makeSortable = this.makeSortable.bind(this);
   }
 
   sortableList(){
@@ -28,7 +25,7 @@ class EditorWorkspace extends Component {
       <ul class="w-100 h-100 pa2 overflow-scroll-y list">
       </ul>
     `
-    // console.log(this.state.workspace.childNodes.length)
+
     this.state.workspace.childNodes.forEach(elm => {
       sortableEl.appendChild(elm)
     })
@@ -40,29 +37,17 @@ class EditorWorkspace extends Component {
       },
       animation: 150,
       onSort: (evt) => {
-        console.log(evt)
         let {childNodes} = evt.target;
         console.log("updating",childNodes.length)
-        
-        console.log(childNodes)
+
         this.state.workspace.childNodes = []
+
         childNodes.forEach(child => {
           this.state.workspace.childNodes.push(child)
         })
 
         // reset each time
-        // this.local.json.features = [];
         this.state.workspace.json.features = [];
-        
-        childNodes.forEach(item => {
-          // console.log()
-          let currentFeature = this.state[item.dataset.db].find(feat => {
-            return feat._id == item.id
-          });
-          // console.log(currentFeature)
-          // this.local.json.features.push(currentFeature);
-          this.state.workspace.json.features.push(currentFeature);
-        })
 
         let items = evt.item.querySelectorAll('.workspace-view')
         items.forEach(item => {
@@ -71,9 +56,6 @@ class EditorWorkspace extends Component {
 
       }
     });
-
-    console.log(sortable.el)
-
     return sortable.el
   }
 
@@ -107,14 +89,32 @@ class EditorWorkspace extends Component {
     `
   }
 
-  update () {
-    return true 
-  }
+  // makeSortable(el){
+  //   const nestedSortables = [].slice.call(document.querySelectorAll('.list-container'));
+  //   console.log(nestedSortables)
+  //   const sortableConfig = {
+  //     group: {
+  //       name: 'shared',
+  //       pull: 'clone'
+  //     },
+  //     animation: 150,
+  //     // onEnd: this.handleSorting(this.state, this.emit)
+  //   }
+  
+  //   nestedSortables.forEach( feature => {
+  //     new Sortable( feature, sortableConfig);
+  //   })
+
+  // } // end makeSortable
 
   // afterupdate(el){
   //   // after each update, rerun sortable to make sure we can keep sorting!
   //   this.makeSortable(el)
   // }
+
+  update () {
+    return true 
+  }
 
 }
 

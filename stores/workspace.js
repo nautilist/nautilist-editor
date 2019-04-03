@@ -6,9 +6,10 @@ const md2jt = require('../helpers/md2jt');
 
 module.exports = store
 store.storeName = 'workspace'
+
 function store (state, emitter) {
   
-  const initialMd= setInitialMd('single');
+  // const initialMd= setInitialMd('single');
 
   state.workspace = {
     currentTab: 'links',
@@ -52,6 +53,12 @@ function store (state, emitter) {
 
   emitter.on(state.events.workspace_all_update, function(_payload){
     state.workspace.json = addClientId(_payload);
+    state.workspace.childNodes = [];
+    
+    helpers.createList(_payload).childNodes.forEach(item=>{
+      state.workspace.childNodes.push(item);
+    })
+    
     state.workspace.name = _payload.name;
     state.workspace.description = _payload.description;
     state.workspace.md = md2jt.json2md(_payload);
@@ -79,57 +86,57 @@ function addClientId(parent){
   return parentCopy;
 }
 
-function setInitialMd(selection){
-  const singleList = `
-# Nautilist Simple Boilerplate
-> description: A boilerplate list of lists for nautilist
+// function setInitialMd(selection){
+//   const singleList = `
+// # Nautilist Simple Boilerplate
+// > description: A boilerplate list of lists for nautilist
 
-## My Special List
-> description: A list 1 description
+// ## My Special List
+// > description: A list 1 description
 
-### ITP/IMA
-> Website to NYU's ITP/IMA program      
-- www.itp.nyu.edu
+// ### ITP/IMA
+// > Website to NYU's ITP/IMA program      
+// - www.itp.nyu.edu
       
-### Nautilist homepage
-> Nautilist is a tool for ...
-- url: www.nautilist.github.io/
-  `
+// ### Nautilist homepage
+// > Nautilist is a tool for ...
+// - url: www.nautilist.github.io/
+//   `
 
-  const multilist=`
-# Nautilist Simple Boilerplate
-> description: A boilerplate list of lists for nautilist
+//   const multilist=`
+// # Nautilist Simple Boilerplate
+// > description: A boilerplate list of lists for nautilist
 
-## My Special List
-> description: A list 1 description
+// ## My Special List
+// > description: A list 1 description
 
-### ITP/IMA
-> Website to NYU's ITP/IMA program      
-- www.itp.nyu.edu
+// ### ITP/IMA
+// > Website to NYU's ITP/IMA program      
+// - www.itp.nyu.edu
       
-### Nautilist homepage
-> Nautilist is a tool for ...
-- url: www.nautilist.github.io/
+// ### Nautilist homepage
+// > Nautilist is a tool for ...
+// - url: www.nautilist.github.io/
 
-## My Other Special List
->  A list 2 description
+// ## My Other Special List
+// >  A list 2 description
 
-### name: ITP/IMA for list 2
-> description: Website to NYU's ITP/IMA program
-- www.itp.nyu.edu
+// ### name: ITP/IMA for list 2
+// > description: Website to NYU's ITP/IMA program
+// - www.itp.nyu.edu
 
-### Nautilist homepage for list 2
-> Nautilist is a tool for ...
-- www.nautilist.github.io/
-  `
+// ### Nautilist homepage for list 2
+// > Nautilist is a tool for ...
+// - www.nautilist.github.io/
+//   `
 
-  if(selection == "single"){
-    return singleList.trim()
-  } else{
-    return multilist.trim()
-  }
+//   if(selection == "single"){
+//     return singleList.trim()
+//   } else{
+//     return multilist.trim()
+//   }
 
-}
+// }
 
 
 

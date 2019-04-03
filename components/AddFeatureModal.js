@@ -56,8 +56,10 @@ class AddFeatureModal extends Component {
         }
 
         if(this.state.workspace.currentTab == 'links' || this.state.workspace.currentTab == 'collections') {
-          delete payload.url
           delete payload.json
+        } 
+        if(this.state.workspace.currentTab !== 'links'){
+          delete payload.url
         }
         
         console.log(payload)
@@ -70,6 +72,7 @@ class AddFeatureModal extends Component {
           this.state[this.state.currentTab] = result.data;
           console.log(this.state[this.state.currentTab])
           this.close();
+          this.emit('render');
           this.state.components.EditorSidebar.fetchSelected(this.state.workspace.currentTab, this.state, this.emit).call()
         })
         .catch(err => {
@@ -82,7 +85,7 @@ class AddFeatureModal extends Component {
   createElement () {
     let {currentTab} = this.state.workspace;
     return html`
-    <div id="addFeatureModal" class="w-100 h-100 flex-column justify-center items-center ${this.local.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(255, 215, 0,0.7)">
+    <div id="addFeatureModal" class="w-100 h-100 flex-column justify-center items-center ${this.local.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(51,51,51,0.7)">
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
           <h2>Add Feature: ${this.state.workspace.currentTab}</h2>

@@ -4,6 +4,7 @@ const AddToCollectionModal = require("../components/AddToCollectionModal");
 const AddCollaboratorModal = require("../components/AddCollaboratorModal");
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer')
+const helpers = require('../helpers');
 
 module.exports = view
 
@@ -113,55 +114,55 @@ function addCollaboratorBtn(state, emit, modal){
 
 
 
-function createlistItem(feature) {
-  return html `
-  <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-db="${feature.featureType}" id="${feature._id}">
-    <div class="w-100 flex flex-row justify-between items-start">
-      <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
-    </div>
-    <p class="ma0 f7">${feature.description}</p>
-  </li>
-  `
-} // end createListItem
+// function createlistItem(feature) {
+//   return html `
+//   <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-db="${feature.featureType}" id="${feature._id}">
+//     <div class="w-100 flex flex-row justify-between items-start">
+//       <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+//     </div>
+//     <p class="ma0 f7">${feature.description}</p>
+//   </li>
+//   `
+// } // end createListItem
 
-function createList(parentObject) {
-  if (parentObject !== undefined) {
+// function createList(parentObject) {
+//   if (parentObject !== undefined) {
 
-    let {
-      features
-    } = parentObject;
-    return html `
-    <ul id="listParent" class="list pl0 list-container">
-      ${
-        features.map(feature => {
-          if(feature.hasOwnProperty('features')){
-            return html`
-              <li class="item mt2 mb4" data-db="${feature.featureType}" id="${feature._id}">
-                <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
-                  <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
-                  <p class="ma0 pl2 mb3">${feature.description}</p>
-                  ${createList(feature)}
-                </fieldset>
-              </li>
-            `
-          } else if(feature.hasOwnProperty('json')){
-            return html`
-            <li class="item mt2 mb4" data-db="${feature.featureType}" id="${feature._id}">
-              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
-                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
-                <p class="ma0 pl2 mb3">${feature.description}</p>
-                ${createList(feature.json)}
-              </fieldset>
-            </li>
-          `
-          }
-          return createlistItem(feature);
-        })
-      }
-    </ul>
-    `
-  }
-} // end createList
+//     let {
+//       features
+//     } = parentObject;
+//     return html `
+//     <ul id="listParent" class="list pl0 list-container">
+//       ${
+//         features.map(feature => {
+//           if(feature.hasOwnProperty('features')){
+//             return html`
+//               <li class="item mt2 mb4" data-db="${feature.featureType}" id="${feature._id}">
+//                 <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+//                   <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
+//                   <p class="ma0 pl2 mb3">${feature.description}</p>
+//                   ${createList(feature)}
+//                 </fieldset>
+//               </li>
+//             `
+//           } else if(feature.hasOwnProperty('json')){
+//             return html`
+//             <li class="item mt2 mb4" data-db="${feature.featureType}" id="${feature._id}">
+//               <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
+//                 <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
+//                 <p class="ma0 pl2 mb3">${feature.description}</p>
+//                 ${createList(feature.json)}
+//               </fieldset>
+//             </li>
+//           `
+//           }
+//           return createlistItem(feature);
+//         })
+//       }
+//     </ul>
+//     `
+//   }
+// } // end createList
 
 function followProject(state, emit) {
   return e => {
@@ -225,7 +226,7 @@ function view(state, emit) {
                     <p class="f5 lh-copy mt0 mb2">${selectedProject.description ||  "No list description yet"}</p>
                   </header>
                   <section class="w-100">
-                    ${createList(selectedProject.json)}
+                  ${helpers.createList(selectedProject.json)}
                   </section>
                 </div>
             </section>

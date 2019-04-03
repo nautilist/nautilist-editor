@@ -7,10 +7,12 @@ const md2jt = require('../../helpers/md2jt');
 class EditFeatureModal extends Component {
   constructor (id, state, emit) {
     super(id)
-    this.local = state.components[id] = {}
+    this.local = state.components[id] = {
+      open: this.open.bind(this)
+    }
     this.state = state;
     this.emit = emit;
-    this.open = this.open.bind(this);
+    // this.open = this.open.bind(this);
     this.close = this.close.bind(this);
     this.submit = this.submit.bind(this);
     this.displayed = 'dn';
@@ -20,11 +22,11 @@ class EditFeatureModal extends Component {
   }
 
   open(){
-    return e => {
+    // return e => {
       console.log("opening!")
       this.displayed = 'flex';
       this.rerender();
-    }
+    // }
     
   }
   

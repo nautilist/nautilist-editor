@@ -5,8 +5,7 @@ const feathersClient = require('../../helpers/feathersClient')
 
 function newProject(state, emit){
   return e=>{
-
-  
+  // TODO: DO NOT EDIT STATE HERE!!!
   state.workspace.json = {
     name:'',
     description:'',

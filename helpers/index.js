@@ -1,10 +1,15 @@
+const html = require('choo/html');
+
 module.exports = {
     removeFromTree,
     removeClientId,
     updateFeature,
     pushNewFeature,
     moveFeature,
-    findFeature
+    findFeature,
+    createList,
+    createListItem,
+    listToJson
 }
 
 
@@ -171,6 +176,73 @@ function findFeature(parent, featureid){
       }
     }
     return result
+}
+
+/**
+ * create listItem
+ * @param {*} parentObject 
+ */
+
+function createListItem(parentObject, feature){
+  return html`
+  <li class="item pa2 ba bw1 mb1 mt1 bg-white" data-db="${feature.featureType || 'projects'}" id="${feature._id}">
+    <div class="w-100 flex flex-row justify-between items-start">
+      <a data-name="${feature.name}" class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
+    </div>
+    <p data-description="${feature.description}" class="ma0 f7">${feature.description}</p>
+  </li>
+  `
+} // end createListItem
+
+/**
+ * create list
+ * @param {*} parentObject 
+ */
+function createList(parentObject){
+
+  if(!parentObject) return ''
+
+  const {features} = parentObject;
+  return html`
+  <ul class="list pl0 list-container">
+    ${
+      features.map(feature => {
+        if(feature.hasOwnProperty('features')){
+          return html`
+            <li class="item mt2 mb4" data-db="${feature.featureType || 'projects'}" id="${feature._id}">
+              <fieldset class="ba b bw1 bg-near-white b--black dropshadow">
+                <legend data-name="${feature.name}" class="bg-white ba bw1 b--black pl2 pr2">${feature.name}</legend>
+                <p data-description="${feature.description}" class="ma0 pl2 mb3">${feature.description}</p>
+                ${createList(feature)}
+              </fieldset>
+            </li>
+          `
+        } else if(feature.hasOwnProperty('json')){
+          return html`
+          <li class="item mt2 mb4" data-db="${feature.featureType || 'projects'}" id="${feature._id}">
+            <fieldset class="ba b bw1 bg-near-white b--black dropshadow">
+              <legend data-name="${feature.name}" class="bg-white ba bw1 b--black pl2 pr2">${feature.name}</legend>
+              <p data-description="${feature.description}" class="ma0 pl2 mb3">${feature.description}</p>
+              ${createList(feature.json)}
+            </fieldset>
+          </li>
+        `
+        }
+        return createListItem(parentObject, feature);
+      })
+    }
+  </ul>
+  `
+} // end createList
+
+function listToJson(el){
+  let output = featureArray.slice(0,);
+  let childNodes;
+
+  childNodes = el.childNodes  
+  childNodes = [].slice.call(childNodes)
+
+  return output
 }
 
 

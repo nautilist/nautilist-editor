@@ -1,7 +1,9 @@
 var css = require('sheetify')
 var choo = require('choo')
-const config = require('./config.js');
 css('tachyons')
+
+// css styles
+require('./views/style')
 
 var app = choo()
 if (process.env.NODE_ENV !== 'production') {
@@ -17,7 +19,8 @@ app.use(require('./stores/public'))
 app.use(require('./stores/user'))
 
 // Routes & Views
-app.route('/', require('./views/main'))
+app.route('/', require('./views/home'))
+// app.route('/', require('./views/editor'))
 app.route('/signup', require('./views/signup'))
 // login routes
 app.route('/login', require('./views/login'))
@@ -50,6 +53,9 @@ app.use((state, emitter) => {                  // 1.
 
     switch(state.route){
       // projects
+      case '':
+        emitter.emit("fetch-home", {});
+        break;
       case 'projects':
         emitter.emit("fetch-projects", {});
         break;

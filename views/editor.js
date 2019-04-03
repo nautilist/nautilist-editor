@@ -5,15 +5,14 @@ const Editor = require('../components/Editor');
 const EditorHelpModal = require("../components/Editor/EditorHelpModal");
 const NavbarTop = require("../components/NavbarTop");
 const AddFeatureModal = require("../components/AddFeatureModal");
+const EditFeatureModal = require("../components/Editor/EditFeatureModal");
 
 const TITLE = 'Nautilist Web Editor'
-
-// css styles
-require('./style')
 
 
 module.exports = view
 
+// ${Editor(state, emit)}
 function view(state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
@@ -22,10 +21,11 @@ function view(state, emit) {
       <!-- nav bar -->  
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <!-- main -->
-      ${Editor(state, emit)}
+      
       <!-- modals --> 
       ${state.cache(EditorHelpModal,"EditorHelpModal", state, emit).render()}
       ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
+      ${state.cache(EditFeatureModal,"EditFeatureModal", state, emit).render()}
     </body>
   `
 

@@ -112,6 +112,7 @@ function store(state, emitter) {
         }).catch(err => {
           // Show login page (potentially with `e.message`)
           console.log('Authentication error', err);
+          alert(err);
           state.user.authenticated = false;
           // emitter.emit("pushState", "/login")
         });
@@ -120,7 +121,7 @@ function store(state, emitter) {
 
     // LOGOUT
     this.logout = function () {
-      state.api.logout;
+      state.api.logout();
 
       state.user.username = null;
       state.user.authenticated = false;

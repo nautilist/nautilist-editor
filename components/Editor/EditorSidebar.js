@@ -1,8 +1,9 @@
 var Component = require('choo/component')
 var html = require('choo/html')
-const feathersClient = require('../../helpers/feathersClient');
 const Sortable = require('sortablejs')
 const EditorSearchBar = require('./EditorSearchBar');
+const helpers = require('../../helpers');
+const EditFeatureBtn = require('./EditFeatureBtn')
 
 class EditorSidebar extends Component {
   constructor (id, state, emit) {
@@ -22,45 +23,29 @@ class EditorSidebar extends Component {
 
   fetchSelected(data, state, emit){
     return e=> {
-    switch(data){
-      case 'links':
-        feathersClient.service('/api/links').find({}).then(result =>{
-          state.links = result.data
+      switch(data){
+        case 'links':
           state.workspace.currentTab = 'links'
           this.local.currentSelection = 'links'
-          emit('render');
-        }).catch(err => {
-          alert(err)
-        })
-        break;
-      case 'projects':
-        feathersClient.service('/api/projects').find({}).then(result =>{
-          state.projects = result.data
+          emit('fetch-links', {});
+          break;
+        case 'projects':
           state.workspace.currentTab = 'projects'
           this.local.currentSelection = 'projects'
-          emit('render');
-        }).catch(err => {
-          alert(err)
-        })
-        break;
-      case 'collections':
-        feathersClient.service('/api/collections').find({}).then(result =>{
-          state.collections = result.data
+          emit('fetch-projects', {});
+          break;
+        case 'collections':
           state.workspace.currentTab = 'collections'
           this.local.currentSelection = 'collections'
-          emit('render');
-        }).catch(err => {
-          alert(err)
-        })
-        break
-      default:
-        return [];
-        break
-    }
-
+          emit('fetch-collections', {});
+          break
+        default:
+          return [];
+      }
     }
   }
 
+  // TODO: remove by removing from the data array
   removeItem(state, emit){
     
     return e => {
@@ -74,7 +59,6 @@ class EditorSidebar extends Component {
       state.workspace.childNodes = newChildNodes
       e.target.parentElement.parentElement.remove()
 
-      
     }
     
   }
@@ -84,20 +68,33 @@ class EditorSidebar extends Component {
     
     if(!this.state[currentTab].length > 0){
       this.fetchSelected(currentTab)
-    }         
+    }
+           
 
     return this.state[currentTab].map(feat => {
-      return html`
-        <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" data-db="${currentTab}" id="${feat._id}" style="border-color:${feat.colors[feat.selectedColor]}">
-          <div class="w-100 flex flex-row justify-end"><button class="bn underline workspace-view dn" 
-            onclick=${this.removeItem(this.state, this.emit)}>remove</button></div>
-          <h4 class="ma0 f7 b">${feat.name}</h4>
-          <small class="f7">by ${feat.ownerDetails.username}</small>
-          <p class="ma0 f7">${feat.description}</p>
-
-          <section class="dn workspace-view">
-            <p>${currentTab == 'projects' ? createList(feat.json) : ''}</p>
+      
+      function createWorkspaceView(feat){
+        if(currentTab == 'projects'){
+          return html`
+          <section data-features="true" class="dn workspace-view">
+            ${helpers.createList(feat.json)}
           </section>
+          `
+        }
+      }
+
+      return html`
+        <li class="f7 w-100 dropshadow list mb2 ba bw1 pa2" data-db="${currentTab}" id="${feat._id}" 
+          style="border-color:${feat.colors[feat.selectedColor]};">
+          <div class="w-100 flex flex-row justify-end">
+            ${EditFeatureBtn(this.state, this.emit, feat)}
+            <button class="bn underline workspace-view dn" 
+            onclick=${this.removeItem(this.state, this.emit)}>remove</button>
+            </div>
+          <h4 data-name="${feat.name}" class="ma0 f7 b">${feat.name}</h4>
+          <small class="f7">by ${feat.ownerDetails.username}</small>
+          <p data-description="${feat.description}" class="mt2 f7">${feat.description}</p>
+          ${createWorkspaceView(feat)}
         </li>
       `
     })
@@ -190,49 +187,3 @@ class EditorSidebar extends Component {
 }
 
 module.exports = EditorSidebar;
-
-function createlistItem(parentObject, feature){
-  return html`
-  <li class="item pa2 ba bw1 mb1 mt1 bg-white">
-    <div class="w-100 flex flex-row justify-between items-start">
-      <a class="link underline black f7 b" href="${feature.url}">${feature.name}</a>
-    </div>
-    <p class="ma0 f7">${feature.description}</p>
-  </li>
-  `
-} // end createListItem
-
-function createList(parentObject){
-  const {features} = parentObject;
-
-  return html`
-  <ul class="list pl0 list-container">
-    ${
-      features.map(feature => {
-        if(feature.hasOwnProperty('features')){
-          return html`
-            <li class="item mt2 mb4">
-              <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
-                <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
-                <p class="ma0 pl2 mb3">${feature.description}</p>
-                ${createList(feature)}
-              </fieldset>
-            </li>
-          `
-        } else if(feature.hasOwnProperty('json')){
-          return html`
-          <li class="item mt2 mb4">
-            <fieldset class="ba b bw2 bg-light-green b--dark-pink dropshadow">
-              <legend class="bg-white ba bw2 b--dark-pink pl2 pr2">${feature.name}</legend>
-              <p class="ma0 pl2 mb3">${feature.description}</p>
-              ${createList(feature.json)}
-            </fieldset>
-          </li>
-        `
-        }
-        return createlistItem(parentObject, feature);
-      })
-    }
-  </ul>
-  `
-} // end createList

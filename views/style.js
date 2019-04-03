@@ -30,4 +30,20 @@ html{
 .resize-none{
   resize:none;
 }
+
+.multiline-truncate {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 400px;
+  height: 2.5rem; /* Fallback for non-webkit */
+  margin: 0 auto;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flex-grow-1{
+  flex-grow:1;
+}
 `
