@@ -20,6 +20,7 @@ app.use(require('./stores/user'))
 
 // Routes & Views
 app.route('/', require('./views/home'))
+app.route('/editor', require('./views/editor'))
 // app.route('/', require('./views/editor'))
 app.route('/signup', require('./views/signup'))
 // login routes
