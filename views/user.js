@@ -3,6 +3,7 @@ const NavSelect = require('../components/NavSelect');
 const NavbarTop = require("../components/NavbarTop");
 const Footer = require("../components/Footer")
 const UserContributions = require("../components/UserContributions")
+const AddFeatureBtn = require('../components/AddFeatureBtn');
 
 module.exports = view
 
@@ -11,13 +12,14 @@ function view (state, emit) {
   return html`
     <body class="w-100 h-100 code lh-copy flex flex-column" onload=${() => emit('fetch-user', state.params.username) }>
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
-      <main class="w-100 flex flex-column flex-grow-1 items-center">
+      <main class="w-100 flex flex-column flex-grow-1 items-center mb5">
         <section class="w-100 h-100 mw7 pa2">
           ${UserDetails(state, emit)}
           ${state.cache(UserContributions, "UserContributions", state, emit).render()}
         </section>
       </main>
       ${Footer()}
+      ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
     </body>
   `
 }
@@ -58,6 +60,7 @@ function UserDetails(state, emit){
       <div class="w-100 h-100 flex flex-column justify-center pa2">
         <h1 class="ma0">${username}</h1>
         <p class="ma0">${bio}</p>
+        <p class="ma0 f6"># followers · # following</p>
       </div>
     </section>
     

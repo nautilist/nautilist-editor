@@ -15,9 +15,9 @@ class UserContributionsMenu extends Component {
 
   showSelectedTab(tab){
     if(tab == this.local.selectedTab){
-      return 'bg-dark-pink yellow'
+      return 'bg-dark-pink white'
     } else {
-      return 'bg-light-gray dark-pink'
+      return 'bg-near-white dark-pink'
     }
   }
 

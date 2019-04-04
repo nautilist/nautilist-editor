@@ -121,7 +121,7 @@ function headerSection(){
     </section>
   </header>
   <div class="w-100 mw8-ns pr4 pl4 flex flex-row justify-end">
-      <h2 class="ma0">→ <a class="black underline" href="/editor">Get Started</a></h2>
+      <h2 class="ma0">→ <a class="black underline" href="/browse">Get Started</a></h2>
       <img class="pl2 h2" src="/assets/2728.png">
   </div>
 </section>

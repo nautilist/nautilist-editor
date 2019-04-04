@@ -1,17 +1,23 @@
 var Component = require('choo/component')
 var html = require('choo/html')
 const UserContributionsMenu = require('./UserContributionsMenu');
+const UserContributionCard = require('./UserContributionCard');
 
-function renderItems(features){
+
+function renderItems(route,features){
   if(features.length <= 0){
     return 'none';
   }
-  return features.map(feature => {
-    return html`
-      <p>${feature.name}</p>
-    `
-  })
   
+  const items = features.map(feature => {
+    return UserContributionCard(route,feature);
+  })
+
+  return html`
+    <ul class="list w-100 pl0 mt4">
+      ${items}
+    </ul>
+  `
 }
 
 class UserContributions extends Component {
@@ -29,7 +35,7 @@ class UserContributions extends Component {
   showCurrentSelection(){
     const{currentTab} = this.local;
     const currentItems = this.state.selectedUser[currentTab];
-    return renderItems(currentItems);
+    return renderItems(currentTab, currentItems);
   }
 
   setSelectedTab(tab){
