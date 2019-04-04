@@ -117,6 +117,26 @@ function store(state, emitter) {
     })
   })
 
+  emitter.on('fetch-list', (id) => {
+    console.log(id)
+    state.api.lists.get(id).then(result => {
+      state.selectedList = result
+      emitter.emit('render');
+    }).catch(err => {
+      alert(err);
+    })
+  })
+
+  emitter.on('fetch-track', (id) => {
+    console.log(id)
+    state.api.tracks.get(id).then(result => {
+      state.selectedTrack = result
+      emitter.emit('render');
+    }).catch(err => {
+      alert(err);
+    })
+  })
+
   emitter.on('fetch-projects', () => {
     state.api.projects.find({}).then(result => {
       state.projects = result.data.reverse()
@@ -184,26 +204,20 @@ function store(state, emitter) {
     state.api.users.find(findByUsername)
       .then(result => {
         state.selectedUser.profile = result.data[0];
-        queryParams.query.$or[0].owner = state.selectedUser._id;
-        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
+        queryParams.query.$or[0].owner = state.selectedUser.profile._id;
+        queryParams.query.$or[1].collaborators.$in = [state.selectedUser.profile._id];
         return state.api.links.find(queryParams)
       })
       .then(result => {
         state.selectedUser.links = result.data;
-        queryParams.query.$or[0].owner = state.selectedUser._id;
-        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
         return state.api.lists.find(queryParams)
       })
       .then(result => {
         state.selectedUser.lists = result.data;
-        queryParams.query.$or[0].owner = state.selectedUser._id;
-        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
         return state.api.tracks.find(queryParams)
       })
       .then(result => {
-        state.selectedUser.lists = result.data;
-        queryParams.query.$or[0].owner = state.selectedUser._id;
-        queryParams.query.$or[1].collaborators.$in = state.selectedUser._id;
+        state.selectedUser.tracks = result.data;
         return state.api.collections.find(queryParams)
       })
       .then(result => {

@@ -4,6 +4,8 @@ const Footer = require("../components/Footer");
 const UserCards = require('../components/UserCards')
 const ListCards = require('../components/ListCards')
 const LinkCards = require('../components/LinkCards')
+const AddFeatureBtn = require('../components/AddFeatureBtn');
+const AddFeatureModal = require('../components/AddFeatureModal');
 
 const TITLE = 'Nautilists Home';
 
@@ -25,6 +27,8 @@ function view(state, emit) {
         ${acknowledgementsSection(state, emit)}
       </main>
       ${Footer()}
+      ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
+      ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
     </body>
   `
 

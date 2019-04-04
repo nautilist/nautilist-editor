@@ -4,6 +4,8 @@ const Footer = require('../components/Footer');
 const LinkCards = require('../components/LinkCards');
 const UserCards = require('../components/UserCards');
 const ListCards = require('../components/ListCards');
+const AddFeatureBtn = require('../components/AddFeatureBtn');
+const AddFeatureModal = require('../components/AddFeatureModal');
 
 module.exports = view
 
@@ -16,6 +18,8 @@ function view (state, emit) {
         ${searchCategoriesSection(state, emit)}
       </main>
       ${Footer()}
+      ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
+      ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
     </body>
   `
 }

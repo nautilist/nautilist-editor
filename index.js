@@ -20,7 +20,8 @@ app.use(require('./stores/user'))
 
 // Routes & Views
 app.route('/', require('./views/home'))
-app.route('/editor', require('./views/editor'))
+
+// app.route('/editor', require('./views/editor'))
 // app.route('/', require('./views/editor'))
 app.route('/signup', require('./views/signup'))
 // login routes
@@ -28,8 +29,12 @@ app.route('/login', require('./views/login'))
 app.route('/reset', require('./views/LoginReset'))
 app.route('/verify', require('./views/verify'))
 
-app.route('/projects', require('./views/projects'))
-app.route('/projects/:id', require('./views/project'))
+// app.route('/projects', require('./views/projects'))
+// app.route('/projects/:id', require('./views/project'))
+// app.route('/projects', require('./views/projects'))
+
+app.route('/lists/:id', require('./views/List'))
+app.route('/tracks/:id', require('./views/Track'))
 
 app.route('/collections', require('./views/collections'))
 app.route('/collections/:id', require('./views/collection'))
@@ -37,8 +42,8 @@ app.route('/collections/:id', require('./views/collection'))
 app.route('/users', require('./views/users'))
 app.route('/users/:username', require('./views/user'))
 
-app.route('/test', require('./views/test'))
-app.route('/about', require('./views/about'))
+// app.route('/test', require('./views/test'))
+// app.route('/about', require('./views/about'))
 app.route('/browse', require('./views/browse'))
 
 app.route('/*', require('./views/404'))
@@ -69,6 +74,11 @@ app.use((state, emitter) => {                  // 1.
       case 'projects/:id':
         if(state.params.hasOwnProperty('id')){
           emitter.emit("fetch-project", state.params.id);
+        }
+        break;
+      case 'lists/:id':
+        if(state.params.hasOwnProperty('id')){
+          emitter.emit("fetch-list", state.params.id);
         }
         break;
       // collections
