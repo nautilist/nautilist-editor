@@ -9,9 +9,9 @@ function CreateSectionList(sections, sectionsDetails){
 
   return sections.map(section => {
     return html`
-    <li data-id="${section._id}">
-      <h2>${section.name}</h2>
-      <p>${section.description}</p>
+    <li class="mt4 pa3-ns pa2 bg-washed-blue dropshadow ba bw1 b--black" data-id="${section._id}">
+      <h2 class="f2 lh-title ma0">${section.name}</h2>
+      <p class="f5 mt1">${section.description}</p>
       <ul data-sectionid=${section._id} class="list nested-sortable pl0 w-100">
         ${CreateLinkList(section.links, sectionsDetails)}
       </ul>
@@ -29,7 +29,7 @@ function CreateLinkList(links, linksDetails){
   return links.map(link => {
     let detail = linksDetails.find(item => item._id == link);
     return html`
-      <li class="mt2 dropshadow pa2 bn bg-near-white" data-id="${detail._id}">
+      <li class="mt2 dropshadow pa2 ba bg-washed-red " data-id="${detail._id}">
         <h3>${detail.name}</h3>
         <p>${detail.description}</p>
       </li>
@@ -83,9 +83,6 @@ class EditableList extends Component {
 
   handleSorting(item){
     return e => {
-      console.log()
-      
-      // let newOrder = this.local.sortable.toArray()
       
       let listOrder = this.local.sortables.map(item => {
         return {
@@ -96,8 +93,8 @@ class EditableList extends Component {
 
       const sectionOrder = this.local.sortable.toArray()
       
-      console.log("section order: ", sectionOrder);
-      console.log("nested list order: ", listOrder)
+      // console.log("section order: ", sectionOrder);
+      // console.log("nested list order: ", listOrder);
 
       const newSections = sectionOrder.map(sectionid => {
         let data = this.state.selectedList.sections.find(item => item._id === sectionid);

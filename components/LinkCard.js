@@ -38,7 +38,7 @@ module.exports = function(link){
       </div>
       </div>
       <div class="w-100 pa2 flex flex-row justify-end">
-        <button class="h2 w2 br-100 f7 bn bg-moon-gray white grow" onclick=${saveLink}>+</button>
+        <button class="dn h2 w2 br-100 f7 bn bg-moon-gray white grow" onclick=${saveLink}>+</button>
       </div>
     </div>
     </a>
