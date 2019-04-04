@@ -4,6 +4,7 @@ const NavbarTop = require("../components/NavbarTop");
 const Footer = require("../components/Footer")
 const UserContributions = require("../components/UserContributions")
 const AddFeatureBtn = require('../components/AddFeatureBtn');
+const AddFeatureModal = require('../components/AddFeatureModal');
 
 module.exports = view
 
@@ -20,6 +21,7 @@ function view (state, emit) {
       </main>
       ${Footer()}
       ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
+      ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
     </body>
   `
 }
