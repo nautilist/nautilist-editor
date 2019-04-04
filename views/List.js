@@ -20,7 +20,7 @@ function view(state, emit) {
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <!-- main -->
       <main class="w-100 h-auto  flex-grow-1 flex flex-column items-center">
-        <section class="w-100 h-100 mw7 pa2">
+        <section class="w-100 h-100 mw7 pa2 pb5">
         ${BackBtn(state, emit)}
 
         ${privateActions(state, emit)}

@@ -137,7 +137,6 @@ class EditableList extends Component {
 
     const {linksDetails, links, sections, sectionsDetails} = selectedList;
     // ${CreateLinkList(links, linksDetails)}
-    // ${CreateSectionList(sections, sectionsDetails)}
     return html`
       <ul class="list pl0 mt4 w-100 pt2 pb5 flex-grow-1">
         ${CreateSectionList(sections, sectionsDetails)}
@@ -146,7 +145,6 @@ class EditableList extends Component {
   }
 
   update () {
-    // this.makeSortable(el);
     return true
   }
 
@@ -177,64 +175,3 @@ class EditableList extends Component {
 }
 
 module.exports = EditableList
-
-
-/**
- // this.makeSortable(el);
-    // if(this.local.editable === true){
-    //   this.local.sortable.option('disabled', false);
-    // } else{
-    //   this.local.sortable.option('disabled', true);
-    // }
-
-    if(this.local.editable === true){
-      this.local.sortable.option('disabled', false);
-    } else{
-      this.local.sortable.option('disabled', true);
-    }
-
-
-      let newOrder = this.local.sortable.toArray()
-      
-      const params = {
-          links: newOrder
-      }
-
-      const {_id} = this.state.selectedList;
-      this.state.api.lists.patch(_id, params, {})
-        .then(result => {
-          console.log("patched:", result.links)
-          this.state.selectedList = result;
-          
-          this.rerender();
-        })
-        .catch(err => {
-          alert(err);
-        })
-
-
-        store:{
-        get: (sortable) => {
-          return this.state.selectedList.links ? this.state.selectedList.links : []
-        },
-        set: (sortable) => {
-          var newOrder = sortable.toArray();
-          this.state.selectedList.links = newOrder;
-          
-          const params = {
-            links: newOrder
-          }
-    
-          const {_id} = this.state.selectedList;
-          this.state.api.lists.patch(_id, params, {})
-            .then(result => {
-              console.log("patched:", result.links)
-              this.state.selectedList = result;
-              // this.rerender();
-            })
-            .catch(err => {
-              alert(err);
-            })
-        }
-      },
- */
