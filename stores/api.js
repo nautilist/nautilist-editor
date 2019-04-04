@@ -16,8 +16,7 @@ function store(state, emitter) {
             if(payload !== undefined){
                 return feathersClient.authenticate(payload)
             }
-            return feathersClient.authenticate()
-            
+            return feathersClient.authenticate()  
         },
         logout: function(){
             return feathersClient.logout()

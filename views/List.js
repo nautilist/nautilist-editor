@@ -4,6 +4,8 @@ const Footer = require("../components/Footer");
 const BackBtn = require('../components/BackBtn');
 const AddFeatureBtn = require('../components/AddFeatureBtn');
 const AddFeatureModal = require('../components/AddFeatureModal');
+const EditableList = require('../components/EditableList');
+const EditableListHeader = require('../components/EditableListHeader');
 
 const TITLE = 'Nautilists - List';
 
@@ -17,13 +19,15 @@ function view(state, emit) {
       <!-- nav bar -->  
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <!-- main -->
-      <main class="w-100 flex flex-column flex-grow-1 items-center mb5">
+      <main class="w-100 h-auto  flex-grow-1 flex flex-column items-center">
         <section class="w-100 h-100 mw7 pa2">
         ${BackBtn(state, emit)}
 
         ${privateActions(state, emit)}
-        ${headerSection(state, emit)}
+        ${state.cache(EditableListHeader,"EditableListHeader", state, emit).render()}
         ${publicActions(state, emit)}
+        
+        ${state.cache(EditableList,"EditableList", state, emit).render()}
         </section>
       </main>
       ${Footer()}
@@ -34,56 +38,26 @@ function view(state, emit) {
 
 }
 
-function showOwner(details){
-    return html`<p class="f6 mt1">By <a class="link black underline" href="/users/${details.username}">${details.username}</a></p>`
-}
 
-function showCollaborators(details){
-    if(details.length <=0){
-        return ''
-    }
+// ${headerSection(state, emit)}
+// function headerSection(state, emit){
+//     const {selectedList} = state;
 
-    const collaborators = details.map( (person, idx)  => {
-        return html`
-            <a class="link black underline" href="/users/${person.username}">${person.username} ${idx < details.length - 1 ? '·' : ''}</a>
-        `
-    });
+//     if(Object.keys(selectedList).length <= 0){
+//         return html`<p class="tc w-100">no details</p>`
+//     }
+//     const{name, description, ownerDetails, collaboratorDetails, followersDetails} = selectedList
 
-    return html`
-        <p class="ma0 f6">Together with ${collaborators}</p>
-    `
-}
-
-function showFollowers(state, emit, details){
-    function displayFollowerList(e){
-        alert('show followers');
-    }
-
-    return html`
-        <button onclick=${displayFollowerList} class="ma0 pa0 bn  bg-white f6">${details.length} Followers</button>
-    `
-}
-
-
-
-function headerSection(state, emit){
-    const {selectedList} = state;
-
-    if(Object.keys(selectedList).length <= 0){
-        return html`<p class="tc w-100">no details</p>`
-    }
-    const{name, description, ownerDetails, collaboratorDetails, followersDetails} = selectedList
-
-    return html`
-        <section class="w-100 mt4">
-            <p class="mb2 pa0 f6">${showFollowers(state, emit, followersDetails)}</p>
-            <h2 class="f2 lh-title ma0">${name}</h2>
-            ${showOwner(ownerDetails)}
-            ${showCollaborators(collaboratorDetails)}
-            <h4 class="f4 mt2">${description}</h4>
-        </section>
-    `
-}
+//     return html`
+//         <section class="w-100 mt4">
+//             <p class="mb2 pa0 f6">${showFollowers(state, emit, followersDetails)}</p>
+//             <h2 class="f2 lh-title ma0">${name}</h2>
+//             ${showOwner(ownerDetails)}
+//             ${showCollaborators(collaboratorDetails)}
+//             <h4 class="f4 mt2">${description}</h4>
+//         </section>
+//     `
+// }
 
 function publicActions(state, emit){
     return html`
@@ -101,11 +75,18 @@ function privateActions(state, emit){
         return ''
     }
 
+    function toggleEditable(e){
+        state.components.EditableList.toggleEditable();
+        state.components.EditableListHeader.toggleEditable();
+        emit('render')   
+    }
+
     const {ownerDetails, collaboratorDetails} = selectedList;
     if(user.authenticated === true && user.username === ownerDetails.username || collaboratorDetails.includes(user.username)){
         return html`
-        <section class="w-100 mt4 flex flex-row">
-            <button class="bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
+        <section class="w-100 mt4 flex flex-row items-center">
+            <button onclick=${toggleEditable} class="bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
+            <p class="f7 pl2 ma0">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
         </section>
         `
     }
