@@ -61,7 +61,7 @@ class AddFeatureBtn extends Component {
             </li>
           </ul>
         </div>
-        <button class="absolute bottom-0 right-0 bn w3 h3 br-100 bg-dark-pink shadow-5" onclick=${this.toggleButton}>+</button>
+        <button class="absolute bottom-0 right-0 bn w3 h3 br-100 bg-light-pink shadow-5" onclick=${this.toggleButton}>+</button>
       </div>
     `
   }

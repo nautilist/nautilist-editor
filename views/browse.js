@@ -32,8 +32,8 @@ function SearchResults(state, emit){
   return html`
     <section class="w-100 flex flex-column">
       <h2 class="f2 lh-title tc">Search Results by category</h2>
-      ${showLinks(state, emit)}
       ${showLists(state, emit)}
+      ${showLinks(state, emit)}
       ${nautilistUsers(state, emit)}
     </section>
   `
