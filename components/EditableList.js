@@ -99,12 +99,16 @@ class EditableList extends Component {
     }
   
     return links.map(link => {
+      
       let detail = linksDetails.find(item => item._id == link);
+      let ensureUrl = detail.url ? detail.url: '#';
       return html`
         <li class="mt2 dropshadow pa2 ba bg-washed-red " data-id="${detail._id}">
+          <a class="link black" href="${ensureUrl}" target="_blank">
           <p class="w-100 flex flex-row justify-end">${this.removeBtn('links',section._id,detail._id)}</p>
           <h3>${detail.name}</h3>
           <p>${detail.description}</p>
+          </a>
         </li>
       `
     })
