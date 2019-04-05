@@ -108,6 +108,15 @@ function store(state, emitter) {
     })
   })
 
+  emitter.on('fetch-lists', () => {
+    state.api.lists.find({}).then(result => {
+      state.lists = result.data.reverse()
+      emitter.emit('render');
+    }).catch(err => {
+      console.log("could not find lists")
+    })
+  })
+
   emitter.on('fetch-link', (id) => {
     console.log(id)
     state.api.links.get(id).then(result => {

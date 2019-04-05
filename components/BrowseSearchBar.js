@@ -18,7 +18,7 @@ class BrowseSearchBar extends Component {
 
   onSubmit(){
     let apiUrl;
-    if(this.state.route == 'projects' || this.state.route == 'collections'){
+    if(this.state.route == 'links' || this.state.route == 'lists'){
       apiUrl = `/api/${this.state.route}`;
     } else {
       apiUrl = `/${this.state.route}`;
@@ -79,13 +79,10 @@ class BrowseSearchBar extends Component {
   createElement () {
     return html`
     <section class="w-100 pa4 flex flex-column items-center">
-      <form class="w-100 mw6 flex flex-row shadow-5 ba b--green" onsubmit=${this.onSubmit()}>
-        <input class="input-reset h-100 w-two-thirds b--green pl2 bn" type="search" 
-          value="${this.local.searchTerm}"
-          onkeyup=${this.onChange}
-          placeholder="search by title or description">
-        <button class="input-reset pa2 h-100 w-third b--green bw1 bg-washed-green" style="border-left:1px solid #19A974; border-top:none; border-right:none; border-bottom:none">search</button>
-      </form>
+        <form class="w-100 h-100 mw6 flex flex-row items-center dropshadow" onsubmit=${this.onSubmit() }>
+          <img class="bl bb bt bw1 b--dark-pink w3 h3" src="/assets/1F50E.png">
+          <input class="w-100 ma0 h3 input-reset br bb bt bw1 b--dark-pink pa1 f4 i ba" type="search" value="${this.local.searchTerm}" onkeyup=${this.onChange} placeholder="search: terms, users, etc">
+        </form>
       </section>
     `
   }
@@ -95,4 +92,18 @@ class BrowseSearchBar extends Component {
   }
 }
 
+
+
 module.exports = BrowseSearchBar
+
+
+/**
+ * 
+ * <form class="w-100 mw6 flex flex-row shadow-5 ba b--green" onsubmit=${this.onSubmit()}>
+        <input class="input-reset h-100 w-two-thirds b--green pl2 bn" type="search" 
+          value="${this.local.searchTerm}"
+          onkeyup=${this.onChange}
+          placeholder="search by title or description">
+        <button class="input-reset pa2 h-100 w-third b--green bw1 bg-washed-green" style="border-left:1px solid #19A974; border-top:none; border-right:none; border-bottom:none">search</button>
+      </form>
+ */

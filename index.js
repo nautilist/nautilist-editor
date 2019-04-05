@@ -20,31 +20,32 @@ app.use(require('./stores/user'))
 
 // Routes & Views
 app.route('/', require('./views/home'))
-
-// app.route('/editor', require('./views/editor'))
-// app.route('/', require('./views/editor'))
+app.route('/browse', require('./views/browse'))
+// auth and signup
 app.route('/signup', require('./views/signup'))
-// login routes
 app.route('/login', require('./views/login'))
 app.route('/reset', require('./views/LoginReset'))
 app.route('/verify', require('./views/verify'))
-
-// app.route('/projects', require('./views/projects'))
-// app.route('/projects/:id', require('./views/project'))
-// app.route('/projects', require('./views/projects'))
-
+// links
+app.route('/links', require('./views/Links'))
+app.route('/links/:id', require('./views/Link'))
+// lists
+app.route('/lists', require('./views/Lists'))
 app.route('/lists/:id', require('./views/List'))
-// app.route('/tracks/:id', require('./views/Track'))
-
-// app.route('/collections', require('./views/collections'))
-// app.route('/collections/:id', require('./views/collection'))
-
+// users
 app.route('/users', require('./views/users'))
 app.route('/users/:username', require('./views/user'))
 
+// app.route('/editor', require('./views/editor'))
+// app.route('/', require('./views/editor'))
+// app.route('/projects', require('./views/projects'))
+// app.route('/projects/:id', require('./views/project'))
+// app.route('/projects', require('./views/projects'))
+// app.route('/tracks/:id', require('./views/Track'))
+// app.route('/collections', require('./views/collections'))
+// app.route('/collections/:id', require('./views/collection'))
 // app.route('/test', require('./views/test'))
 // app.route('/about', require('./views/about'))
-app.route('/browse', require('./views/browse'))
 
 app.route('/*', require('./views/404'))
 
@@ -62,35 +63,17 @@ app.use((state, emitter) => {                  // 1.
       case '/':
         emitter.emit("fetch-home", {});
         break;
-      // case 'projects':
-      //   emitter.emit("fetch-projects", {});
-      //   break;
-      case 'about':
-        // emitter.emit("fetch-projects", {});
-        break;
       case 'browse':
-        // emitter.emit("fetch-projects", {});
+        emitter.emit("fetch-lists", {});
         break;
-      // case 'projects/:id':
-      //   if(state.params.hasOwnProperty('id')){
-      //     emitter.emit("fetch-project", state.params.id);
-      //   }
-      //   break;
+      case '/links':
+        emitter.emit("fetch-links", {});
+        break;
       case 'lists/:id':
         if(state.params.hasOwnProperty('id')){
           emitter.emit("fetch-list", state.params.id);
         }
         break;
-      // collections
-      // case 'collections':
-      //   emitter.emit("fetch-collections", {});
-      //   break;
-      // case 'collections/:id':
-      //   if(state.params.hasOwnProperty('id')){
-      //     emitter.emit("fetch-collection", state.params.id);
-      //   }
-      //   break;
-      // users
       case 'users':
         emitter.emit("fetch-users", {});
         break;
@@ -99,7 +82,6 @@ app.use((state, emitter) => {                  // 1.
           emitter.emit('fetch-user', state.params.username);
         }
         break;
-      // default
       default:
         break;
     }    
@@ -114,3 +96,26 @@ module.exports = app;
 // }
 
 // module.exports = app.mount('body')
+
+// case 'projects':
+      //   emitter.emit("fetch-projects", {});
+      //   break;
+      // case 'about':
+      //   // emitter.emit("fetch-projects", {});
+      //   break;
+      // collections
+      // case 'collections':
+      //   emitter.emit("fetch-collections", {});
+      //   break;
+      // case 'collections/:id':
+      //   if(state.params.hasOwnProperty('id')){
+      //     emitter.emit("fetch-collection", state.params.id);
+      //   }
+      //   break;
+      // users
+
+      // case 'projects/:id':
+      //   if(state.params.hasOwnProperty('id')){
+      //     emitter.emit("fetch-project", state.params.id);
+      //   }
+      //   break;
