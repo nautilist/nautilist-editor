@@ -2,41 +2,6 @@ var Component = require('choo/component')
 var html = require('choo/html')
 const Sortable = require('sortablejs');
 
-function CreateSectionList(sections, sectionsDetails){
-  if(sections && sections.length <= 0){
-    return ' no sections! '
-  }
-
-  return sections.map(section => {
-    return html`
-    <li class="mt4 pa3-ns pa2 bg-washed-blue dropshadow ba bw1 b--black" data-id="${section._id}">
-      <h2 class="f2 lh-title ma0">${section.name}</h2>
-      <p class="f5 mt1">${section.description}</p>
-      <ul data-sectionid=${section._id} class="list nested-sortable pl0 w-100">
-        ${CreateLinkList(section.links, sectionsDetails)}
-      </ul>
-    </li>
-    `
-  })
-
-}
-
-function CreateLinkList(links, linksDetails){
-  if(links && links.length <= 0){
-    return ' no links! '
-  }
-
-  return links.map(link => {
-    let detail = linksDetails.find(item => item._id == link);
-    return html`
-      <li class="mt2 dropshadow pa2 ba bg-washed-red " data-id="${detail._id}">
-        <h3>${detail.name}</h3>
-        <p>${detail.description}</p>
-      </li>
-    `
-  })
-  
-}
 
 class EditableList extends Component {
   constructor (id, state, emit) {
@@ -51,6 +16,90 @@ class EditableList extends Component {
     }
     this.makeSortable = this.makeSortable.bind(this);
     this.handleSorting = this.handleSorting.bind(this);
+    this.CreateLinkList = this.CreateLinkList.bind(this);
+    this.CreateSectionList = this.CreateSectionList.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.removeBtn = this.removeBtn.bind(this);
+  }
+
+  handleRemove(prop, parentid, featureid){
+    return e=>{
+      let c = confirm(`are you sure you want to remove ${featureid} at ${parentid} of ${prop}?`)
+      if(c === true){
+        let query, params;
+
+        if(prop === 'links'){
+
+        } else if(prop === 'sections'){
+          query = null,
+          
+          params = {
+            $pull:{
+              "sections": {_id: featureid }
+            }
+          }
+
+        }
+
+        this.state.api.lists.patch(this.state.selectedList._id, params, query)
+          .then(result => {
+            this.state.selectedList = result;
+            this.emit('render');
+          })
+          .catch(err => {
+            alert(err);
+          })
+        
+      } else {
+        return;
+      }
+    }
+  }
+
+  removeBtn(prop, parentid, featureid){
+    let displayed = this.local.editable === true ? 'fl':'dn'
+    return html`
+      <button onclick=${this.handleRemove(prop,parentid,featureid)} class="${displayed} f7 bn bg-near-white red">remove</button>
+    `
+  }
+
+  CreateSectionList(sections, sectionsDetails){
+    if(sections && sections.length <= 0){
+      return ' no sections! '
+    }
+    let selectedListId = this.state.selectedList._id
+  
+    return sections.map(section => {
+      return html`
+      <li class="mt4 pa3-ns pa2 bg-washed-blue dropshadow ba bw1 b--black" data-id="${section._id}">
+        <p class="w-100 flex flex-row justify-end">${this.removeBtn('sections',selectedListId, section._id)}</p>
+        <h2 class="f2 lh-title ma0">${section.name}</h2>
+        <p class="f5 mt1">${section.description}</p>
+        <ul data-sectionid=${section._id} class="list nested-sortable pl0 w-100">
+          ${this.CreateLinkList(section.links, sectionsDetails, section)}
+        </ul>
+      </li>
+      `
+    })
+  
+  }
+
+  CreateLinkList(links, linksDetails, section){
+    if(links && links.length <= 0){
+      return ' no links! '
+    }
+  
+    return links.map(link => {
+      let detail = linksDetails.find(item => item._id == link);
+      return html`
+        <li class="mt2 dropshadow pa2 ba bg-washed-red " data-id="${detail._id}">
+          <p class="w-100 flex flex-row justify-end">${this.removeBtn('links',section._id,detail._id)}</p>
+          <h3>${detail.name}</h3>
+          <p>${detail.description}</p>
+        </li>
+      `
+    })
+    
   }
 
   toggleEditable(e){
@@ -149,7 +198,7 @@ class EditableList extends Component {
     // ${CreateLinkList(links, linksDetails)}
     return html`
       <ul class="list pl0 mt4 w-100 pt2 pb5 flex-grow-1">
-        ${CreateSectionList(sections, sectionsDetails)}
+        ${this.CreateSectionList(sections, sectionsDetails)}
       </ul>
     `
   }
