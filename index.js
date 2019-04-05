@@ -71,25 +71,25 @@ app.use((state, emitter) => {                  // 1.
       case 'browse':
         // emitter.emit("fetch-projects", {});
         break;
-      case 'projects/:id':
-        if(state.params.hasOwnProperty('id')){
-          emitter.emit("fetch-project", state.params.id);
-        }
-        break;
+      // case 'projects/:id':
+      //   if(state.params.hasOwnProperty('id')){
+      //     emitter.emit("fetch-project", state.params.id);
+      //   }
+      //   break;
       case 'lists/:id':
         if(state.params.hasOwnProperty('id')){
           emitter.emit("fetch-list", state.params.id);
         }
         break;
       // collections
-      case 'collections':
-        emitter.emit("fetch-collections", {});
-        break;
-      case 'collections/:id':
-        if(state.params.hasOwnProperty('id')){
-          emitter.emit("fetch-collection", state.params.id);
-        }
-        break;
+      // case 'collections':
+      //   emitter.emit("fetch-collections", {});
+      //   break;
+      // case 'collections/:id':
+      //   if(state.params.hasOwnProperty('id')){
+      //     emitter.emit("fetch-collection", state.params.id);
+      //   }
+      //   break;
       // users
       case 'users':
         emitter.emit("fetch-users", {});

@@ -13,7 +13,7 @@ module.exports = view
 
 function view(state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
-  // emit('fetch-home')
+
 
   return html `
     <body class="w-100 h-100 code lh-copy flex flex-column" onload=${() => emit('fetch-home')}>

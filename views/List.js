@@ -7,7 +7,7 @@ const AddFeatureModal = require('../components/AddFeatureModal');
 const EditableList = require('../components/EditableList');
 const EditableListHeader = require('../components/EditableListHeader');
 const helpers = require("../helpers")
-
+const AddLinksToSectionModal = require('../components/AddLinksToSectionModal');
 
 const TITLE = 'Nautilists - List';
 
@@ -34,32 +34,13 @@ function view(state, emit) {
       </main>
       ${Footer()}
         ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
-      ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
+        ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
+        ${state.cache(AddLinksToSectionModal, "AddLinksToSectionModal", state, emit).render()}
     </body>
   `
 
 }
 
-
-// ${headerSection(state, emit)}
-// function headerSection(state, emit){
-//     const {selectedList} = state;
-
-//     if(Object.keys(selectedList).length <= 0){
-//         return html`<p class="tc w-100">no details</p>`
-//     }
-//     const{name, description, ownerDetails, collaboratorDetails, followersDetails} = selectedList
-
-//     return html`
-//         <section class="w-100 mt4">
-//             <p class="mb2 pa0 f6">${showFollowers(state, emit, followersDetails)}</p>
-//             <h2 class="f2 lh-title ma0">${name}</h2>
-//             ${showOwner(ownerDetails)}
-//             ${showCollaborators(collaboratorDetails)}
-//             <h4 class="f4 mt2">${description}</h4>
-//         </section>
-//     `
-// }
 
 function publicActions(state, emit){
     const {selectedList} = state;
@@ -114,8 +95,15 @@ function privateActions(state, emit){
         alert('add section')
     }
 
+    // TODO: do better getting links for modal
     function addLink(e){
-        alert('add link')
+        state.api.links.find({query:{$limit:20}})
+        .then(result => {
+            state.links = result.data;
+            state.components.AddLinksToSectionModal.open();
+        }).catch(err => {
+            alert(err);
+        })
     }
 
     const {ownerDetails, collaboratorDetails} = selectedList;
@@ -131,3 +119,27 @@ function privateActions(state, emit){
     }
 
 }
+
+
+
+
+
+// ${headerSection(state, emit)}
+// function headerSection(state, emit){
+//     const {selectedList} = state;
+
+//     if(Object.keys(selectedList).length <= 0){
+//         return html`<p class="tc w-100">no details</p>`
+//     }
+//     const{name, description, ownerDetails, collaboratorDetails, followersDetails} = selectedList
+
+//     return html`
+//         <section class="w-100 mt4">
+//             <p class="mb2 pa0 f6">${showFollowers(state, emit, followersDetails)}</p>
+//             <h2 class="f2 lh-title ma0">${name}</h2>
+//             ${showOwner(ownerDetails)}
+//             ${showCollaborators(collaboratorDetails)}
+//             <h4 class="f4 mt2">${description}</h4>
+//         </section>
+//     `
+// }
