@@ -10,6 +10,10 @@ html{
   box-sizing:border-box;
 }
 
+.font-tiny{
+  font-size:8px;
+}
+
 .reverse-img{
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);

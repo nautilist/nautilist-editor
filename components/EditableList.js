@@ -81,9 +81,9 @@ class EditableList extends Component {
     return sections.map(section => {
       return html`
       <li class="mt4 pa3-ns pa2 bg-washed-blue dropshadow ba bw1 b--black" data-id="${section._id}">
-        <p class="w-100 flex flex-row justify-end">${this.removeBtn('sections',selectedListId, section._id)}</p>
+        <p class="ma0 w-100 flex flex-row justify-end">${this.removeBtn('sections',selectedListId, section._id)}</p>
         <h2 class="f2 lh-title ma0">${section.name}</h2>
-        <p class="f5 mt1">${section.description}</p>
+        <p class="ma0 f5 mt1">${section.description}</p>
         <ul data-sectionid=${section._id} class="list nested-sortable pl0 w-100">
           ${this.CreateLinkList(section.links, sectionsDetails, section)}
         </ul>
@@ -103,11 +103,12 @@ class EditableList extends Component {
       let detail = linksDetails.find(item => item._id == link);
       let ensureUrl = detail.url ? detail.url: '#';
       return html`
-        <li class="mt2 dropshadow pa2 ba bg-washed-red " data-id="${detail._id}">
-          <p class="w-100 flex flex-row justify-end">${this.removeBtn('links',section._id,detail._id)}</p>
+        <li class="mt2 dropshadow pt2 pl3 pr3 pb4 ba bg-washed-red " data-id="${detail._id}">
+          <p class="ma0 w-100 flex flex-row justify-end">${this.removeBtn('links',section._id,detail._id)}</p>
           <a class="link black" href="${ensureUrl}" target="_blank">
-          <h3>${detail.name}</h3>
-          <p>${detail.description}</p>
+          <small class="ma0 font-tiny b"><a class="link black" href="${ensureUrl}" target="blank">${ensureUrl}</a></small>
+          <h3 class="ma0">${detail.name}</h3>
+          <p class="ma0">${detail.description}</p>
           </a>
         </li>
       `

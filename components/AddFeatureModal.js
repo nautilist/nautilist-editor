@@ -68,7 +68,8 @@ class AddFeatureModal extends Component {
     let {featureType} = this.local;
 
     return html`
-    <div id="addFeatureModal" class="w-100 h-100 flex-column justify-center items-center ${this.local.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(51,51,51,0.7)">
+    <div id="addFeatureModal" class="w-100 h-100 flex-column justify-center items-center ${this.local.displayed} fixed top-0 left-0 max-z pa4" 
+    style="background:rgba(232, 253, 245, 0.9)">
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
           <h2>Add Feature:${featureType}</h2>
