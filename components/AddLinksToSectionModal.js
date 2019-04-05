@@ -69,7 +69,7 @@ class AddLinksToSectionModal extends Component {
     let highlight = section._id === this.local.selectedSection ? 'bg-light-blue dark-pink' : 'bg-white navy';
 
       return html`
-        <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="h-100 w4 b--black flex flex-column ba bw1 hover-bg-washed-blue ${highlight}">
+        <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="h-100 w4 b--black flex flex-column ba bw1 grow ${highlight}">
           <p class="w-100 tc f7 truncate">${section.name === '' ? 'default' : section.name}</p>
         </div>
       `
@@ -78,7 +78,7 @@ class AddLinksToSectionModal extends Component {
     return html`
     <section class="w-100 overflow-x-scroll">
     <fieldset class="w-100 mw7 h4 pa2 ba bw1 b--black flex flex-row">
-        <legend>Choose a section</legend>
+        <legend>Choose a section - required</legend>
         ${els}
       </fieldset>
       </section>
@@ -90,7 +90,7 @@ class AddLinksToSectionModal extends Component {
     let els = links.map(link => {
       let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-washed-red navy' : 'bg-white navy';
         return html`
-          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h-100 w4 b--black fl ba bw1 hover-bg-washed-blue ${highlight}">
+          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h-100 w4 b--black fl ba bw1 grow ${highlight}">
             <p class="w-100 tc f7 truncate">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `
@@ -191,7 +191,7 @@ class AddLinksToSectionModal extends Component {
         style="background:rgba(25, 169, 116, 0.7)">
         <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
           <header class="flex flex-row items-center justify-between">
-            <h2>Add Link to Section</h2>
+            <h2>Add a link</h2>
             <button class="bn bg-navy washed-green bw2 pa2 h3 w3 f3 pointer" onclick="${this.close}">╳</button>
           </header>
 
@@ -200,7 +200,9 @@ class AddLinksToSectionModal extends Component {
           <p>and/or</p>
           ${this.linkDetailsForm()}
           
-          <button class="h2 bg-near-white dark-pink pa2 mt3 dropshadow bn br0" onclick=${this.handleSubmit} class="pa2">Submit!</button>
+          <section class="h3 w-100 mt3 mb4">
+          <button class="h-100 bg-near-white dark-pink pl3 pr3 dropshadow bn br0" onclick=${this.handleSubmit} class="pa2">Submit!</button>
+          </section>
         </div>
         <!-- invisible div under the modal to capture out of modal click to close -->
         <div class="dn w-100 h-100 fixed top-0 left-0" onclick=${this.close}></div>
