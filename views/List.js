@@ -81,12 +81,22 @@ function privateActions(state, emit){
         emit('render')   
     }
 
+    function addSection(e){
+        alert('add section')
+    }
+
+    function addLink(e){
+        alert('add link')
+    }
+
     const {ownerDetails, collaboratorDetails} = selectedList;
     if(user.authenticated === true && user.username === ownerDetails.username || collaboratorDetails.includes(user.username)){
         return html`
         <section class="w-100 mt4 flex flex-row items-center">
             <button onclick=${toggleEditable} class="bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
-            <p class="f7 pl2 ma0">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
+            <p class="f7 pl2 ma0 mr2">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
+            <button onclick=${addSection} class="bn bg-near-white mr2">Add section</button>
+            <button onclick=${addLink} class="bn bg-near-white mr2">Add link</button>
         </section>
         `
     }
