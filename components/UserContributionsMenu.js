@@ -45,13 +45,13 @@ class UserContributionsMenu extends Component {
             onclick=${this.handleSelect('lists')}>lists
             </button>
           </li>
-        <li class="mr2">
+        <li class="dn mr2">
           <button 
             class="${this.showSelectedTab('tracks')} bn pa2 dropshadow" 
             onclick=${this.handleSelect('tracks')}>tracks
           </button>
         </li>
-        <li class="mr2">
+        <li class="dn mr2">
           <button 
             class="${this.showSelectedTab('collections')} bn pa2 dropshadow" 
             onclick=${this.handleSelect('collections')}>collections

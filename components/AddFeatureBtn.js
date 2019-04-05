@@ -47,13 +47,13 @@ class AddFeatureBtn extends Component {
                 class="button-reset bg-near-white w-100 tr grow ba bw1 b--white pa1">list
               </button>
             </li>
-            <li>
+            <li class="dn">
               <button 
                 onclick=${this.triggerModal('tracks')}
                 class="button-reset bg-near-white w-100 tr grow ba bw1 b--white pa1">track
               </button>
             </li>
-            <li>
+            <li class="dn">
               <button 
                 onclick=${this.triggerModal('collections')}
                 class="button-reset bg-near-white w-100 tr grow ba bw1 b--white pa1">collection

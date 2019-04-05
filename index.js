@@ -34,10 +34,10 @@ app.route('/verify', require('./views/verify'))
 // app.route('/projects', require('./views/projects'))
 
 app.route('/lists/:id', require('./views/List'))
-app.route('/tracks/:id', require('./views/Track'))
+// app.route('/tracks/:id', require('./views/Track'))
 
-app.route('/collections', require('./views/collections'))
-app.route('/collections/:id', require('./views/collection'))
+// app.route('/collections', require('./views/collections'))
+// app.route('/collections/:id', require('./views/collection'))
 
 app.route('/users', require('./views/users'))
 app.route('/users/:username', require('./views/user'))
@@ -62,9 +62,9 @@ app.use((state, emitter) => {                  // 1.
       case '/':
         emitter.emit("fetch-home", {});
         break;
-      case 'projects':
-        emitter.emit("fetch-projects", {});
-        break;
+      // case 'projects':
+      //   emitter.emit("fetch-projects", {});
+      //   break;
       case 'about':
         // emitter.emit("fetch-projects", {});
         break;

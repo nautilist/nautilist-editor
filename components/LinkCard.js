@@ -20,10 +20,12 @@ module.exports = function(link){
       }
 
 
-    const {name, description, _id, selectedColor, colors, ownerDetails} = link;
+    const {name, url, description, _id, selectedColor, colors, ownerDetails} = link;
+
+    let ensureUrl = url ? url: '#';
 
     return html`
-    <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/link/${_id}">
+    <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="${ensureUrl}" target="_blank">
     <div class="h-100 dropshadow bg-near-white ma2 flex flex-column justify-between" data-type="links" data-id=${_id} onclick=${handleRedirect}>
         <div class="flex flex-column w-100">
             <button class="w-100 dn f7 bn bg-navy dark-pink">save for later</button>

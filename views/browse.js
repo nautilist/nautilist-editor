@@ -26,13 +26,14 @@ function view (state, emit) {
 
 
 function SearchResults(state, emit){
+  // TODO: add these in soon
+  // ${showTracks(state, emit)}
+  // ${showCollections(state, emit)}
   return html`
     <section class="w-100 flex flex-column">
       <h2 class="f2 lh-title tc">Search Results by category</h2>
       ${showLinks(state, emit)}
       ${showLists(state, emit)}
-      ${showTracks(state, emit)}
-      ${showCollections(state, emit)}
       ${nautilistUsers(state, emit)}
     </section>
   `
@@ -170,32 +171,35 @@ function searchCategoriesSection(state, emit){
   return html`
   <section class="w-100 pa4 flex flex-column items-center">
     <h2 class="w-100 tc f2 lh-title">Browse Categories</h2>
-    <div class="w-100 flex flex-row-ns flex-column items-center justify-center tc">
-      <div class="w-25-ns w-100">
-        <a class="link black w-100" href="/lists">
-          <img style="max-width:60%" src="/assets/1F33C.png">  
-        <h3 class="f2 lh-title">lists</h3>
-        </a>
-        <p class="pa2">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
+    <div class="w-100 flex flex-row-ns flex-column items-start justify-start tc">
+      <div class="w-third-ns w-100 flex flex-column justify-start">
+        <a class="link black w-100" href="/links">
+          <img style="max-width:60% h4-ns h3" src="/assets/1F33C.png">  
+          </a>
+        <h3 class="f2 lh-title">links</h3>
+        
+        <p class="pa2">Links are the heart of nautilist projects. Add 'em in and organize them into lists.</p>
       </div>  
-      <div class="w-25-ns w-100">
-        <a class="link black w-100" href="/tracks">
-          <img style="max-width:60%" src="/assets/1F33C.png">  
+      <div class="w-third-ns w-100 flex flex-column justify-start">
+        <a class="link black w-100" href="/lists">
+          <img style="max-width:60% h4-ns h3" src="/assets/1F490.png">  
+        </a>
         <h3 class="f2 lh-title">tracks</h3>
-        </a>
-        <p class="pa2">Projects are lists of links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
+        
+        <p class="pa2">Lists are the home for your wonderful links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>
       </div>
-      <div class="w-25-ns w-100">
+      <div class="w-25-ns w-100 dn">
         <a class="link black w-100" href="/collections">
-        <img style="max-width:60%" src="/assets/1F490.png"> 
-        <h3 class="f2 lh-title">Collections</h3>
+        <img style="max-width:60% h4-ns h3" src="/assets/1F490.png"> 
         </a>
+        <h3 class="f2 lh-title">Collections</h3>
+        
         <p class="pa2">Collections are groups of projects. Collections may contain similar themed projects such as for a class or larger project.</p>
       </div>
-      <div class="w-25-ns w-100">
+      <div class="w-third-ns w-100 flex flex-column justify-start">
         <a class="link black w-100" href="/users">
-        <img style="max-width:60%" src="/assets/1F984.png">
-        <h3 class="f2 lh-title">Users</h3>
+        <img style="max-width:60% h4" src="/assets/1F984.png">
+        <h3 class="f2 lh-title">users</h3>
         </a>
         <p class="pa2">Oh and what would we be without our wonderful users? Go checkout their projects and collections for inspiration or to collaborate!</p>
       </div>
