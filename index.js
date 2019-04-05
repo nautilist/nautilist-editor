@@ -69,6 +69,9 @@ app.use((state, emitter) => {                  // 1.
       case '/links':
         emitter.emit("fetch-links", {});
         break;
+      case '/lists':
+        emitter.emit("fetch-lists", {});
+        break;
       case 'lists/:id':
         if(state.params.hasOwnProperty('id')){
           emitter.emit("fetch-list", state.params.id);

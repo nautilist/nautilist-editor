@@ -3,6 +3,9 @@ const NavbarTop = require("../components/NavbarTop");
 const Footer = require('../components/Footer');
 const BrowseSearchBar = require('../components/BrowseSearchBar');
 const LinkCards = require('../components/LinkCards');
+const AddFeatureBtn = require('../components/AddFeatureBtn');
+const AddFeatureModal = require('../components/AddFeatureModal');
+
 module.exports = view
 
 function showLinks(state, emit){
@@ -39,6 +42,8 @@ function view(state, emit) {
         ${showLinks(state, emit)}
       </main>
       ${Footer()}
+${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
+      ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
     </body>
     `
 }
