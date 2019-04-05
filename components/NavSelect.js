@@ -44,7 +44,7 @@ class NavSelect extends Component {
     el.value = `/${this.state.route}`
     el.childNodes.forEach( (item, idx) => {
       if(item.value == el.value){
-        console.log('true')
+        // console.log('true')
         el.selectedIndex = idx;
       }
     })

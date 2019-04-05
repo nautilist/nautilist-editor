@@ -34,7 +34,7 @@ class NavbarTop extends Component {
   showNavSelect(){
     let routes = ['projects','users','collections', 'users/:id', 'projects/:id', 'collections/:id']
     if(routes.includes(this.state.route)){
-      console.log("from navbartop:",this.state.route)
+      // console.log("from navbartop:",this.state.route)
       this.local.navSelectDisplayed = 'flex';
     } else {
       this.local.navSelectDisplayed = 'flex'; // to only show at routes set 'dn'

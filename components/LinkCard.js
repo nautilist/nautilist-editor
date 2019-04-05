@@ -1,6 +1,7 @@
 const html = require('choo/html');
 
 module.exports = function(link){
+    
     function handleRedirect(e){
         const {id, type} = e.currentTarget.dataset
         console.log('go to selected list!', id, type)
