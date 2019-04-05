@@ -55,9 +55,20 @@ class EditableList extends Component {
 
   toggleEditable(e){
     this.local.editable = !this.local.editable;
+
+    // if(this.local.editable === false){
+    //   this.local.sortable.option('disabled', true);
+    //   this.local.sortables.forEach(item=> { item.option('disabled', true) })
+    // } else {
+    //   this.local.sortable.option('disabled', false);
+    //   this.local.sortables.forEach(item=> {item.option('disabled', false)})
+    // }
+    
+    
     this.rerender();
-    // console.log("sortable options: ",this.local.sortable.options.disabled)
-    // this.local.sortables.forEach(item=> { console.log(item.options.disabled)})
+    console.log("sortable option: ", this.local.sortable.options.disabled)
+    this.local.sortables.forEach(item=> { console.log(item.options.disabled) })
+    
   }
 
   makeSortable(el){
@@ -69,7 +80,15 @@ class EditableList extends Component {
     const sortableConfig = {
       animation: 150,
       direction:'vertical',
-      onEnd: this.handleSorting()
+      onMove: event => {
+        // return !event.related.classList.contains('disabled');
+        if(this.local.editable == false){
+          return false;
+        } else {
+          return true
+        }
+      },
+      onSort: this.handleSorting()
     }
 
     // console.log(nestedSortables)
@@ -151,26 +170,42 @@ class EditableList extends Component {
   load(el){
     this.makeSortable(el);
 
-    if(this.local.editable === false){
-      this.local.sortable.option('disabled', true);
-      this.local.sortables.forEach(item=> {item.option('disabled', true)})
-    } else {
-      this.local.sortable.option('disabled', false); 
-      this.local.sortables.forEach(item=> {item.option('disabled', false)})
-    }
+    // if(this.local.editable === false){
+    //   this.local.sortable.option('disabled', true);
+    //   // this.local.sortable.option('sort', false);
+    //   this.local.sortables.forEach(item=> {item.option('disabled', true)})
+    //   // this.local.sortables.forEach(item=> {item.option('sort', false)})
+    // } else {
+    //   this.local.sortable.option('disabled', false);
+    //   // this.local.sortable.option('sort', true);
+    //   this.local.sortables.forEach(item=> {item.option('disabled', false)})
+    //   // this.local.sortables.forEach(item=> {item.option('sort', true)})
+    // }
 
   }
 
   afterupdate(el){
     this.makeSortable(el);
 
-    if(this.local.editable === false){
-      this.local.sortable.option('disabled', true);
-      this.local.sortables.forEach(item=> {item.option('disabled', true)})
-    } else {
-      this.local.sortable.option('disabled', false); 
-      this.local.sortables.forEach(item=> {item.option('disabled', false)})
-    }
+    // if(this.local.editable === false){
+    //   this.local.sortable.option('disabled', true);
+    //   // this.local.sortable.option('sort', false);
+    //   this.local.sortables.forEach(item=> {item.option('disabled', true)})
+    //   // this.local.sortables.forEach(item=> {item.option('sort', false)})      
+    // } else {
+    //   this.local.sortable.option('disabled', false);
+    //   // this.local.sortable.option('sort', true);
+    //   this.local.sortables.forEach(item=> {item.option('disabled', false)})
+    //   // this.local.sortables.forEach(item=> {item.option('sort', true)})
+    // }
+
+    // if(this.local.editable === false){
+    //   this.local.sortable.option('disabled', true);
+    //   this.local.sortables.forEach(item=> {item.option('disabled', true)})
+    // } else {
+    //   this.local.sortable.option('disabled', false); 
+    //   this.local.sortables.forEach(item=> {item.option('disabled', false)})
+    // }
   }
 }
 
