@@ -25,7 +25,7 @@ class BrowseSearchBar extends Component {
     }
     
     let collectionName = this.state.route
-    console.log(collectionName, apiUrl)
+    // console.log(collectionName, apiUrl)
     return e => {
       e.preventDefault()
 

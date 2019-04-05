@@ -41,7 +41,7 @@ class EditableListHeader extends Component {
         name: this.local.name,
         description: this.local.description
       }
-      console.log(payload)
+      // console.log(payload)
       state.api.lists.patch(state.selectedList._id, payload,{})
         .then(result => {
           state.selectedList = result;

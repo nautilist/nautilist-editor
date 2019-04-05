@@ -155,7 +155,7 @@ function store(state, emitter) {
           }
         }
         state.api.authmanagement.create(obj).then(result => {
-        console.log('sending reset password!', result)
+        // console.log('sending reset password!', result)
       }).catch(err => {
         return err;
       })
@@ -172,7 +172,7 @@ function store(state, emitter) {
         }
       }
       state.api.authmanagement.create(obj).then(result => {
-        console.log('password changed!', result)
+        // console.log('password changed!', result)
         emitter.emit('pushState', '/login')
       }).catch(err => {
         return err;

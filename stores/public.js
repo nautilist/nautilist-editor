@@ -118,7 +118,7 @@ function store(state, emitter) {
   })
 
   emitter.on('fetch-link', (id) => {
-    console.log(id)
+    // console.log(id)
     state.api.links.get(id).then(result => {
       state.selectedLink = result
       emitter.emit('render');
@@ -128,7 +128,7 @@ function store(state, emitter) {
   })
 
   emitter.on('fetch-list', (id) => {
-    console.log(id)
+    // console.log(id)
     state.api.lists.get(id).then(result => {
       state.selectedList = result
       emitter.emit('render');
@@ -138,7 +138,7 @@ function store(state, emitter) {
   })
 
   emitter.on('fetch-track', (id) => {
-    console.log(id)
+    // console.log(id)
     state.api.tracks.get(id).then(result => {
       state.selectedTrack = result
       emitter.emit('render');

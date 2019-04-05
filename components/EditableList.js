@@ -119,8 +119,8 @@ class EditableList extends Component {
     this.local.editable = !this.local.editable;
 
     this.rerender();
-    console.log("sortable option: ", this.local.sortable.options.disabled)
-    this.local.sortables.forEach(item=> { console.log(item.options.disabled) })
+    // console.log("sortable option: ", this.local.sortable.options.disabled)
+    // this.local.sortables.forEach(item=> { console.log(item.options.disabled) })
     
   }
 
@@ -181,7 +181,7 @@ class EditableList extends Component {
           sections: newSections
       }
 
-      console.log(params)
+      // console.log(params)
 
       const {_id} = this.state.selectedList;
 

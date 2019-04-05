@@ -39,7 +39,7 @@ class AddCollaboratorModal extends Component {
 
   addByUrl(e) {
     e.preventDefault();
-    console.log(e.currentTarget);
+    // console.log(e.currentTarget);
     const projectId = this.state.selectedProject._id
     const form = new FormData(e.currentTarget);
     const url = form.get('url');
@@ -77,14 +77,14 @@ class AddCollaboratorModal extends Component {
     const form = new FormData(e.currentTarget);
     const username = form.get('username');
 
-    console.log("searching for: ", username)
+    // console.log("searching for: ", username)
     const searchQuery = {
       "query": {
         "$search": username
       }
     }
     feathersClient.service('users').find(searchQuery).then(result => {
-      console.log(result.data)
+      // console.log(result.data)
       this.local.searchResults = result.data;
       this.rerender();
     }).catch(err => {

@@ -39,7 +39,7 @@ class AddToCollectionModal extends Component {
 
   createAndAdd(e){
     e.preventDefault();
-    console.log(e.currentTarget);
+    // console.log(e.currentTarget);
     const form = new FormData(e.currentTarget);
     const name = form.get('name');
 
@@ -61,7 +61,7 @@ class AddToCollectionModal extends Component {
 
   addByUrl(e){
     e.preventDefault();
-    console.log(e.currentTarget);
+    // console.log(e.currentTarget);
     const form = new FormData(e.currentTarget);
     const url = form.get('url');
     const collectionId = url.split("/").slice(-1).pop()
