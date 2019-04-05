@@ -50,21 +50,23 @@ class AddSectionToListModal extends Component {
   
   showLinks(links){
     let els = links.map(link => {
-      let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-washed-red navy' : 'bg-white navy';
+      let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-light-green navy' : 'bg-white navy';
         return html`
-          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h-100 w4 b--black fl ba bw1 grow ${highlight}">
-            <p class="w-100 tc f7 truncate">${link.name === '' ? 'default' : link.name}</p>
+          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id}  class="mr2 h3 w4 b--black fl pa2 ba bw1 grow ${highlight}">
+            <p class="w-100 tc ma0 f7 truncate">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `
       })
   
       return html`
-        <section class="w-100 overflow-x-scroll">
-        <fieldset class="w-100 mw7 h4 pa2 ba bw1 b--black flex flex-row">
-          <legend>Choose some links</legend>
-          ${els}
-        </fieldset>
-        </section>
+      <section class="w-100 mw7 h-auto ma0 overflow-hidden">
+      <fieldset class="w-100 h-100 ma0 h4 ba bw1 b--black">
+      <legend>Choose some links</legend>
+        <div class="mw7 h-100 pa0 flex flex-row overflow-x-scroll">
+        ${els}
+        </div>
+      </fieldset>
+    </section>
       `
   }
 
@@ -133,7 +135,7 @@ class AddSectionToListModal extends Component {
         style="background:rgba(232, 253, 245, 0.9)">
         <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
           <header class="flex flex-row items-center justify-between">
-            <h2>Add Link to Section</h2>
+            <h2>Add Section to List</h2>
             <button class="bn bg-navy washed-green bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
           </header>
           ${this.showLinks(links)}

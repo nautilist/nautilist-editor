@@ -66,21 +66,23 @@ class AddLinksToSectionModal extends Component {
   showSections(sections){
     
     let els = sections.map(section => {
-    let highlight = section._id === this.local.selectedSection ? 'bg-light-blue dark-pink' : 'bg-white navy';
+    let highlight = section._id === this.local.selectedSection ? 'bg-yellow dark-pink' : 'bg-white navy';
 
       return html`
-        <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="h-100 w4 b--black flex flex-column ba bw1 grow ${highlight}">
-          <p class="w-100 tc f7 truncate">${section.name === '' ? 'default' : section.name}</p>
+        <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="mr2 h3 w4 b--black fl pa2 ba bw1 grow ${highlight}">
+          <p class="w-100 tc ma0 f7 truncate">${section.name === '' ? 'default' : section.name}</p>
         </div>
       `
     })
 
     return html`
-    <section class="w-100 overflow-x-scroll">
-    <fieldset class="w-100 mw7 h4 pa2 ba bw1 b--black flex flex-row">
+      <section class="w-100 mw7 h-auto overflow-hidden">
+        <fieldset class="w-100 h-100 ma0 pa2 ba bw1 b--black">
         <legend>Choose a section - required</legend>
-        ${els}
-      </fieldset>
+          <div class="mw7 h-100 pa2 flex flex-row overflow-x-scroll">
+          ${els}
+          </div>
+        </fieldset>
       </section>
     `
   
@@ -88,21 +90,25 @@ class AddLinksToSectionModal extends Component {
 
   showLinks(links){
     let els = links.map(link => {
-      let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-washed-red navy' : 'bg-white navy';
+      let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-light-green navy' : 'bg-white navy';
         return html`
-          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h-100 w4 b--black fl ba bw1 grow ${highlight}">
-            <p class="w-100 tc f7 truncate">${link.name === '' ? 'default' : link.name}</p>
+          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h3 w4 b--black fl pa2 ba bw1 grow ${highlight}">
+            <p class="w-100 tc ma0 f7 truncate">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `
       })
   
       return html`
-        <section class="w-100 overflow-x-scroll">
-        <fieldset class="w-100 mw7 h4 pa2 ba bw1 b--black flex flex-row">
+        
+      <section class="w-100 mw7 h-auto overflow-hidden">
+        <fieldset class="w-100 h-100 ma0 pa2 ba bw1 b--black">
           <legend>Choose some links</legend>
+          <div class="mw7 h-100 pa2 flex flex-row overflow-x-scroll">
           ${els}
+          </div>
         </fieldset>
-        </section>
+      </section>
+        
       `
   }
 
