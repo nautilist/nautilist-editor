@@ -8,6 +8,7 @@ const EditableList = require('../components/EditableList');
 const EditableListHeader = require('../components/EditableListHeader');
 const helpers = require("../helpers")
 const AddLinksToSectionModal = require('../components/AddLinksToSectionModal');
+const AddSectionToListModal = require('../components/AddSectionToListModal');
 
 const TITLE = 'Nautilists - List';
 
@@ -36,6 +37,7 @@ function view(state, emit) {
         ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
         ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
         ${state.cache(AddLinksToSectionModal, "AddLinksToSectionModal", state, emit).render()}
+        ${state.cache(AddSectionToListModal, "AddSectionToListModal", state, emit).render()}
     </body>
   `
 
@@ -52,7 +54,6 @@ function publicActions(state, emit){
 
             // TODO: not sure but event listeners are bubbling!
             // emit('remix', {id, db});
-
             state.api[db].get(id)
                 .then(result => {
                 let sanitizedResult = helpers.removeIds(result);
@@ -92,7 +93,13 @@ function privateActions(state, emit){
     }
 
     function addSection(e){
-        alert('add section')
+        state.api.links.find({query:{$limit:20}})
+        .then(result => {
+            state.links = result.data;
+            state.components.AddSectionToListModal.open();
+        }).catch(err => {
+            alert(err);
+        })
     }
 
     // TODO: do better getting links for modal
