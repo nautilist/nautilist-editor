@@ -29,7 +29,9 @@ class AddSectionToListModal extends Component {
     return e => {
       console.log("closing!")
       this.local.displayed = 'dn';
-      this.selectedLinks = [];
+      this.local.name='New friendly section name';
+      this.local.description='A super nice section description.';
+      this.local.selectedLinks = [];
       this.rerender();
     }
   }
@@ -50,7 +52,7 @@ class AddSectionToListModal extends Component {
     let els = links.map(link => {
       let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-washed-red navy' : 'bg-white navy';
         return html`
-          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h-100 w4 b--black fl ba bw1 hover-bg-washed-blue ${highlight}">
+          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h-100 w4 b--black fl ba bw1 grow ${highlight}">
             <p class="w-100 tc f7 truncate">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `

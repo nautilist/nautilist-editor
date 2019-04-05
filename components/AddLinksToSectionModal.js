@@ -33,7 +33,7 @@ class AddLinksToSectionModal extends Component {
       console.log("closing!")
       this.local.displayed = 'dn';
       this.local.selectedSection= '';
-      this.local.selectedLinks= [];
+      this.local.selectedLinks = [];
       this.local.name='';
       this.local.description='';
       this.local.url='';
