@@ -12,7 +12,8 @@
     "build-commit": "npm run build; git add .; git commit -am 'added latest build';",
     "deploy": "npm run build; git add .; git commit -am 'added latest build'; git push origin master",
     "deploy-ghpages": "npm run build; git add .; git commit -am 'added latest build'; git push origin `git subtree split --prefix dist master`:gh-pages --force",
-    "deploy-heroku": "git push heroku master; heroku repo:purge_cache -a nautilist-editor"
+    "deploy-heroku": "git push heroku master; heroku repo:purge_cache -a nautilist-editor",
+    "quick-deploy": "npm run build-commit; npm run deploy-heroku"
   },
   "dependencies": {
     "@feathersjs/authentication-client": "^1.0.11",
