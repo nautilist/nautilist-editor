@@ -176,7 +176,7 @@ function searchCategoriesSection(state, emit){
       <!-- links -->
       <div class="w-third-ns w-100 flex flex-column justify-start">
         <a class="link black w-100" href="/links">
-          <img style="max-width:60%" class="h4-ns h3" src="/assets/1F33C.png">  
+          <img style="max-width:60%" class="h4-ns h3" src="/assets/1F517.png">  
           </a>
         <h3 class="f2 lh-title">links</h3>
         <p class="pa2">Links are the heart of nautilist projects. Add 'em in and organize them into lists.</p>
@@ -185,7 +185,7 @@ function searchCategoriesSection(state, emit){
       <!-- lists -->
       <div class="w-third-ns w-100 flex flex-column justify-start">
         <a class="link black w-100" href="/lists">
-          <img style="max-width:60%" class="h4-ns h3" src="/assets/1F490.png">  
+          <img style="max-width:60%" class="h4-ns h3" src="/assets/1F4A5.png">  
         </a>
         <h3 class="f2 lh-title">lists</h3>
         <p class="pa2">Lists are the home for your wonderful links. These have been created, curated, and saved to Nautilist for you to reuse and remix.</p>

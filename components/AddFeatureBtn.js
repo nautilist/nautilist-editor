@@ -38,13 +38,13 @@ class AddFeatureBtn extends Component {
             <li>
               <button 
                 onclick=${this.triggerModal('links')}
-                class="button-reset bg-near-white w-100 tr grow ba bw1 b--white pa1">link
+                class="button-reset w-100 tc grow ba bw1 bg-light-green b--white pa1"> <p class="w-100 h1"><img class="h1" src="/assets/1F517.png"> link</p>
               </button>
             </li>
             <li>
               <button 
                 onclick=${this.triggerModal('lists')}
-                class="button-reset bg-near-white w-100 tr grow ba bw1 b--white pa1">list
+                class="button-reset w-100 tc grow ba bw1 bg-yellow b--white pa1"> <p class="w-100 h1"><img class="h1" src="/assets/1F4A5.png"> list</p>
               </button>
             </li>
             <li class="dn">
