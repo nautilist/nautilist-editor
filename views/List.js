@@ -6,6 +6,8 @@ const AddFeatureBtn = require('../components/AddFeatureBtn');
 const AddFeatureModal = require('../components/AddFeatureModal');
 const EditableList = require('../components/EditableList');
 const EditableListHeader = require('../components/EditableListHeader');
+const helpers = require("../helpers")
+
 
 const TITLE = 'Nautilists - List';
 
@@ -60,10 +62,37 @@ function view(state, emit) {
 // }
 
 function publicActions(state, emit){
+    const {selectedList} = state;
+
+    function remix(id, db){
+        return e => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            // TODO: not sure but event listeners are bubbling!
+            // emit('remix', {id, db});
+
+            state.api[db].get(id)
+                .then(result => {
+                let sanitizedResult = helpers.removeIds(result);
+                return state.api[db].create(sanitizedResult)
+                })
+                .then(result => {
+                // navigate to the route
+                alert('feature copied!')
+                    emit('pushState', `/${db}/${result._id}`);
+                    // emit('render');
+                })
+                .catch(err => {
+                alert(err);
+                })
+        }
+    }
+
     return html`
     <section class="w-100 mt4 flex flex-row">
         <button class="bn bg-near-white dark-pink pa2 dropshadow mr2">Follow</button>
-        <button class="bn bg-near-white dark-pink pa2 dropshadow mr2">Remix</button>
+        <button id="remixBtn" onclick=${remix(selectedList._id, 'lists')} class="bn bg-near-white dark-pink pa2 dropshadow mr2">Remix</button>
     </section>
     `
 }
@@ -93,10 +122,10 @@ function privateActions(state, emit){
     if(user.authenticated === true && user.username === ownerDetails.username || collaboratorDetails.includes(user.username)){
         return html`
         <section class="w-100 mt4 flex flex-row items-center">
-            <button onclick=${toggleEditable} class="bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
+            <button onclick=${toggleEditable} class="h2 dropshadow bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
+            <button onclick=${addSection} class="h2  dropshadow bn bg-near-white mr2">Add section</button>
+            <button onclick=${addLink} class="h2  dropshadow bn bg-near-white mr2">Add link</button>
             <p class="f7 pl2 ma0 mr2">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
-            <button onclick=${addSection} class="bn bg-near-white mr2">Add section</button>
-            <button onclick=${addLink} class="bn bg-near-white mr2">Add link</button>
         </section>
         `
     }

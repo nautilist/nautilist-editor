@@ -24,7 +24,7 @@ function store(state, emitter) {
 
 
   // LISTENERS
-  
+  emitter.on('DOMContentLoaded', () => {
     // SIGNUP
     emitter.on(state.events.user_signup, auth.signup);
     // LOGIN
@@ -38,6 +38,7 @@ function store(state, emitter) {
     // SEND RESET
     emitter.on(state.events.user_sendVerificationToken, auth.sendVerificationToken);
     // emitter.on('DOMContentLoaded', function () {})
+  })
 
   // AUTH FUNCTIONS
   function Auth() {
@@ -65,12 +66,11 @@ function store(state, emitter) {
         state.user.username = authResponse.username;
         state.user.id = authResponse.id;
         state.user.authenticated = true;
-        emitter.emit(state.events.RENDER);
+        // emitter.emit('pushState', '/')
+        emitter.emit('render');
       }).catch(err => {
         console.log("not auth'd friend!")
         state.user.authenticated = false;
-
-        // emitter.emit("pushState", "/login")
         return err;
       });
     };

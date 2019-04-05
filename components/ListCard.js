@@ -29,7 +29,7 @@ function ListCard(list){
 
     return html`
     <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/lists/${_id}">
-    <div class="h-100 shadow-5 bg-near-white ma2" data-type="lists" data-id=${_id}>
+    <div class="h-100 dropshadow bg-near-white ma2" data-type="lists" data-id=${_id}>
       <header class="w-100 h2  br--top" style="background-color:${colors[selectedColor]};"></header>
       <div class="hide-child">
         <section class="pa2">

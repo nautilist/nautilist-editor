@@ -35,69 +35,70 @@ function store(state, emitter) {
   // state.selectedUserCollections = [];
   // state.selectedUserFollowingCollections = []
 
+  emitter.on('DOMContentLoaded', () => {
 
-  emitter.on('fetch-navsearch', (payload) => {
-    const {searchTerm} = payload;
-    const query = {
-      query: {
-        "$text":{"$search": searchTerm}
+    emitter.on('fetch-home', () => {
+      const query = {
+        query: {
+          $limit: 16
+        }
       }
-    }
-
-    state.api.lists.find(query)
-      .then(result => {
-        state.lists = result.data.reverse()
-        return state.api.tracks.find(query)
-      })
-      .then(result => {
-        state.tracks = result.data.reverse()
-        return state.api.collections.find(query)
-      })
-      .then(result => {
-        state.collections = result.data.reverse()
-        return state.api.users.find(query)
-      })
-      .then(result => {
-        state.users = result.data.reverse()
-        return state.api.links.find(query)
-      })
-      .then(result => {
-        state.links = result.data.reverse()
-        emitter.emit('pushState', '/browse');
-      })
-      .catch(err => {
-        console.log(err)
-        alert(err);
-      })
-  })
+  
+      state.api.lists.find(query)
+        .then(result => {
+          state.lists = result.data.reverse()
+          return state.api.links.find(query)
+        })
+        .then(result => {
+          state.links = result.data.reverse()
+          return state.api.users.find(query)
+        })
+        .then(result => {
+          state.users = result.data.reverse()
+          emitter.emit('render');
+        })
+        .catch(err => {
+          alert(err);
+        })
+    });
 
 
-  emitter.on('fetch-home', () => {
-    const query = {
-      query: {
-        $limit: 16
+    emitter.on('fetch-navsearch', (payload) => {
+      const {searchTerm} = payload;
+      const query = {
+        query: {
+          "$text":{"$search": searchTerm}
+        }
       }
-    }
+  
+      state.api.lists.find(query)
+        .then(result => {
+          state.lists = result.data.reverse()
+          return state.api.tracks.find(query)
+        })
+        .then(result => {
+          state.tracks = result.data.reverse()
+          return state.api.collections.find(query)
+        })
+        .then(result => {
+          state.collections = result.data.reverse()
+          return state.api.users.find(query)
+        })
+        .then(result => {
+          state.users = result.data.reverse()
+          return state.api.links.find(query)
+        })
+        .then(result => {
+          state.links = result.data.reverse()
+          emitter.emit('pushState', '/browse');
+        })
+        .catch(err => {
+          console.log(err)
+          alert(err);
+        })
+    })
 
-    state.api.lists.find(query)
-      .then(result => {
-        state.lists = result.data.reverse()
-        return state.api.links.find(query)
-      })
-      .then(result => {
-        state.links = result.data.reverse()
-        return state.api.users.find(query)
-      })
-      .then(result => {
-        state.users = result.data.reverse()
-        emitter.emit('render');
-      })
-      .catch(err => {
-        alert(err);
-      })
-  })
-
-  // state.events.saveProjectToLists = "saveProjectToLists";
+    // state.events.saveProjectToLists = "saveProjectToLists";
   emitter.on('fetch-links', () => {
     state.api.links.find({}).then(result => {
       state.links = result.data.reverse()
@@ -237,7 +238,17 @@ function store(state, emitter) {
       //       }
   });
 
-  // emitter.on('fetch-user', (username) => {
+
+  }) // end DOMContentLoaded
+
+} // end emitter
+
+
+
+
+
+
+// emitter.on('fetch-user', (username) => {
 
   //   state.api.users.find(findByUsername).then(result => {
   //       state.selectedUser = result.data[0]
@@ -308,4 +319,3 @@ function store(state, emitter) {
 
 
   // })
-}
