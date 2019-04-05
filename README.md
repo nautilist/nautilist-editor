@@ -1,13 +1,21 @@
-# Nautilist Web Editor
-> A reactive web editor for making nautilist lists built on Choo.js
+# www.nautilists.com
 
-Should be living at the moment at: https://nautilist-editor.herokuapp.com/
-TODO: figure out how to host on github. Right now the URL's don't resolve well when using nautilist.github.io/nautilist-editor because the resources living in the /dist folder are served at: nautilist.github.io ==> basically need to fix the site.baseUrl somehow :) 
+> Pick and mix lists for all occasions
 
-![web editor sketch](assets/web-editor.png)
+![nautilist header image - nautilists.com](assets/nautilists-header.png)
 
 ## About 
-> Inspired by some of the helpful data editing tools out there (e.g. geojson.io or the P5js Web Editor), we bring you nautilist web editor - a super simple, no frills web editor to help you make lists of URLs, export, and share them across the web. 
+> Welcome to Nautilists: Pick-and-mix lists for all occasions
+
+### Add links
+> Add your favorite links from across the web.
+
+### Mix 'em up
+> Pick-and-mix links and lists for all to see.
+
+
+### Collaborate
+> Build with buddies on collaborative lists.
 
 
 ## Features (forthcoming!)
@@ -16,12 +24,63 @@ TODO: figure out how to host on github. Right now the URL's don't resolve well w
 
 ## Setup
 
+### Backend
+
+* Download and install the dependencies for [nautilist public](https://github.com/nautilist/nautilist-public)
+* Run the application - make sure you're running mongodb in the background
+
+### Frontend
+
+* Download and install the dependencies for [nautilist editor](https://github.com/nautilist/nautilist-editor)
+* Run the application - make sure you're running mongodb in the background and you have the server running
+
+### Important credentials
+If you're developing, you'll need a gmail to handle login confirmation and password reset. Only team members will have access to those infos, but you can test/develop with your own email credentials :) 
+
+
+## Run
+
 Install the dependencies
+
 ```sh
 npm install
+npm start
 ```
 
-## Heroku Deployment
+### Choo Commands
+Command                | Description                                      |
+-----------------------|--------------------------------------------------|
+`$ npm start`          | Start the development server
+`$ npm test`           | Lint, validate deps & run tests
+`$ npm run build`      | Compile all files into `dist/`
+`$ npm run create`     | Generate a scaffold file
+`$ npm run inspect`    | Inspect the bundle's dependencies
+
+### Build and deployment Commands
+
+Command                   | Description                                      |
+--------------------------|--------------------------------------------------|
+`$ npm run quick-deploy`  | build and deploy to heroku
+
+
+## CODE OF CONDUCT
+
+See [CODEOFCONDUCT.md](CODEOFCONDUCT.md)
+
+## CONTRIBUTING
+
+Interested in contributing see: [CONTRIBUTING](CONTRIBUTING.md)
+
+## Process
+
+My design and development process is logged here - link coming soon.
+
+***
+***
+## Notes
+***
+***
+## Heroku Deployment notes
 
 Using the Heroku static page buildpack: https://github.com/heroku/heroku-buildpack-static
 
@@ -46,14 +105,3 @@ https://github.com/heroku/heroku-repo#purge-cache
 ```
 $ heroku repo:purge_cache -a nautilist-editor
 ```
-
-
-
-## Commands
-Command                | Description                                      |
------------------------|--------------------------------------------------|
-`$ npm start`          | Start the development server
-`$ npm test`           | Lint, validate deps & run tests
-`$ npm run build`      | Compile all files into `dist/`
-`$ npm run create`     | Generate a scaffold file
-`$ npm run inspect`    | Inspect the bundle's dependencies
