@@ -11,7 +11,7 @@ module.exports = view
 function view (state, emit) {
   
   return html`
-    <body class="w-100 h-100 code lh-copy flex flex-column" onload=${() => emit('fetch-user', state.params.username) }>
+    <body class="w-100 h-auto code lh-copy flex flex-column" onload=${() => emit('fetch-user', state.params.username) }>
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 flex flex-column flex-grow-1 items-center mb5">
         <section class="w-100 h-100 mw7 pa2">

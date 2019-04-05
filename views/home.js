@@ -16,12 +16,12 @@ function view(state, emit) {
 
 
   return html `
-    <body class="w-100 h-100 code lh-copy flex flex-column" onload=${() => emit('fetch-home')}>
+    <body class="w-100 h-auto code lh-copy flex flex-column" onload=${() => emit('fetch-home')}>
       <!-- nav bar -->  
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       ${headerSection()}
       <!-- main -->
-      <main class="w-100 flex-grow-1 pa4 flex flex-column">
+      <main class="w-100 h-100 pa4 flex flex-column">
         ${recentLists(state, emit)}
         ${recentLinks(state, emit)}
         ${nautilistUsers(state, emit)}
@@ -34,6 +34,7 @@ function view(state, emit) {
   `
 
 }
+
 
 function nautilistUsers(state, emit){
   const {users} = state;
@@ -101,31 +102,31 @@ function recentLists(state, emit){
 
 function headerSection(){
   return html`
-  <section class="w-100 flex flex-column items-center mt4">
-  <header class="w-100 mw8-ns pa4 flex flex-row-ns flex-column items-center">
-    <section class="w-third-ns w-100 flex flex-column h-100 mr2 justify-center pa2">
-      <h2 class="tl-ns tc b f2 ma0">Welcome to <span class="dark-pink">Nautilists</span></h2>
-      <h3 class="tl-ns tc f3 mt1">Pick-and-mix lists for all occasions</ph3>
+  <section class="w-100 h-auto flex flex-column items-center mt0 pt5 pb5 bg-washed-red">
+  <header class="w-100  mw8-ns flex flex-row-ns flex-column items-center">
+    <section class="w-third-ns w-100 flex flex-column h-100 justify-center pa2 pb5 pb0-ns">
+      <h2 class="tl-ns tc b f2-ns f4 ma0">Welcome to <span class="dark-pink">Nautilists</span></h2>
+      <h3 class="tl-ns tc f3-ns f5 mt1">Pick-and-mix lists for all occasions</h3>
     </section>
-    <section class="pa2 w-two-thirds-ns w-100 flex flex-row-ns flex-column h-100 ba bw1 dropshadow b--dark-pink">
-      <div class="w-third-ns w-100 tc flex flex-column items-center">
-        <h4>Add links</h4>
+    <section class=" bg-near-white bn h-100 pa3-ns pt3 pb3 w-two-thirds-ns w-100 flex flex-row-ns flex-column ba-ns bw1-ns dropshadow-ns b--dark-pink">
+      <div class="justify-between w-third-ns w-100 h-100 tc flex flex-column items-center">
+        <h4 class="ma0">Add links</h4>
         <img class="h3 w3" src="/assets/1F517.png">
         <p class="f6 ma0 pa2 tl">Add your favorite links from across the web.</p>
       </div>
-      <div class="w-third-ns w-100 tc flex flex-column items-center">
-        <h4>Mix 'em up</h4>
+      <div class="justify-between w-third-ns w-100 h-100 tc flex flex-column items-center">
+        <h4 class="ma0">Mix 'em up</h4>
         <img class="h3 w3" src="/assets/1F4A5.png">
         <p class="f6 ma0 pa2 tl">Pick-and-mix links and lists for all to see.</p>
       </div>
-      <div class="w-third-ns w-100 tc flex flex-column items-center">
-        <h4>Collaborate</h4>
+      <div class="justify-between w-third-ns w-100 h-100 tc flex flex-column items-center">
+        <h4 class="ma0">Collaborate</h4>
         <img class="h3 w3" src="/assets/1F3D3.png">
         <p class="f6 ma0 pa2 tl">Build with buddies on collaborative lists.</p>
       </div>
     </section>
   </header>
-  <div class="w-100 mw8-ns pr4 pl4 flex flex-row justify-end">
+  <div class="w-100 mw8-ns mt4 flex flex-row justify-end-ns justify-center">
       <h2 class="ma0">→ <a class="black underline" href="/browse">Get Started</a></h2>
       <img class="pl2 h2" src="/assets/2728.png">
   </div>

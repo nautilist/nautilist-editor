@@ -29,9 +29,9 @@ class NavSearchBar extends Component {
 
   createElement () {
     return html`
-      <form class="w-100 h-100 flex flex-row items-center dropshadow" onsubmit=${this.handleSubmit(this.state, this.emit) }>
-        <img class="bl bb bt bw1 b--dark-pink w2 h2" src="/assets/1F50E.png">
-        <input class="w-100 ma0 h2 input-reset br bb bt bw1 b--dark-pink pa1 f7 i ba" type="search" value="${this.local.searchTerm}" onchange=${this.handleChange} placeholder="search: terms, users, etc">
+      <form class="w-100 h-100 flex flex-row items-center" onsubmit=${this.handleSubmit(this.state, this.emit) }>
+        <img class=" dropshadow bl bb bt bw1 b--dark-pink w2 h2" src="/assets/1F50E.png">
+        <input class=" dropshadow w-100 ma0 h2 input-reset br bb bt bw1 b--dark-pink pa1 f7 i ba" type="search" value="${this.local.searchTerm}" onchange=${this.handleChange} placeholder="search: terms, users, etc">
       </form>
     `
   }

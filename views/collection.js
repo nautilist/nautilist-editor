@@ -132,7 +132,7 @@ function view(state, emit) {
     }
 
     return html `
-  <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-collection', state.params.id)}>
+  <body class="w-100 h-auto code lh-copy" onload=${()=> emit('fetch-collection', state.params.id)}>
   ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
     <div class="w-100 flex flex-column h-auto pl2 pr2 bg-washed-green" style="flex-grow:1">
             <div class="w-100 pt3 pb2 ">

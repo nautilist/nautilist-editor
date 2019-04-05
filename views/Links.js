@@ -30,7 +30,7 @@ function showLinks(state, emit){
 
 function view(state, emit) {
   return html`
-    <body class="w-100 h-100 code lh-copy flex flex-column" onload=${()=> emit('fetch-links')}>
+    <body class="w-100 h-auto code lh-copy flex flex-column" onload=${()=> emit('fetch-links')}>
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <header class="w-100 tc flex flex-column items-center">
           <h1 class="w-100 mw6 tc f1 lh-title">Links</h1>

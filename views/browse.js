@@ -11,7 +11,7 @@ module.exports = view
 
 function view (state, emit) {
   return html`
-    <body class="w-100 h-100 code lh-copy">
+    <body class="w-100 h-auto code lh-copy">
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 flex-grow-1 pa4 flex flex-column outline">
         ${SearchResults(state, emit)}

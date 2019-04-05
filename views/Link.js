@@ -13,7 +13,7 @@ function view(state, emit) {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
 
   return html `
-    <body class="w-100 h-100 code lh-copy flex flex-column">
+    <body class="w-100 h-auto code lh-copy flex flex-column">
       <!-- nav bar -->  
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <!-- main -->

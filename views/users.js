@@ -47,7 +47,7 @@ function view(state, emit) {
   }
 
   return html `
-  <body class="w-100 h-100 code lh-copy" onload=${()=> emit('fetch-users') }>
+  <body class="w-100 h-auto code lh-copy" onload=${()=> emit('fetch-users') }>
     ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
     <header class="w-100 tc flex flex-column items-center">
           <h1 class="w-100 mw6 tc f1 lh-title">Users</h1>

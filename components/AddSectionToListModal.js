@@ -119,7 +119,7 @@ class AddSectionToListModal extends Component {
     const { selectedList, links } = this.state;
 
     if(Object.keys(selectedList).length <= 0 || links.length <= 0){
-      return html`<div>no sections to show </div>`
+      return html`<div class="dn">no sections to show </div>`
     }
 
     // const{sections} = selectedList; 

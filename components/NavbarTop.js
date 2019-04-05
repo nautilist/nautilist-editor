@@ -44,29 +44,17 @@ class NavbarTop extends Component {
 
   createElement () {
     return html`
-      <nav class="w-100 bb bw1 b--near-white navy h3 flex flex-row justify-between items-center">
+      <nav class="w-100 h-auto bb bw1 b--near-white navy flex flex-row flex-wrap justify-between items-center">
         <!-- NAVBAR LEFT -->
-        <ul class="list pl0 h-100 dn flex-ns flex-row items-center">
+        <ul class="ma0 list pl0 pt2 pa0-ns h-100 w-100 w-two-thirds-ns flex flex-column flex-row-ns items-center">
           <li class="ml2 f2 lh-title h-100 w3 bg-white flex flex-column justify-center tc"><a class="link black" href="/"><img src="/assets/logo-wow.png"></a></li>
-          <li class="ml4 w5" >${this.state.cache(NavSearchBar, "NavSearchbar", this.state, this.emit).render()}</li>
-          <li class="f6 ml3"><a class="link navy" href="/browse">browse</a></li>
+          <li class="h-100 ml4-ns pa3 w5-ns w-100"> ${this.state.cache(NavSearchBar, "NavSearchbar", this.state, this.emit).render()}</li>
+          <li class="f6 ml3-ns w-100 w-auto-ns tc"><a class="link navy" href="/browse">browse</a></li>
         </ul>
         
         <!-- NAVBAR RIGHT -->
-        <ul class="list pl0 h-100 dn flex-ns flex-row items-center">
+        <ul class="ma0 pt3 pt0-ns list pl0 h-100 w-100 w-third-ns flex flex-column flex-row-ns items-center justify-end-ns">
           <li class="f6 pr2">${isAuthd(this.state, this.emit)}</li>
-        </ul>
-
-        <!-- NAVBAR Mobile -->
-        <ul class="w-100 list pl0 h-100 dn-ns flex flex-row justify-between items-center">
-        <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/"><img src="/assets/logo-wow.png"></a></li>
-        <li class="pr2"><span onclick=${this.toggleMobileMenu}>Menu</span>
-          <ul class="w-100 ${this.local.mobileMenuToggled} fixed flex-column right-0 tr list pr2 mt2">
-            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="dn link black" href="/">Editor</a></li>
-            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="dn link black" href="/browse">Browse</a></li>
-            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100">${isAuthd(this.state, this.emit)}</span>
-          </ul>
-        </li>
         </ul>
       </nav>
     `
@@ -82,6 +70,18 @@ class NavbarTop extends Component {
 module.exports = NavbarTop
 
 /**
+ * 
+ * <!-- NAVBAR Mobile -->
+        <ul class="w-100 list pl0 h-100 dn-ns flex flex-row justify-between items-center">
+        <li class="w3 f2 lh-title h-100 bg-dark-pink flex flex-column justify-center tc"><a class="link black" href="/"><img src="/assets/logo-wow.png"></a></li>
+        <li class="pr2"><span onclick=${this.toggleMobileMenu}>Menu</span>
+          <ul class="w-100 ${this.local.mobileMenuToggled} fixed flex-column right-0 tr list pr2 mt2">
+            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="dn link black" href="/">Editor</a></li>
+            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100"><a class="dn link black" href="/browse">Browse</a></li>
+            <li class="f6 pt1 pb1 pr3 bg-white shadow-5 w-100">${isAuthd(this.state, this.emit)}</span>
+          </ul>
+        </li>
+        </ul>
 
 <li class="f6 pl3"><a class="dn link navy" href="/about">About</a></li>
 <li class="f6 pl3"><a class="link navy dn" href="/editor">Editor</a></li>
