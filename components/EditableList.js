@@ -29,7 +29,16 @@ class EditableList extends Component {
         let query, params;
 
         if(prop === 'links'){
-
+          query={
+            "query":{
+              "sections._id": parentid
+            }
+          }
+          params={
+            "$pull":{
+              "sections.$.links": featureid
+            }
+          }
         } else if(prop === 'sections'){
           query = null,
           
