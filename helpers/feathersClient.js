@@ -10,7 +10,7 @@ if(process.env.NODE_ENV !== 'production'){
     restClientUrl =  config.NAUTILISTAPI // https://nautilist-public.herokuapp.com
 }
 
-console.log(`i'm in ${process.env.NODE_ENV} and my url is: ${restClientUrl}`)
+// console.log(`i'm in ${process.env.NODE_ENV} and my url is: ${restClientUrl}`)
 const restClient = rest(restClientUrl)
 const feathersClient = feathers().configure(restClient.fetch(window.fetch));
 
