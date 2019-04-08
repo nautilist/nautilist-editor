@@ -212,10 +212,10 @@ function store(state, emitter) {
       }
     }
 
-    const findFollowing = {
+    let findFollowing = {
       query:{ 
         "followers": {
-          "$in": [state.user.id]
+          "$in": []
         }
       }
     }
@@ -233,6 +233,7 @@ function store(state, emitter) {
       })
       .then(result => {
         state.selectedUser.lists = result.data;
+        findFollowing.query.followers.$in = [state.selectedUser.profile._id];
         return state.api.lists.find(findFollowing)
       })
       .then(result => {
