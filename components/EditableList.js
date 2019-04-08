@@ -28,10 +28,20 @@ class EditableList extends Component {
     return e => {
       // alert('edit!')
       if(prop === 'links'){
-
-        // TODO
-        this.state.components.EditFeatureModal.open()
-
+        this.state.api.links.get(featureid)
+          .then(result => {
+            let selectedLink = result
+            this.state.components.EditFeatureModal.featureType = "links"
+            this.state.components.EditFeatureModal.name = selectedLink.name;
+            this.state.components.EditFeatureModal.description = selectedLink.description;
+            this.state.components.EditFeatureModal.featureid = featureid;
+            this.state.components.EditFeatureModal.url = selectedLink.url;
+            // open the modal
+            this.state.components.EditFeatureModal.open()
+          })
+          .catch(err => {
+            alert(err);
+          })
       } else if (prop === 'sections'){
         
         const query = {
@@ -150,7 +160,7 @@ class EditableList extends Component {
       let ensureUrl = detail.url ? detail.url: '#';
       return html`
         <li class="mt2 dropshadow pt2 pl3 pr3 pb4 ba bg-washed-red " data-id="${detail._id}">
-          <p class="ma0 w-100 flex flex-row justify-end">${this.removeBtn('links',section._id,detail._id)}</p>
+          <p class="ma0 w-100 flex flex-row justify-end">${this.editBtn('links', detail._id)} ${this.removeBtn('links',section._id,detail._id)}</p>
           <a class="link black" href="${ensureUrl}" target="_blank">
           <small class="ma0 font-tiny b"><a class="link black" href="${ensureUrl}" target="blank">${ensureUrl}</a></small>
           <h3 class="ma0">${detail.name}</h3>

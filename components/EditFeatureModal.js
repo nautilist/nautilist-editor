@@ -52,9 +52,21 @@ class EditFeatureModal extends Component {
       description: this.local.description,
       tags: this.local.tags.split(','),
     }
-    
     if(featureType !== 'links'){
       delete payload.url;
+    }
+    
+    if(featureType === 'links'){
+
+      this.state.api.links.patch(this.local.featureid, payload, {})
+        .then(result => {
+          this.state.selectedLink = result;
+          this.emit('pushState', `/lists/${this.state.selectedList._id}`);
+          this.close();
+        })
+        .catch(err => {
+          alert(err);
+        })
       
     }
 
@@ -110,7 +122,7 @@ class EditFeatureModal extends Component {
             <!-- URL -->
             <fieldset class="w-100 ba bw1 b--black ${this.local.featureType == 'links' ? 'fl':'dn'}">
             <legend>URL</legend>
-            <input class="w-100 pa2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="url">
+            <input class="w-100 pa2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="url" value="${this.local.url}" onkeyup=${this.handleChange}>
           </fieldset>
           <!-- NAME -->
           <fieldset class="w-100 ba bw1 b--black">
