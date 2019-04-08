@@ -51,6 +51,30 @@ function view(state, emit) {
 function publicActions(state, emit){
     const {selectedList} = state;
 
+    function addFollower(e){
+        let c = confirm('follow this list?')
+        if(c === true){
+            alert('You are now following this list!')
+
+            const params = {
+                $push:{
+                    followers: state.user.id
+                }
+            }
+            state.api.lists.patch(selectedList._id, params, {})
+                .then(result => {
+                    state.selectedList = result
+                    emit('render');
+                })
+                .catch(err => {
+                    alert(err);
+                })
+
+        } else {
+            return;
+        }
+    }
+
     function remix(id, db){
         return e => {
             e.preventDefault();
@@ -77,7 +101,7 @@ function publicActions(state, emit){
 
     return html`
     <section class="w-100 mt4 flex flex-row">
-        <button class="bn bg-near-white dark-pink pa2 dropshadow mr2">Follow</button>
+        <button onclick=${addFollower} class="bn bg-near-white dark-pink pa2 dropshadow mr2">Follow</button>
         <button id="remixBtn" onclick=${remix(selectedList._id, 'lists')} class="bn bg-near-white dark-pink pa2 dropshadow mr2">Remix</button>
     </section>
     `
