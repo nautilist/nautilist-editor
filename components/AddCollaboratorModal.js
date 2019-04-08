@@ -1,70 +1,66 @@
 var Component = require('choo/component')
 var html = require('choo/html')
-const feathersClient = require('../helpers/feathersClient')
+// const feathersClient = require('../helpers/feathersClient')
 
 class AddCollaboratorModal extends Component {
   constructor(id, state, emit) {
     super(id)
     this.local = state.components[id] = {
-      searchResults: []
+      searchResults: [],
+      open:this.open.bind(this),
+      displayed:'dn'
     }
     this.state = state;
     this.emit = emit;
-    this.open = this.open.bind(this);
-    this.displayed = 'dn';
+    
     this.rerender = this.rerender.bind(this)
     this.addByUrl = this.addByUrl.bind(this)
     this.searchByName = this.searchByName.bind(this)
     this.searchResults = this.searchResults.bind(this)
     this.selectAndAdd = this.selectAndAdd.bind(this)
     this.showCurrentCollaborators = this.showCurrentCollaborators.bind(this)
+    this.removeCollaborator = this.removeCollaborator.bind(this);
   }
 
   open() {
-    // return e => {
     console.log("opening!")
-    this.displayed = 'flex';
+    this.local.displayed = 'flex';
     this.rerender();
-    // }
-
   }
 
   close() {
     return e => {
       console.log("closing!")
-      this.displayed = 'dn';
+      this.local.displayed = 'dn';
       this.rerender();
     }
   }
 
   addByUrl(e) {
     e.preventDefault();
-    // console.log(e.currentTarget);
-    const projectId = this.state.selectedProject._id
+    const listId = this.state.selectedList._id
     const form = new FormData(e.currentTarget);
     const url = form.get('url');
     const username = url.split("/").slice(-1).pop()
 
-
     // TODO
-    feathersClient.service('/users').find({query:{username}}).then(result => {
+    this.state.api.users.find({query:{username}}).then(result => {
       if(!result.data.length > 0){
         alert("user not found!");
         return
       } 
       let profile = result.data[0];
-
       const params = {
         "$push": {
           "collaborators": profile._id
         }
       }
-      return feathersClient.service('/api/projects').patch(projectId, params)
+      return this.state.api.lists.patch(listId, params)
     })
     .then(result => {
       alert('added collaborator!')
-      this.emit('fetch-project', `${projectId}`)
-      this.open()
+      this.emit('fetch-list', `${listId}`)
+      this.local.open()
     })
     .catch(err => {
       alert(err);
@@ -83,7 +79,7 @@ class AddCollaboratorModal extends Component {
         "$search": username
       }
     }
-    feathersClient.service('users').find(searchQuery).then(result => {
+    this.state.api.users.find(searchQuery).then(result => {
       // console.log(result.data)
       this.local.searchResults = result.data;
       this.rerender();
@@ -96,18 +92,23 @@ class AddCollaboratorModal extends Component {
   selectAndAdd(e) {
     console.log('clicked!');
     const userId = e.currentTarget.dataset.userid;
-    const projectId = this.state.selectedProject._id;
+    const listId = this.state.selectedList._id;
     const params = {
       "$push": {
         "collaborators": userId
       }
     }
 
-    feathersClient.service('/api/projects').patch(projectId, params, {}).then(result => {
+    this.state.api.lists.patch(listId, params, {}).then(result => {
         // alert(JSON.stringify(result)) ;
         alert("user added as collaborator!");
-        this.emit("pushState", `/projects/${projectId}`)
-        // this.close();
+        // this.emit("pushState", `/lists/${listId}`)
+        return this.state.api.lists.get(result._id)
+      }).then(result => {
+        this.state.selectedList = result;
+        // this.rerender();
+        this.showCurrentCollaborators()
+        this.rerender();
       })
       .catch(err => {
         alert(err);
@@ -118,13 +119,13 @@ class AddCollaboratorModal extends Component {
     if (this.local.searchResults.length > 0) {
       let users = this.local.searchResults.map(user => {
         return html `
-          <div class="w-100 bn bg-light-gray flex flex-column">
+          <div class="w-100 bn bg-light-gray flex flex-column mb2">
             <div class="w-100 pa3 flex flex-row items-center">
               <div class="w-two-thirds">
               <p class=" w-100 ma0 b">${user.username}</p>
               </div>
               <div class="w-third tr">
-              <button data-userid="${user._id}" class="dropshadow pa3 bg-light-yellow bn" onclick=${this.selectAndAdd}>Select</button>
+              <button data-userid="${user._id}" class="dropshadow pa2 bg-dark-pink white bn" onclick=${this.selectAndAdd}>Select</button>
               </div>
             </div>
           </div>
@@ -136,50 +137,51 @@ class AddCollaboratorModal extends Component {
     }
   }
 
+  removeCollaborator(_id) {
+    return e => {
+      const rmId = e.currentTarget.dataset.userid;
+
+      const params = {
+        $pull: {
+          "collaborators": rmId
+        }
+      }
+
+      let del = confirm("do you really want to remove this collaborator?");
+      if (del === true) {
+        this.state.api.lists.patch(_id, params, {})
+        .then(result => {
+          this.state.selectedList = result;
+          this.rerender();
+        })
+        .catch(err => {
+          alert("error removing collaborator", err);
+          return err;
+        })
+      } else {
+        return
+      }
+    }
+
+  }
+
   showCurrentCollaborators() {
 
     const {
       _id
-    } = this.state.selectedProject
+    } = this.state.selectedList
 
-    function removeCollaborator(state, emit) {
-      return e => {
-        const rmId = e.currentTarget.dataset.userid;
-
-        const params = {
-          $pull: {
-            "collaborators": rmId
-          }
-        }
-
-        let del = confirm("do you really want to remove this collaborator?");
-        if (del === true) {
-          feathersClient.service('/api/projects').patch(_id, params, {}).then(result => {
-
-            emit('fetch-project', `${_id}`)
-
-          }).catch(err => {
-            alert("remove collaborator", err);
-            return err;
-          })
-        } else {
-          return
-        }
-      }
-
-    }
-
-    if (this.state.selectedProject.hasOwnProperty("collaboratorDetails") &&
-      this.state.selectedProject.collaboratorDetails.length > 0) {
-      return this.state.selectedProject.collaboratorDetails.map(collaborator => {
+    if (this.state.selectedList.hasOwnProperty("collaboratorDetails") &&
+      this.state.selectedList.collaboratorDetails.length > 0) {
+      return this.state.selectedList.collaboratorDetails.map(collaborator => {
         return html `
-        <div class="w-100 bn bg-light-gray flex flex-column">
+        <div class="w-100 bn bg-light-gray flex flex-column mb2">
         <div class="w-100 pa3 flex flex-row items-center">
           <div class="w-two-thirds">
           <p class=" w-100 ma0 b">${collaborator.username}</p>
           </div>
           <div class="w-third tr">
-          <button data-userid="${collaborator._id}" class="dropshadow pa3 bg-orange white bn" onclick=${removeCollaborator(this.state, this.emit)}>Remove</button>
+          <button data-userid="${collaborator._id}" class="dropshadow pa2 bg-near-white red bn" onclick=${this.removeCollaborator(_id)}>Remove</button>
           </div>
         </div>
       </div>
@@ -192,7 +194,8 @@ class AddCollaboratorModal extends Component {
 
   createElement() {
     return html `
-    <div id="addCollaboratorModal" class="w-100 h-100 flex-column justify-center items-center ${this.displayed} fixed top-0 left-0 max-z pa4" style="background:rgba(25, 169, 116, 0.7)">
+    <div id="addCollaboratorModal" class="w-100 h-100 flex-column justify-center items-center ${this.local.displayed} fixed top-0 left-0 max-z pa4" 
+    style="background:rgba(232, 253, 245, 0.9)">
       <div class="w-100 h-auto mw7 pa4 ba dropshadow br2 bg-white overflow-y-scroll max-z">
         <header class="flex flex-row items-center justify-between">
           <h2>Add Collaborator</h2>
@@ -212,8 +215,8 @@ class AddCollaboratorModal extends Component {
           <!-- url input -->
           <fieldset class="w-100 ba bw1 b--black flex flex-row-ns flex-column items-center">
           <legend>URL</legend>
-          <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="https://editor.nautilists.com/users/shiffman">
-          <input class="w-100 w-third-ns h3 pa2 bg-light-yellow bn mt2 ma0-ns" form="addByUrlForm-collaborator" type="submit" value="Add Collaborator">
+          <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="https://www.nautilists.com/users/shiffman">
+          <input class="w-100 w-third-ns h3 pa2 bg-light-pink navy dropshadow bn mt2 ma0-ns" form="addByUrlForm-collaborator" type="submit" value="add collaborator">
           </form>
         </fieldset>
         
@@ -225,7 +228,7 @@ class AddCollaboratorModal extends Component {
           <fieldset class="w-100 ba bw1 b--black flex flex-row-ns flex-column items-center">
           <legend>Search</legend>
           <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="search" name="username" placeholder="e.g. shiffman">
-          <input class="w-100 w-third-ns h3 pa2 bg-light-blue bn mt2 ma0-ns" form="searchByName-collaborator" type="submit" value="search">
+          <input class="w-100 w-third-ns h3 pa2 bg-light-pink navy dropshadow bn bw2 mt2 ma0-ns" form="searchByName-collaborator" type="submit" value="search">
           </fieldset>
           </form>
           <!-- Search results -->

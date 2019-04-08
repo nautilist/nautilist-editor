@@ -9,6 +9,7 @@ const EditableListHeader = require('../components/EditableListHeader');
 const helpers = require("../helpers")
 const AddLinksToSectionModal = require('../components/AddLinksToSectionModal');
 const AddSectionToListModal = require('../components/AddSectionToListModal');
+const AddCollaboratorModal = require('../components/AddCollaboratorModal');
 
 const TITLE = 'Nautilists - List';
 
@@ -38,6 +39,7 @@ function view(state, emit) {
         ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
         ${state.cache(AddLinksToSectionModal, "AddLinksToSectionModal", state, emit).render()}
         ${state.cache(AddSectionToListModal, "AddSectionToListModal", state, emit).render()}
+        ${state.cache(AddCollaboratorModal, "AddCollaboratorModal", state, emit).render()}
     </body>
   `
 
@@ -113,13 +115,20 @@ function privateActions(state, emit){
         })
     }
 
+    function addCollaborator(e){
+        // alert('add collaborator');
+        state.components.AddCollaboratorModal.open();
+    }
+
     const {ownerDetails, collaboratorDetails} = selectedList;
-    if(user.authenticated === true && user.username === ownerDetails.username || collaboratorDetails.includes(user.username)){
+    const isCollaborator = collaboratorDetails.find(item => item.username === user.username) ? true:false;
+    if(user.authenticated === true && user.username === ownerDetails.username || isCollaborator === true){
         return html`
         <section class="w-100 mt4 flex flex-row items-center">
             <button onclick=${toggleEditable} class="h2 dropshadow bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
             <button onclick=${addSection} class="h2  dropshadow bn bg-near-white mr2">Add section</button>
             <button onclick=${addLink} class="h2  dropshadow bn bg-near-white mr2">Add link</button>
+            <button onclick=${addCollaborator} class="h2  dropshadow bn bg-near-white mr2">Add Collaborator</button>
             <p class="f7 pl2 ma0 mr2">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
         </section>
         `
