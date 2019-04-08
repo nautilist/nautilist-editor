@@ -143,12 +143,12 @@ function privateActions(state, emit){
     const isCollaborator = collaboratorDetails.find(item => item.username === user.username) ? true:false;
     if(user.authenticated === true && user.username === ownerDetails.username || isCollaborator === true){
         return html`
-        <section class="w-100 mt4 flex flex-row items-center">
-            <button onclick=${toggleEditable} class="h2 dropshadow bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
-            <button onclick=${addSection} class="h2  dropshadow bn bg-near-white mr2">Add section</button>
-            <button onclick=${addLink} class="h2  dropshadow bn bg-near-white mr2">Add link</button>
-            <button onclick=${addCollaborator} class="h2  dropshadow bn bg-near-white mr2">Add Collaborator</button>
-            <button onclick=${deleteList} class="h2  dropshadow bn bg-near-white red mr2">Delete List</button>
+        <section class="w-100 mt4 flex flex-row-ns flex-column items-center-ns items-start">
+            <button onclick=${toggleEditable} class="mt2 mt0-ns h2 dropshadow bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
+            <button onclick=${addSection} class="mt2 mt0-ns h2  dropshadow bn bg-near-white mr2">Add section</button>
+            <button onclick=${addLink} class="mt2 mt0-ns h2  dropshadow bn bg-near-white mr2">Add link</button>
+            <button onclick=${addCollaborator} class="mt2 mt0-ns h2  dropshadow bn bg-near-white mr2">Add Collaborator</button>
+            <button onclick=${deleteList} class="mt2 mt0-ns h2  dropshadow bn bg-near-white red mr2">Delete List</button>
             <p class="f7 pl2 ma0 mr2">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
         </section>
         `
