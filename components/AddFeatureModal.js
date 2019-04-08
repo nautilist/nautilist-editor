@@ -41,7 +41,7 @@ class AddFeatureModal extends Component {
       url: formData.get('url'),
       name: formData.get('name'),
       description: formData.get('description'),
-      tags: formData.get('description').split(','),
+      tags: formData.get('tags').split(','),
     }
     
     if(featureType !== 'links'){

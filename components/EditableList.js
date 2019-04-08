@@ -20,6 +20,51 @@ class EditableList extends Component {
     this.CreateSectionList = this.CreateSectionList.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.removeBtn = this.removeBtn.bind(this);
+    this.editBtn = this.editBtn.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
+
+  handleEdit(prop, featureid){
+    return e => {
+      // alert('edit!')
+      if(prop === 'links'){
+
+        // TODO
+        this.state.components.EditFeatureModal.open()
+
+      } else if (prop === 'sections'){
+        
+        const query = {
+          query: {
+            "sections._id": featureid
+          }
+        }
+        
+        this.state.api.lists.find(query)
+          .then(result => {
+            let selectedList = result.data[0];
+            let selectedSection = selectedList.sections.find(item => item._id === featureid);
+            this.state.components.EditFeatureModal.featureType = "sections"
+            this.state.components.EditFeatureModal.parentid = selectedList._id
+            this.state.components.EditFeatureModal.name = selectedSection.name;
+            this.state.components.EditFeatureModal.description = selectedSection.description;
+            this.state.components.EditFeatureModal.featureid = selectedSection._id;
+            // open the modal
+            this.state.components.EditFeatureModal.open()
+          })
+          .catch(err => {
+            alert(err);
+          })
+
+      }
+    }
+  }
+
+  editBtn(prop, featureid){
+    let displayed = this.local.editable === true ? 'fl':'dn'
+    return html`
+      <button onclick=${this.handleEdit(prop,featureid)} class="${displayed} f7 bn bg-light-green navy mr2">edit</button>
+    `
   }
 
   handleRemove(prop, parentid, featureid){
@@ -78,18 +123,19 @@ class EditableList extends Component {
     }
     let selectedListId = this.state.selectedList._id
   
-    return sections.map(section => {
-      return html`
-      <li class="mt4 pa3-ns pa2 bg-washed-blue dropshadow ba bw1 b--black" data-id="${section._id}">
-        <p class="ma0 w-100 flex flex-row justify-end">${this.removeBtn('sections',selectedListId, section._id)}</p>
-        <h2 class="f2 lh-title ma0">${section.name}</h2>
-        <p class="ma0 f5 mt1">${section.description}</p>
-        <ul data-sectionid=${section._id} class="list nested-sortable pl0 w-100">
-          ${this.CreateLinkList(section.links, sectionsDetails, section)}
-        </ul>
-      </li>
-      `
-    })
+      return sections.map(section => {
+        return html`
+        <li class="mt4 pa3-ns pa2 bg-washed-blue dropshadow ba bw1 b--black" data-id="${section._id}">
+          <p class="ma0 w-100 flex flex-row justify-end">${this.editBtn('sections', section._id)} ${this.removeBtn('sections',selectedListId, section._id)}</p>
+          <h2 class="f3 lh-title ma0">${section.name}</h2>
+          <p class="ma0 f4 mt1">${section.description}</p>
+          <ul data-sectionid=${section._id} class="list nested-sortable pl0 w-100">
+            ${this.CreateLinkList(section.links, sectionsDetails, section)}
+          </ul>
+        </li>
+        `
+      })
+    
   
   }
 
