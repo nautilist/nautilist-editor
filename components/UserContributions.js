@@ -50,6 +50,11 @@ class UserContributions extends Component {
         console.log('lists')
         this.rerender();
         break;
+      case 'listsFollowing':
+        this.local.currentTab = tab;
+        console.log('listsFollowing')
+        this.rerender();
+        break;
       case 'tracks':
         this.local.currentTab = tab;
         console.log('tracks')

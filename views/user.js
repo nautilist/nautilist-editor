@@ -27,6 +27,13 @@ function view (state, emit) {
 }
 
 
+function FollowingLists(state, emit){
+  return html`
+  <section class="w-100 flex flex-column mt4">
+  </section>
+  `
+}
+
 function EditUserDetailsBtn(state, emit){
   const {user} = state;
   const selectedUsername = state.params.username
@@ -40,7 +47,6 @@ function EditUserDetailsBtn(state, emit){
   }
 
 }
-
 
 function UserDetails(state, emit){
   const { profile }= state.selectedUser;

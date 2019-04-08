@@ -25,6 +25,7 @@ function store(state, emitter) {
     lists:[],
     tracks:[],
     collections:[],
+    listsFollowing:[],
     following:[],
     followers:[]
   };
@@ -211,6 +212,14 @@ function store(state, emitter) {
       }
     }
 
+    const findFollowing = {
+      query:{ 
+        "followers": {
+          "$in": [state.user.id]
+        }
+      }
+    }
+
     state.api.users.find(findByUsername)
       .then(result => {
         state.selectedUser.profile = result.data[0];
@@ -224,27 +233,16 @@ function store(state, emitter) {
       })
       .then(result => {
         state.selectedUser.lists = result.data;
-        return state.api.tracks.find(queryParams)
+        return state.api.lists.find(findFollowing)
       })
       .then(result => {
-        state.selectedUser.tracks = result.data;
-        return state.api.collections.find(queryParams)
-      })
-      .then(result => {
-        state.selectedUser.collections = result.data;
+        state.selectedUser.listsFollowing = result.data;
         emitter.emit('render');
       })
       .catch(err =>{
         alert(err);
       })
       
-      //       const queryParams = {
-      //         query: {
-      //           "followers": {
-      //             "$in": state.selectedUser._id
-      //           }
-      //         }
-      //       }
   });
 
 

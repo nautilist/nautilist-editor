@@ -2,6 +2,9 @@ const html = require('choo/html');
 
 module.exports = function(route, feature){
     const {_id, name, description, colors, selectedColor} = feature
+    // special case for listsFollowing
+    if(route === 'listsFollowing') route = 'lists';
+
     return html`
         <li class="w-100 dropshadow mb3">
         <a class="link black" href="/${route}/${_id}">

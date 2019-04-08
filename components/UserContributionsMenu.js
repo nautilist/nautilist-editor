@@ -45,6 +45,12 @@ class UserContributionsMenu extends Component {
             onclick=${this.handleSelect('lists')}>lists
             </button>
           </li>
+        <li class="mr2">
+          <button 
+            class="${this.showSelectedTab('listsFollowing')} bn pa2 dropshadow" 
+            onclick=${this.handleSelect('listsFollowing')}>Lists I follow
+            </button>
+          </li>
         <li class="dn mr2">
           <button 
             class="${this.showSelectedTab('tracks')} bn pa2 dropshadow" 
