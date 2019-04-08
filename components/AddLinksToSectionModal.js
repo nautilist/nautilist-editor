@@ -22,6 +22,7 @@ class AddLinksToSectionModal extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.linkDetailsForm = this.linkDetailsForm.bind(this);
+    this.clearLocal = this.clearLocal.bind(this);
   }
   open(e) {
     console.log("opening!")
@@ -29,14 +30,17 @@ class AddLinksToSectionModal extends Component {
     this.rerender();
   }
 
-  close(e) {
-      console.log("closing!")
-      this.local.displayed = 'dn';
+  clearLocal(){
       this.local.selectedSection= '';
       this.local.selectedLinks = [];
       this.local.name='';
       this.local.description='';
       this.local.url='';
+  }
+  close(e) {
+      console.log("closing!")
+      this.local.displayed = 'dn';
+      this.clearLocal();
       this.rerender();
   }
 
@@ -140,6 +144,9 @@ class AddLinksToSectionModal extends Component {
 
   handleSubmit(e){
     e.preventDefault();
+    if(this.local.selectedSection !== ''){
+
+    
     const query = {
       "query": {
         "sections._id": this.local.selectedSection
@@ -167,18 +174,23 @@ class AddLinksToSectionModal extends Component {
           this.close()
           this.emit('render')
         }).catch(err => {
-          alert(err)
+          alert(`${err}`)
         })
     } else {
       this.state.api.lists.patch(this.state.selectedList._id, params, query)
       .then(result => {
         this.state.selectedList = result;
+        // this.clearLocal();
+        this.local.selectedLinks = [];
         this.close()
         this.emit('render')
       }).catch(err => {
         alert(err)
       })
     }
+  } else {
+    alert('Make sure to selected a section to add your link to. If there are no sections in your list, make a section, then add your link')
+  }
   }
 
   createElement () {
