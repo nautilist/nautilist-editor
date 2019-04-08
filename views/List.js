@@ -83,8 +83,11 @@ function publicActions(state, emit){
     `
 }
 
+
+
 function privateActions(state, emit){
     const {user, selectedList} = state;
+    const {ownerDetails, collaboratorDetails} = selectedList;
 
     if(Object.keys(selectedList).length <= 0){
         return ''
@@ -122,7 +125,21 @@ function privateActions(state, emit){
         state.components.AddCollaboratorModal.open();
     }
 
-    const {ownerDetails, collaboratorDetails} = selectedList;
+    function deleteList(e){
+        let c = confirm(`Are you sure you want to delete this list - ${selectedList.name} - for you and your collaborators?`)
+        if(c === true){
+            state.api.lists.remove(selectedList._id)
+            .then(result => {
+                alert("list deleted!")
+                emit('pushState', `/users/${ownerDetails.username}`)
+            }).catch(err => {
+                alert(err);
+            })
+        } else{
+            return;
+        }
+    }
+
     const isCollaborator = collaboratorDetails.find(item => item.username === user.username) ? true:false;
     if(user.authenticated === true && user.username === ownerDetails.username || isCollaborator === true){
         return html`
@@ -131,6 +148,7 @@ function privateActions(state, emit){
             <button onclick=${addSection} class="h2  dropshadow bn bg-near-white mr2">Add section</button>
             <button onclick=${addLink} class="h2  dropshadow bn bg-near-white mr2">Add link</button>
             <button onclick=${addCollaborator} class="h2  dropshadow bn bg-near-white mr2">Add Collaborator</button>
+            <button onclick=${deleteList} class="h2  dropshadow bn bg-near-white red mr2">Delete List</button>
             <p class="f7 pl2 ma0 mr2">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
         </section>
         `
