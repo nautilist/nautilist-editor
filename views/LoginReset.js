@@ -19,19 +19,22 @@ function submitSendReset(state, emit){
             email: formData.get('email')
           }
         }
-      state.api.authmanagement.create(obj).then(result => {
-        console.log('sending reset password!', result)
-        document.querySelector("#update").innerHTML = "an email was sent to your inbox - please open that URL"
-      }).catch(err => {
-        return err;
-      })
+      state.api.authmanagement.create(obj)
+        .then(result => {
+          // console.log('sending reset password!', result)
+          // document.querySelector("#update").innerHTML = "an email was sent to your inbox - please open that URL"
+          alert('An email was sent to your inbox - please open that URL to complete your account verification')
+          window.location = "/login"
+        }).catch(err => {
+          return err;
+        })
   }
 }
 
 function submitReset(state, emit){
   return e => {
     e.preventDefault();
-    document.querySelector("#update").innerHTML = "password changed - redirecting to login page!"
+    // document.querySelector("#update").innerHTML = "password changed - redirecting to login page!"
     const formData = new FormData(e.currentTarget);
     // emit(state.events.user_resetPassword, formData);
       const token = state.query.token
@@ -44,7 +47,9 @@ function submitReset(state, emit){
       }
       state.api.authmanagement.create(obj).then(result => {
         console.log('password changed!', result)
-        emit('pushState', '/login')
+        // emit('pushState', '/login')
+        alert('You have successfully reset your password. Redirecting you to log in page')
+        window.location = "/login"
       }).catch(err => {
         return err;
       })

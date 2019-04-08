@@ -19,12 +19,12 @@ function store(state, emitter) {
   state.events.user_sendResetPassword = 'user:sendResetPassword';
   state.events.user_sendVerificationToken = 'user:sendVerificationToken';
 
+  
+
   // initialize the app by trying to login
   auth.checkLogin();
-
-
   // LISTENERS
-  emitter.on('DOMContentLoaded', () => {
+  // emitter.on('DOMContentLoaded', () => {
     // SIGNUP
     emitter.on(state.events.user_signup, auth.signup);
     // LOGIN
@@ -37,8 +37,7 @@ function store(state, emitter) {
     emitter.on(state.events.user_sendResetPassword, auth.sendResetPassword);
     // SEND RESET
     emitter.on(state.events.user_sendVerificationToken, auth.sendVerificationToken);
-    // emitter.on('DOMContentLoaded', function () {})
-  })
+  // })
 
   // AUTH FUNCTIONS
   function Auth() {
@@ -50,12 +49,11 @@ function store(state, emitter) {
         password: _formData.get("password")
       }
       state.api.users.create(credentials).then(() => {
-        console.log("sign up successful yo!")
+        alert('Sign up successful - you will receive an email from hello.nautilists@gmail.com to verify your account')
         // emitter.emit(state.events.user_login, _formData)
         emitter.emit('pushState', "/verify")
       }).catch(err => {
-        console.log("sign up unsuccessful! something went wrong!")
-
+        alert('Something went wrong!', err)
         return error;
       });
     };
@@ -69,7 +67,7 @@ function store(state, emitter) {
         // emitter.emit('pushState', '/')
         emitter.emit('render');
       }).catch(err => {
-        console.log("not auth'd friend!")
+        console.log("Sorry, you're not logged in!")
         state.user.authenticated = false;
         return err;
       });
@@ -77,23 +75,8 @@ function store(state, emitter) {
 
     // LOGIN
     this.login = function (_formData) {
-      if (!_formData) {
-        state.api.authenticate().then(authResponse => {
-          // try to auth using JWT from local Storage
-          state.user.username = authResponse.username;
-          state.user.id = authResponse.id;
-          state.user.authenticated = true;
-          emitter.emit("pushState", "/")
-          // emitter.emit("pushState", `/${state.user.username}/projects`) //${state.user.username}
-        }).catch(err => {
-          console.log("not auth'd friend!")
-          state.user.authenticated = false;
-          // emitter.emit("pushState", "/login")
-          return err;
-        });
-      } else {
         // If we get login information, add the strategy we want to use for login
-        let credentials = {
+        const credentials = {
           username: _formData.get("username"),
           email: _formData.get("email"),
           password: _formData.get("password")
@@ -103,11 +86,15 @@ function store(state, emitter) {
           strategy: 'local'
         }, credentials);
 
+
         state.api.authenticate(payload).then(authResponse => {
           state.user.authenticated = true;
           state.user.username = authResponse.username;
           state.user.id = authResponse.id;
-          emitter.emit("pushState", "/")
+          // alert('logging in now!')
+          // emitter.emit("pushState", "/")
+          alert('log in successful!')
+          window.location = "/";
           // emitter.emit("pushState", `/${state.user.username}/projects`) //${state.user.username}
         }).catch(err => {
           // Show login page (potentially with `e.message`)
@@ -116,7 +103,6 @@ function store(state, emitter) {
           state.user.authenticated = false;
           // emitter.emit("pushState", "/login")
         });
-      }
     };
 
     // LOGOUT
@@ -128,7 +114,8 @@ function store(state, emitter) {
       state.user.id = null;
       // TODO: clear the state of data, etc
       emitter.emit('pushState', "/");
-      emitter.emit('render');
+      // emitter.emit('render');
+      // window.location = "/";
     };
 
 
@@ -139,9 +126,12 @@ function store(state, emitter) {
         action: 'verifySignupLong',
         value: token
       }
-      state.api.authmanagement.create(obj).then(result => {
-        console.log('user verified!', result)
+      state.api.authmanagement.create(obj)
+      .then(result => {
+        // console.log('user verified!', result)
+        alert('Sending your account verification - please check your inbox :)')
       }).catch(err => {
+        alert(err);
         return err;
       })
     };
@@ -154,11 +144,13 @@ function store(state, emitter) {
             email: _formData.get('email')
           }
         }
-        state.api.authmanagement.create(obj).then(result => {
-        // console.log('sending reset password!', result)
-      }).catch(err => {
-        return err;
-      })
+        state.api.authmanagement.create(obj)
+          .then(result => {
+            // console.log('sending reset password!', result)
+            alert("Sending reset password url to your email inbox - please check your email")
+          }).catch(err => {
+            return err;
+          })
     };
 
     this.resetPassword = function (_formData) {
@@ -171,12 +163,14 @@ function store(state, emitter) {
           password: _formData.get('password')
         }
       }
-      state.api.authmanagement.create(obj).then(result => {
-        // console.log('password changed!', result)
-        emitter.emit('pushState', '/login')
-      }).catch(err => {
-        return err;
-      })
+      state.api.authmanagement.create(obj)
+        .then(result => {
+          // console.log('password changed!', result)
+          // emitter.emit('pushState', '/login')
+          window.location = "/login";
+        }).catch(err => {
+          return err;
+        })
     };
 
   } // end Auth()

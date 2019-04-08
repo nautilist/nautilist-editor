@@ -11,8 +11,37 @@ function onClose(state, emit){
 function submitLogin(state, emit){
   return e => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    emit(state.events.user_login, formData);
+    const _formData = new FormData(e.currentTarget);
+    // emit(state.events.user_login, formData);
+    // If we get login information, add the strategy we want to use for login
+    const credentials = {
+      username: _formData.get("username"),
+      email: _formData.get("email"),
+      password: _formData.get("password")
+    }
+    // create the payload
+    const payload = Object.assign({
+      strategy: 'local'
+    }, credentials);
+
+
+    state.api.authenticate(payload).then(authResponse => {
+      state.user.authenticated = true;
+      state.user.username = authResponse.username;
+      state.user.id = authResponse.id;
+      // alert('logging in now!')
+      // emitter.emit("pushState", "/")
+      alert('log in successful!')
+      window.location = "/";
+      // emitter.emit("pushState", `/${state.user.username}/projects`) //${state.user.username}
+    }).catch(err => {
+      // Show login page (potentially with `e.message`)
+      console.log('Authentication error', err);
+      alert(err);
+      state.user.authenticated = false;
+      // emitter.emit("pushState", "/login")
+    });
+
   }
 
 }
@@ -21,7 +50,7 @@ function view (state, emit) {
   return html`
     <body class="code lh-copy w-100 h-100">
       <div class="w-100 flex flex-row items-center justify-between">
-        <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/">Nautilist</a>
+        <a class="link black w3 ml2" href="/"><img src="/assets/logo-wow.png"></a>
         <button class="bn moon-gray bw2 pa2 h3 w3 f3 pointer" onclick="${onClose(state, emit)}">╳</button>
       </div>
       <main class="w-100 h-100">
