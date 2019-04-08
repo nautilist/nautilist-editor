@@ -27,7 +27,7 @@ class UserContributions extends Component {
     this.emit = emit;
     this.local = state.components[id] = {
       setSelectedTab: this.setSelectedTab.bind(this),
-      currentTab: 'links'
+      currentTab: 'lists'
     }
     this.showCurrentSelection = this.showCurrentSelection.bind(this);
   }

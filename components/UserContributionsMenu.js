@@ -7,7 +7,7 @@ class UserContributionsMenu extends Component {
     this.state = state;
     this.emit = emit;
     this.local = state.components[id] = {
-      selectedTab:'links'
+      selectedTab:'lists'
     }
     this.handleSelect = this.handleSelect.bind(this);
     this.showSelectedTab = this.showSelectedTab.bind(this);
