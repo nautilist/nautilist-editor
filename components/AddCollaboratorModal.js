@@ -213,10 +213,12 @@ class AddCollaboratorModal extends Component {
           <h3>Add Collaborator by their profile URL</h3>
           <form id="addByUrlForm-collaborator" name="addByUrlForm-collaborator" onsubmit=${this.addByUrl}>
           <!-- url input -->
-          <fieldset class="w-100 ba bw1 b--black flex flex-row-ns flex-column items-center">
+          <fieldset class="w-100 ba bw1 b--black">
           <legend>URL</legend>
-          <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="https://www.nautilists.com/users/shiffman">
+          <div class="w-100 flex flex-row-ns flex-column items-center">
+          <input class="w-100 b--moon-grey w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="text" name="url" placeholder="https://www.nautilists.com/users/shiffman">
           <input class="w-100 w-third-ns h3 pa2 bg-light-pink navy dropshadow bn mt2 ma0-ns" form="addByUrlForm-collaborator" type="submit" value="add collaborator">
+          </div>
           </form>
         </fieldset>
         
@@ -225,10 +227,12 @@ class AddCollaboratorModal extends Component {
           <h3>Add Collaborator by searching for their username</h3>
           <!-- Search bar -->
           <form id="searchByName-collaborator" name="searchByName" onsubmit=${this.searchByName}>
-          <fieldset class="w-100 ba bw1 b--black flex flex-row-ns flex-column items-center">
+          <fieldset class="w-100 ba bw1 b--black">
           <legend>Search</legend>
-          <input class="w-100 w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="search" name="username" placeholder="e.g. shiffman">
+          <div class="w-100 flex flex-row-ns flex-column items-center">
+          <input class="w-100 b--moon-grey w-two-thirds-ns pl2 pr2 ba bw1 bg-light-gray h3 f6" type="search" name="username" placeholder="e.g. shiffman">
           <input class="w-100 w-third-ns h3 pa2 bg-light-pink navy dropshadow bn bw2 mt2 ma0-ns" form="searchByName-collaborator" type="submit" value="search">
+          </div>
           </fieldset>
           </form>
           <!-- Search results -->
