@@ -85,6 +85,13 @@ function publicActions(state, emit){
             state.api[db].get(id)
                 .then(result => {
                 let sanitizedResult = helpers.removeIds(result);
+                // Remove collaborators
+                sanitizedResult.collaborators = [];
+                // Remove followers
+                sanitizedResult.followers = [];
+                // Remove followers
+                sanitizedResult.suggested = [];
+
                 return state.api[db].create(sanitizedResult)
                 })
                 .then(result => {
