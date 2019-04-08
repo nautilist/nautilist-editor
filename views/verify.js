@@ -32,7 +32,7 @@ function showInput(state, emit){
     return html`
     <div class="mw6 w-100 flex flex-column items-center">
         <h2>Your account was verified!</h2>
-        <a href="/login">go to nautilists.com/login</a>
+        <h3>Go to <a class="link black underline" href="/login">nautilists.com/login</a> to get started!</h3>
     </div>
     `
   } else {
@@ -50,7 +50,7 @@ function view (state, emit) {
   return html`
     <body class="code lh-copy w-100 h-100">
       <div class="w-100 flex flex-row items-center justify-between">
-        <a class="link dark-pink dropshadow ba br-pill pa2 bw1 mr3" href="/">Nautilist</a>
+        <a class="link black w3 ml2" href="/"><img src="/assets/logo-wow.png"></a>
         <button class="bn moon-gray bw2 pa2 h3 w3 f3 pointer" onclick="${onClose(state, emit)}">╳</button>
       </div>
       <main class="w-100 h-100">

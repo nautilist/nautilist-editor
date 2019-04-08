@@ -129,9 +129,9 @@ function store(state, emitter) {
       state.api.authmanagement.create(obj)
       .then(result => {
         // console.log('user verified!', result)
-        alert('Sending your account verification - please check your inbox :)')
+        // alert('Sending your account verification - please check your inbox :)')
       }).catch(err => {
-        alert(err);
+        // alert(err);
         return err;
       })
     };

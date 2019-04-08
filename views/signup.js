@@ -4,15 +4,30 @@ module.exports = view
 
 function onClose(state, emit){
   return e => {
-    emit('pushState', '/')
+    // emit('pushState', '/')
+    window.location = "/"
   }
 }
 
 function submitSignUp(state, emit){
   return e => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    emit(state.events.user_signup, formData);
+    const _formData = new FormData(e.currentTarget);
+    // state.events.user_signup(formData);
+    let credentials = {
+      username: _formData.get("username"),
+      email: _formData.get("email"),
+      password: _formData.get("password")
+    }
+    state.api.users.create(credentials)
+      .then(() => {
+      alert('Sign up successful - you will receive an email from hello.nautilist@gmail.com to verify your account')
+      // emitter.emit(state.events.user_login, _formData)
+      // emit('pushState', "/login")
+      window.location = "/"
+    }).catch(err => {
+      alert('Something went wrong!', err)
+    });
   }
 
 }
@@ -21,7 +36,7 @@ function view (state, emit) {
   return html`
     <body class="code lh-copy w-100 h-100">
       <div class="w-100 flex flex-row items-center justify-between">
-      <a class="link black w3 ml2" href="/"><img src="/assets/logo-wow.png"></a>
+        <a class="link black w3 ml2" href="/"><img src="/assets/logo-wow.png"></a>
         <button class="bn moon-gray bw2 pa2 h3 w3 f3 pointer" onclick="${onClose(state, emit)}">╳</button>
       </div>
       <main class="w-100 h-100">
