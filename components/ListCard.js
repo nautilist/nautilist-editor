@@ -29,16 +29,27 @@ function ListCard(list){
 
     return html`
     <a class="fl w-100 w-25-l w-third-m h5 link black mb4" href="/lists/${_id}">
-    <div class="h-100 dropshadow bg-near-white ma2" data-type="lists" data-id=${_id}>
-      <header class="w-100 h2  br--top" style="background-color:${colors[selectedColor]};"></header>
-      <div class="hide-child">
-        <section class="pa2">
-          <h3 class="ma0">${name}</h3>
-          <small class="ma0">by <a class="link black underline" href="/users/${list.ownerDetails.username}">${checkOwner(list)}</a> ${showCollaborators(list)}</small>
-        </section>
-        <p class="ma0 pa2 child f7 overflow-y-scroll">${description}</p>
+      <div class="h-100 dropshadow bg-near-white ma2" data-type="lists" data-id=${_id}>
+        <header class="w-100 h2  br--top" style="background-color:${colors[selectedColor]};"></header>
+        <div class="hide-child">
+            <section class="pa2">
+              <h3 class="ma0 overflow-y-scroll" style="max-height:4rem">${name}</h3>
+              <small class="ma0">by <a class="link black underline" href="/users/${list.ownerDetails.username}">${checkOwner(list)}</a> ${showCollaborators(list)}</small>
+            </section>
+            <p class="ma0 pa2  f7 overflow-y-scroll" style="max-height:4rem">${description}</p>
+        </div>
       </div>
-    </div>
     </a>
     `
   }
+
+  /**
+   * 
+   * <div class="hide-child">
+          <section class="pa2">
+            <h3 class="ma0 overflow-y-scroll">${name}</h3>
+            <small class="ma0">by <a class="link black underline" href="/users/${list.ownerDetails.username}">${checkOwner(list)}</a> ${showCollaborators(list)}</small>
+          </section>
+          <p class="ma0 pa2 child f7 overflow-y-scroll">${description}</p>
+        </div>
+   */
