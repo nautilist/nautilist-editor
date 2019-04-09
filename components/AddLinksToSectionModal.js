@@ -106,7 +106,7 @@ class AddLinksToSectionModal extends Component {
         
       <section class="w-100 mw7 h-auto overflow-hidden">
         <fieldset class="w-100 h-100 ma0 pa2 ba bw1 b--black">
-          <legend>Choose some links</legend>
+          <legend>Choose some links - optional</legend>
           <div class="mw7 h-100 pa2 flex flex-row overflow-x-scroll">
           ${els}
           </div>

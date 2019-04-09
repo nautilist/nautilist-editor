@@ -174,12 +174,12 @@ function privateActions(state, emit){
     const isCollaborator = collaboratorDetails.find(item => item.username === user.username) ? true:false;
     if(user.authenticated === true && user.username === ownerDetails.username || isCollaborator === true){
         return html`
-        <section class="w-100 mt4 flex flex-row-ns flex-column items-center-ns items-start">
-            <button onclick=${toggleEditable} class="mt2 mt0-ns h2 dropshadow bn bg-near-white mr2"><img class="h2" src="/assets/F000A.png"></button>
-            <button onclick=${addSection} class="mt2 mt0-ns h2  dropshadow bn bg-near-white mr2">Add section</button>
-            <button onclick=${addLink} class="mt2 mt0-ns h2  dropshadow bn bg-near-white mr2">Add link</button>
-            <button onclick=${addCollaborator} class="mt2 mt0-ns h2  dropshadow bn bg-near-white mr2">Add Collaborator</button>
-            <button onclick=${deleteList} class="mt2 mt0-ns h2  dropshadow bn bg-near-white red mr2">Delete List</button>
+        <section class="w-100 mt4 flex flex-row-ns flex-column items-center-ns flex-wrap-ns items-start">
+            <button onclick=${toggleEditable} class="mt2 h2 flex flex-row items-center dropshadow bn bg-near-white mr2"><img class="ma0 pa0 h2" src="/assets/1F58D.png"> Edit List</button>
+            <button onclick=${addSection} class="mt2 h2 flex flex-row items-center dropshadow bn bg-near-white mr2"><img class="ma0 pa0 h2" src="/assets/1F490.png"> Add section</button>
+            <button onclick=${addLink} class="mt2 h2 flex flex-row items-center  dropshadow bn bg-near-white mr2"><img class="ma0 pa0 h2" src="/assets/1F517.png"> Add link</button>
+            <button onclick=${addCollaborator} class="mt2 h2 flex flex-row items-center dropshadow bn bg-near-white mr2"><img class="ma0 pa0 h2" src="/assets/1F984.png"> Add Collaborator</button>
+            <button onclick=${deleteList} class="mt2 h2 flex flex-row items-center  dropshadow bn bg-near-white red mr2"><img class="ma0 pa0 h2" src="/assets/1F5D1.png"> Delete List</button>
             <p class="f7 pl2 ma0 mr2">${state.components.EditableList.editable === true ? 'editing' : '' }</p>
         </section>
         `

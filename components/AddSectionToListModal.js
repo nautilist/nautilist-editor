@@ -61,7 +61,7 @@ class AddSectionToListModal extends Component {
       return html`
       <section class="w-100 mw7 h-auto ma0 overflow-hidden">
       <fieldset class="w-100 h-100 ma0 h4 ba bw1 b--black">
-      <legend>Choose some links</legend>
+      <legend>Choose some links - optional</legend>
         <div class="mw7 h-100 pa0 flex flex-row overflow-x-scroll">
         ${els}
         </div>
