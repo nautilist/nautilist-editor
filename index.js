@@ -36,6 +36,8 @@ app.route('/lists/:id', require('./views/List'))
 app.route('/users', require('./views/users'))
 app.route('/users/:username', require('./views/user'))
 
+app.route('/settings/:username', require('./views/settings'))
+
 // app.route('/editor', require('./views/editor'))
 // app.route('/', require('./views/editor'))
 // app.route('/projects', require('./views/projects'))
@@ -81,6 +83,11 @@ app.use((state, emitter) => {                  // 1.
         emitter.emit("fetch-users", {});
         break;
       case 'users/:username':
+        if(state.params.hasOwnProperty('username')){
+          emitter.emit('fetch-user', state.params.username);
+        }
+        break;
+      case 'settings/:username':
         if(state.params.hasOwnProperty('username')){
           emitter.emit('fetch-user', state.params.username);
         }

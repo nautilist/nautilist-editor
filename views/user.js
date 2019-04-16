@@ -32,7 +32,7 @@ function EditUserDetailsBtn(state, emit){
   
   if(user.authenticated === true && user.username === selectedUsername ){
     return html`
-      <button class="bn bg-white underline f7" onclick=${()=>alert('profile page')}>edit profile</button>
+      <button class="bn bg-white underline f7" onclick=${()=> emit('pushState', `/settings/${selectedUsername}`)}>edit profile</button>
     `
   } else {
     return ''
