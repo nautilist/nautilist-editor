@@ -68,9 +68,6 @@ function view(state, emit) {
       })
 
   }
-
-  console.log(user.authenticated)
-  console.log(selectedUser.profile.username, user.username)
   
   if(user.authenticated === true && user.username === selectedUser.profile.username ){
     return html`
@@ -111,7 +108,8 @@ function view(state, emit) {
       ${state.cache(NavbarTop, "NavbarTop", state, emit).render()}
       <main class="w-100 flex flex-column flex-grow-1 items-center mb5">
       <section class="w-100 h-100 mw7 pa2 pb5">
-        <h1>you're not logged in!</h1>
+        <h1>Hello there. You're not logged in.</h1>
+        <p>→ <a class="link black underline f3" href="/login">login</a></p>
       </section>
       </main>
       ${Footer()}
@@ -120,7 +118,6 @@ function view(state, emit) {
     </body>
     `
   }
-
     
 }
 
