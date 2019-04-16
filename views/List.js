@@ -11,6 +11,7 @@ const AddLinksToSectionModal = require('../components/AddLinksToSectionModal');
 const AddSectionToListModal = require('../components/AddSectionToListModal');
 const AddCollaboratorModal = require('../components/AddCollaboratorModal');
 const EditFeatureModal = require('../components/EditFeatureModal');
+const ShowFollowersModal = require('../components/ShowFollowersModal');
 
 const TITLE = 'Nautilists - List';
 
@@ -42,6 +43,7 @@ function view(state, emit) {
         ${state.cache(AddSectionToListModal, "AddSectionToListModal", state, emit).render()}
         ${state.cache(AddCollaboratorModal, "AddCollaboratorModal", state, emit).render()}
         ${state.cache(EditFeatureModal, "EditFeatureModal", state, emit).render()}
+        ${state.cache(ShowFollowersModal, "ShowFollowersModal", state, emit).render()}
     </body>
   `
 

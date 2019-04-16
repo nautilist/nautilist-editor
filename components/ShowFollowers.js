@@ -2,7 +2,7 @@ const html = require('choo/html');
 
 module.exports = function (state, emit, details){
     function displayFollowerList(e){
-        alert('show followers');
+        state.components.ShowFollowersModal.open();
     }
 
     return html`
