@@ -82,16 +82,16 @@ class ShowFollowersModal extends Component {
       this.state.selectedList.followersDetails.length > 0) {
       return this.state.selectedList.followersDetails.map(follower => {
         return html `
-        <a href="/users/${follower.username}" class="w-100 bn bg-light-gray flex flex-column mb2 black link">
+        <div class="w-100 bn bg-light-gray flex flex-column mb2">
         <div class="w-100 pa3 flex flex-row items-center">
           <div class="w-two-thirds">
-          <p class=" w-100 ma0 b">${follower.username}</p>
+          <a href="/users/${follower.username}" class="link black w-100 ma0 b">${follower.username}</a>
           </div>
           <div class="w-third tr">
           ${this.showRemoveButton(follower._id)}
           </div>
         </div>
-      </a>
+      </div>
         `
       })
     } else {
