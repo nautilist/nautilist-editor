@@ -123,21 +123,20 @@ class AddLinksToSectionModal extends Component {
   linkDetailsForm(){
     return html`
       <form class="w-100 mt3" onsubmit=${this.handleSubmit}>
-        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt2">
           <legend class="pl2 pr2">URL</legend>
-          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f4 bg-near-white" name="url" 
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f5 bg-near-white" name="url" 
           value="${this.local.url}" placeholder="https://yourawesomelink.com">
         </fieldset>
-        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt2">
           <legend class="pl2 pr2">name</legend>
-          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f4 bg-near-white" name="name" 
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f5 bg-near-white" name="name" 
           value="${this.local.name}" placeholder="Your super cool link name">
         </fieldset>
-        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt2">
           <legend class="pl2 pr2">description</legend>
-          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f4 bg-near-white" name="description" 
-          value="${this.local.description}" placeholder="A super sweet description of your new link">
-        </fieldset>
+          <textarea onkeyup=${this.handleChange} class="w-100 h4 bn pa2 f5 bg-near-white" name="description" 
+          value="${this.local.description}" placeholder="A super sweet description of your new link"></textarea>
       </form>
     `
   }
