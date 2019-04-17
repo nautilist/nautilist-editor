@@ -6,6 +6,7 @@ const UserContributions = require("../components/UserContributions")
 const AddFeatureBtn = require('../components/AddFeatureBtn');
 const AddFeatureModal = require('../components/AddFeatureModal');
 const ShowUserFollowersModal = require('../components/ShowUserFollowersModal');
+const ShowUserFollowingModal = require('../components/ShowUserFollowingModal');
 
 module.exports = view
 
@@ -24,6 +25,7 @@ function view (state, emit) {
       ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
       ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
       ${state.cache(ShowUserFollowersModal, "ShowUserFollowersModal", state, emit).render()}
+      ${state.cache(ShowUserFollowingModal, "ShowUserFollowingModal", state, emit).render()}
     </body>
   `
 }
@@ -55,7 +57,13 @@ function UserDetails(state, emit){
 
   function followersBtn(){
     return html`
-      <span onclick=${() => state.components.ShowUserFollowersModal.open()}>followers</span>
+      <span class="underline pointer" onclick=${() => state.components.ShowUserFollowersModal.open()}>followers</span>
+    `
+  }
+
+  function followingBtn(){
+    return html`
+      <span class="underline pointer" onclick=${() => state.components.ShowUserFollowingModal.open()}>following</span>
     `
   }
 
@@ -71,60 +79,10 @@ function UserDetails(state, emit){
       <div class="w-100 h-100 flex flex-column justify-center pa2">
         <h1 class="ma0">${username}</h1>
         <p class="ma0">${bio}</p>
-        <p class="ma0 f6">${hasFollowers} ${followersBtn()} · ${followingDetails.length} following</p>
+        <p class="ma0 f6">${hasFollowers} ${followersBtn()} · ${followingDetails.length} ${followingBtn()}</p>
       </div>
     </section>
     
   </section>
   `
 }
-
-
-
-/**
-<main class="w-100 pa4 flex flex-column">
-        <a class="link black b underline" href="/users">← back to users page</a>
-    
-        <h1 class="tl">${state.selectedUser.username}</h1>
-        <div class="flex flex-row-ns flex-column w-100">
-          <section class="w-50-ns w-100 flex flex-column">
-            <section class="mb4">
-              <h2>My Projects</h2>
-              <ul class="list pl0 pr3 w-100">
-              ${renderUserProjects()}
-              </ul>
-            </section>
-          </section>
-
-          <section class="w-50-ns w-100 flex flex-column">
-            <section class="mb4">
-              <h2>My Collections</h2>
-              <ul class="list pl0 pr3 w-100">
-              ${renderUserCollections()}
-              ${newCollectionBtn(state, emit)}
-              </ul>
-            </section>
-          </section>
-        </div>
-
-        <h1 class="tl">Things I'm Following</h1>
-        <div class="flex flex-row-ns flex-column w-100">
-          <section class="w-50-ns w-100 flex flex-column">
-            <section class="mb4">
-              <h2>Projects I follow</h2>
-              <ul class="list pl0 pr3 w-100">
-              ${renderFollowingProjects()}
-              </ul>
-            </section>
-          </section>
-          <section class="w-50-ns w-100 flex flex-column">
-            <section class="mb4">
-              <h2>Collections I follow</h2>
-              <ul class="list pl0 pr3 w-100">
-              ${renderFollowingCollections()}
-              </ul>
-            </section>
-          </section>
-        </div>
-      </main>
- */
