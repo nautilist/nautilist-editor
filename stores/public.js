@@ -208,7 +208,10 @@ function store(state, emitter) {
         $or: [
           { owner: null},
           { collaborators: {$in: null} }
-        ]
+        ],
+        $sort: {
+          updatedAt: -1
+        }
       }
     }
 
