@@ -73,10 +73,10 @@ function UserDetails(state, emit){
     ${EditUserDetailsBtn(state, emit)}
     </section>
     <section class="w-100 h-auto flex flex-row-ns flex-column">
-      <div class="h-100">
+      <div class="w-100 h-100 w-25-ns flex flex-row justify-center items-center">
         <img class="h4" src="/assets/${emojis[selectedEmoji]}">
       </div>
-      <div class="w-100 h-100 flex flex-column justify-center pa2">
+      <div class="w-100 w-75-ns h-100 flex flex-column justify-center pa2">
         <h1 class="ma0">${username}</h1>
         <p class="ma0">${bio}</p>
         <p class="ma0 f6">${hasFollowers} ${followersBtn()} · ${followingDetails.length} ${followingBtn()}</p>
