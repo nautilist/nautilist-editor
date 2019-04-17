@@ -215,9 +215,17 @@ function store(state, emitter) {
       }
     }
 
-    let findFollowing = {
+    let findFollowers = {
       query:{ 
         "followers": {
+          "$in": []
+        }
+      }
+    }
+
+    let findUserFollowers = {
+      query:{ 
+        "following": {
           "$in": []
         }
       }
@@ -236,11 +244,16 @@ function store(state, emitter) {
       })
       .then(result => {
         state.selectedUser.lists = result.data;
-        findFollowing.query.followers.$in = [state.selectedUser.profile._id];
-        return state.api.lists.find(findFollowing)
+        findFollowers.query.followers.$in = [state.selectedUser.profile._id];
+        return state.api.lists.find(findFollowers)
       })
       .then(result => {
         state.selectedUser.listsFollowing = result.data;
+        findUserFollowers.query.following.$in = [state.selectedUser.profile._id];
+        return state.api.users.find(findUserFollowers)
+      })
+      .then(result => {
+        state.selectedUser.followers = result.data;
         emitter.emit('render');
       })
       .catch(err =>{

@@ -5,6 +5,7 @@ const Footer = require("../components/Footer")
 const UserContributions = require("../components/UserContributions")
 const AddFeatureBtn = require('../components/AddFeatureBtn');
 const AddFeatureModal = require('../components/AddFeatureModal');
+const ShowUserFollowersModal = require('../components/ShowUserFollowersModal');
 
 module.exports = view
 
@@ -22,6 +23,7 @@ function view (state, emit) {
       ${Footer()}
       ${state.cache(AddFeatureBtn, "AddFeatureBtn", state, emit).render()}
       ${state.cache(AddFeatureModal, "AddFeatureModal", state, emit).render()}
+      ${state.cache(ShowUserFollowersModal, "ShowUserFollowersModal", state, emit).render()}
     </body>
   `
 }
@@ -41,12 +43,21 @@ function EditUserDetailsBtn(state, emit){
 }
 
 function UserDetails(state, emit){
-  const { profile }= state.selectedUser;
+  const { profile, followers }= state.selectedUser;
   if(!profile.hasOwnProperty('username')){
     return html`<p>no user</p>`
   }
 
-  const{username, bio, emojis, selectedEmoji} = profile;
+  const{username, bio, emojis, selectedEmoji, followingDetails} = profile;
+
+  let hasFollowers = followers.length > 0 ? followers.length : 0;
+
+
+  function followersBtn(){
+    return html`
+      <span onclick=${() => state.components.ShowUserFollowersModal.open()}>followers</span>
+    `
+  }
 
   return html`
   <section class="w-100 flex flex-column mt4">
@@ -60,7 +71,7 @@ function UserDetails(state, emit){
       <div class="w-100 h-100 flex flex-column justify-center pa2">
         <h1 class="ma0">${username}</h1>
         <p class="ma0">${bio}</p>
-        <p class="ma0 f6"># followers · # following</p>
+        <p class="ma0 f6">${hasFollowers} ${followersBtn()} · ${followingDetails.length} following</p>
       </div>
     </section>
     
