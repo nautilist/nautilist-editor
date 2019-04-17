@@ -74,7 +74,7 @@ class AddLinksToSectionModal extends Component {
 
       return html`
         <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="mr2 h3 overflow-y-scroll dropshadow b--black fl pa2 ba bw1 grow ${highlight}" style="min-width:180px">
-          <p class="w-100 tc ma0 f7 truncate">${section.name === '' ? 'default' : section.name}</p>
+          <p class="w-100 tc ma0 f7">${section.name === '' ? 'default' : section.name}</p>
         </div>
       `
     })

@@ -53,7 +53,7 @@ class AddSectionToListModal extends Component {
       let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-light-green navy' : 'bg-white navy';
         return html`
           <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id}  class="mr2 h3 overflow-scroll-y dropshadow b--black fl pa2 ba bw1 grow ${highlight}" style="min-width:180px">
-            <p class="w-100 tc ma0 f7 truncate">${link.name === '' ? 'default' : link.name}</p>
+            <p class="w-100 tc ma0 f7">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `
       })
