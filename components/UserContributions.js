@@ -72,7 +72,7 @@ class UserContributions extends Component {
 
   createElement () {
     return html`
-    <section class="w-100">
+    <section class="w-100 pa2 pa0-ns">
       ${this.state.cache(UserContributionsMenu, "UserContributionsMenu", this.state, this.emit).render()} 
       ${this.showCurrentSelection()}
     </section>

@@ -31,7 +31,7 @@ class UserContributionsMenu extends Component {
 
   createElement () {
     return html`
-    <menu class="pa0 mt4 reset-input w-100 flex flex-column">
+    <menu class="pa0 mt2 reset-input w-100 flex flex-column">
       <ul class="list flex flex-row pa0">
         <li class="mr2">
           <button 

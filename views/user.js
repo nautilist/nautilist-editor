@@ -53,9 +53,9 @@ function UserDetails(state, emit){
     <section class="w-100 flex flex-row">
     ${EditUserDetailsBtn(state, emit)}
     </section>
-    <section class="w-100 h4 flex flex-row">
+    <section class="w-100 h-auto flex flex-row-ns flex-column">
       <div class="h-100">
-        <img class="h-100" src="/assets/${emojis[selectedEmoji]}">
+        <img class="h4" src="/assets/${emojis[selectedEmoji]}">
       </div>
       <div class="w-100 h-100 flex flex-column justify-center pa2">
         <h1 class="ma0">${username}</h1>
