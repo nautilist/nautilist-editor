@@ -73,16 +73,16 @@ class AddLinksToSectionModal extends Component {
     let highlight = section._id === this.local.selectedSection ? 'bg-yellow dark-pink' : 'bg-white navy';
 
       return html`
-        <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="mr2 h3 w4 b--black fl pa2 ba bw1 grow ${highlight}">
+        <div onclick=${this.setSelectedSection(section._id)} data-id=${section._id} class="mr2 h3 overflow-y-scroll dropshadow b--black fl pa2 ba bw1 grow ${highlight}" style="min-width:180px">
           <p class="w-100 tc ma0 f7 truncate">${section.name === '' ? 'default' : section.name}</p>
         </div>
       `
     })
 
     return html`
-      <section class="w-100 mw7 h-auto overflow-hidden">
+      <section class="w-100 mw7 mt3 h-auto overflow-hidden">
         <fieldset class="w-100 h-100 ma0 pa2 ba bw1 b--black">
-        <legend>Choose a section - required</legend>
+        <legend class="pl2 pr2">Choose a section for your link to go into - required</legend>
           <div class="mw7 h-100 pa2 flex flex-row overflow-x-scroll">
           ${els}
           </div>
@@ -96,17 +96,17 @@ class AddLinksToSectionModal extends Component {
     let els = links.map(link => {
       let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-light-green navy' : 'bg-white navy';
         return html`
-          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h3 w4 b--black fl pa2 ba bw1 grow ${highlight}">
-            <p class="w-100 tc ma0 f7 truncate">${link.name === '' ? 'default' : link.name}</p>
+          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id} class="mr2 h3 overflow-y-scroll dropshadow b--black fl pa2 ba bw1 ${highlight}" style="min-width:180px">
+            <p class="w-100 tc ma0 f7">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `
       })
   
       return html`
         
-      <section class="w-100 mw7 h-auto overflow-hidden">
-        <fieldset class="w-100 h-100 ma0 pa2 ba bw1 b--black">
-          <legend>Choose some links - optional</legend>
+      <section class="w-100 mw7 mt3 h-auto overflow-hidden">
+        <fieldset class="w-100 h-100 ma0 pa2 ba bw1 b--near-grey">
+          <legend class="pl2 pr2">Add additional links from the collection - optional</legend>
           <div class="mw7 h-100 pa2 flex flex-row overflow-x-scroll">
           ${els}
           </div>
@@ -123,20 +123,20 @@ class AddLinksToSectionModal extends Component {
   linkDetailsForm(){
     return html`
       <form class="w-100 mt3" onsubmit=${this.handleSubmit}>
-        <fieldset class="w-100 ba bw b--black mt1">
-          <legend>URL</legend>
-          <input onkeyup=${this.handleChange} class="w-100 ba bw1 pa2 f4" name="url" 
-          value="${this.local.url}">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+          <legend class="pl2 pr2">URL</legend>
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f4 bg-near-white" name="url" 
+          value="${this.local.url}" placeholder="https://yourawesomelink.com">
         </fieldset>
-        <fieldset class="w-100 ba bw b--black mt1">
-          <legend>name</legend>
-          <input onkeyup=${this.handleChange} class="w-100 ba bw1 pa2 f4" name="name" 
-          value="${this.local.name}">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+          <legend class="pl2 pr2">name</legend>
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f4 bg-near-white" name="name" 
+          value="${this.local.name}" placeholder="Your super cool link name">
         </fieldset>
-        <fieldset class="w-100 ba bw b--black mt1">
-          <legend>description</legend>
-          <input onkeyup=${this.handleChange} class="w-100 ba bw1 pa2 f4" name="description" 
-          value="${this.local.description}">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+          <legend class="pl2 pr2">description</legend>
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f4 bg-near-white" name="description" 
+          value="${this.local.description}" placeholder="A super sweet description of your new link">
         </fieldset>
       </form>
     `
@@ -213,13 +213,18 @@ class AddLinksToSectionModal extends Component {
             <button class="bn bg-navy washed-green bw2 pa2 h3 w3 f3 pointer" onclick="${this.close}">╳</button>
           </header>
 
-          ${this.showSections(sections)}
-          ${this.showLinks(links)}
-          <p>and/or</p>
+          <h2>Step 1 - add/select link(s)</h2>
+          <h3>Add a new link...</h3>
           ${this.linkDetailsForm()}
+          <h3>...or select existing ones</h3>
+          ${this.showLinks(links)}
+
+          <h2>Step 2 - select a section</h2>
+          ${this.showSections(sections)}
           
-          <section class="h3 w-100 mt3 mb4">
-          <button class="h-100 bg-near-white dark-pink pl3 pr3 dropshadow bn br0" onclick=${this.handleSubmit} class="pa2">Submit!</button>
+          <h2>Step 3 - submit</h2>
+          <section class="h3 w-100 mt4 mb4">
+          <button class="h-100 bg-navy pink pl3 pr3 dropshadow bn br0" onclick=${this.handleSubmit} class="pa2">Submit!</button>
           </section>
         </div>
         <!-- invisible div under the modal to capture out of modal click to close -->

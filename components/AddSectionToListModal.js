@@ -52,15 +52,15 @@ class AddSectionToListModal extends Component {
     let els = links.map(link => {
       let highlight = this.local.selectedLinks.includes(link._id) ? 'bg-light-green navy' : 'bg-white navy';
         return html`
-          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id}  class="mr2 h3 w4 b--black fl pa2 ba bw1 grow ${highlight}">
+          <div onclick=${this.setSelectedLinks(link._id)} data-id=${link._id}  class="mr2 h3 overflow-scroll-y dropshadow b--black fl pa2 ba bw1 grow ${highlight}" style="min-width:180px">
             <p class="w-100 tc ma0 f7 truncate">${link.name === '' ? 'default' : link.name}</p>
           </div>
         `
       })
   
       return html`
-      <section class="w-100 mw7 h-auto ma0 overflow-hidden">
-      <fieldset class="w-100 h-100 ma0 h4 ba bw1 b--black">
+      <section class="w-100 mt3 mw7 h-auto ma0 overflow-hidden">
+      <fieldset class="w-100 h-100 ma0 h4 ba bw1 b--moon-grey">
       <legend>Choose some links - optional</legend>
         <div class="mw7 h-100 pa0 flex flex-row overflow-x-scroll">
         ${els}
@@ -78,15 +78,15 @@ class AddSectionToListModal extends Component {
   sectionDetailsForm(){
     return html`
       <form class="w-100 mt3" onsubmit=${this.handleSubmit}>
-        <fieldset class="w-100 ba bw b--black mt1">
-          <legend>name</legend>
-          <input onkeyup=${this.handleChange} class="w-100 ba bw1 pa2 f3" name="name" 
-          value="${this.local.name}">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt1">
+          <legend class="pl2 pr2">name - required</legend>
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f3 bg-near-white" name="name" 
+          placeholder="${this.local.name}">
         </fieldset>
-        <fieldset class="w-100 ba bw b--black mt1">
-          <legend>description</legend>
-          <input onkeyup=${this.handleChange} class="w-100 ba bw1 pa2 f3" name="description" 
-          value="${this.local.description}">
+        <fieldset class="w-100 ba bw1 dropshadow b--black mt3">
+          <legend class="pl2 pr2">description - required</legend>
+          <input onkeyup=${this.handleChange} class="w-100 bn pa2 f3 bg-near-white" name="description" 
+          placeholder="${this.local.description}">
         </fieldset>
       </form>
     `
@@ -138,10 +138,10 @@ class AddSectionToListModal extends Component {
             <h2>Add Section to List</h2>
             <button class="bn bg-navy washed-green bw2 pa2 h3 w3 f3 pointer" onclick="${this.close()}">╳</button>
           </header>
-          ${this.showLinks(links)}
+          <h2>Section details</h2>
           ${this.sectionDetailsForm()}
-
-          <button class="h2 bg-near-white dark-pink pa2 mt3 dropshadow bn br0" onclick=${this.handleSubmit} class="pa2">Submit!</button>
+          ${this.showLinks(links)}
+          <button class="bg-navy pink h3 pa2 mt4 dropshadow bn br0" onclick=${this.handleSubmit} class="pa2">Submit!</button>
         </div>
         <!-- invisible div under the modal to capture out of modal click to close -->
         <div class="dn w-100 h-100 fixed top-0 left-0" onclick=${this.close()}></div>
